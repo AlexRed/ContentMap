@@ -97,6 +97,7 @@ function onAfterDisplayContent ( &$article, &$params, $limitstart ) //onAfterDis
 		$maptype = $this->params->get( 'maptype', '' );
 		$googlesearch = $this->params->get( 'googlesearch', '' );
 		$firma = $this->params->get( 'firma', '' );
+		$titlecolor = $this->params->get( 'titlecolor', '' );
 		/**fine parametri aggiunti da ste*/
 		$catid_list= $this->params->get( 'catid_list', '-');
 		if($catid_list=='-') $catid_list = '';
@@ -170,9 +171,14 @@ function onAfterDisplayContent ( &$article, &$params, $limitstart ) //onAfterDis
 			$maptypes= 'G_HYBRID_MAP, G_SATELLITE_MAP, G_NORMAL_MAP, G_PHYSICAL_MAP';
 			} else if ($maptype==3){
 			$maptypes= 'G_PHYSICAL_MAP, G_HYBRID_MAP, G_SATELLITE_MAP, G_NORMAL_MAP';
-	} 
+	}
+			if ($showdate){
+			$data= $article->created;
+			} else{
+			$data= '';
+		}
 	if ($mapenabled==1){ // inserito if per aggiungere lo script nell'head della pagina
-				$linkarticolo= '<a href=\"'.JRoute::_(ContentHelperRoute::getArticleRoute($article->slug, $article->catslug, $article->sectionid.":testset")).'\">'.$article->title.'<\/a>';
+				$linkarticolo= '<a style=\"color: '.$titlecolor.';\" href=\"'.JRoute::_(ContentHelperRoute::getArticleRoute($article->slug, $article->catslug, $article->sectionid.":testset")).'\">'.$article->title.'<\/a>';
 		        $initial_tooltip = "
 				window.addEvent('load', function() {
 					initialize();
@@ -323,11 +329,6 @@ function onAfterDisplayContent ( &$article, &$params, $limitstart ) //onAfterDis
 				$where_cond_older = ' AND a.created < '. $db->Quote($acreated);
 				$where_cond_newer = ' AND a.created > '. $db->Quote($acreated);
 				break;
-		}
-		if ($showdate){
-			$data= $article->created;
-			} else{
-			$data= '';
 		}
 /*************
 Kiem tra xem co thuoc vao list id, cat_id va section_id khong

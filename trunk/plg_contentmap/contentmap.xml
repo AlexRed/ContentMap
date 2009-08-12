@@ -78,6 +78,7 @@
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
+		<param name="titlecolor" type="text" default="#A10F15" label="TITLECOLOR" description="TITLECOLOR DESC"/>
 		<param description="" label="" default="SPACER2" type="spacer" name="b" />
 		<param name="sectionid_list" type="text" size="6" default="-" label="DISABLE SECTION ID LIST" description="DISABLE SECTION ID LIST DESC" />
 		<param name="catid_list" type="text" size="6" default="-" label="DISABLE CATEGORY ID LIST" description="DISABLE CATEGORY ID LIST DESC" />
