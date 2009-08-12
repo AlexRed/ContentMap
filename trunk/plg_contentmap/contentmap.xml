@@ -2,12 +2,12 @@
 <install version="1.5" type="plugin" group="content">
 	<name>Content - ContentMap</name>
 	<author>Turismo.eu</author>
-	<creationDate>12 August 2009</creationDate>
+	<creationDate>13 August 2009</creationDate>
 	<copyright>(C) 2008 Luyenkim.net. All rights reserved. - (C) 2009 Turismo.eu All rights reserved.</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GPLv2.0</license>
 	<authorEmail>info@joomla.it</authorEmail>
 	<authorUrl>www.turismo.eu</authorUrl>
-	<version>1.0.2</version>
+	<version>1.0.3</version>
 	<description>CIAO FROM ITALY</description>
 		<files>
 		<filename plugin="contentmap">contentmap.php</filename>
