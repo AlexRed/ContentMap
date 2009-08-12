@@ -162,6 +162,13 @@ function onAfterDisplayContent ( &$article, &$params, $limitstart ) //onAfterDis
 		} else{
 		$zooms= 'GSmallMapControl()';
 	}
+	if ($maptype==0){ // per decidere il tipo di mappa
+			$maptypes= 'G_NORMAL_MAP, G_SATELLITE_MAP, G_HYBRID_MAP';
+			} else if ($maptype==1){
+			$maptypes= 'G_SATELLITE_MAP, G_NORMAL_MAP, G_HYBRID_MAP';
+			} else if ($maptype==2){
+			$maptypes= 'G_HYBRID_MAP, G_SATELLITE_MAP, G_NORMAL_MAP';
+	} 
 	if ($mapenabled==1){ // inserito if per aggiungere lo script nell'head della pagina
 				$linkarticolo= '<a href=\"'.JRoute::_(ContentHelperRoute::getArticleRoute($article->slug, $article->catslug, $article->sectionid.":testset")).'\">'.$article->title.'<\/a>';
 		        $initial_tooltip = "
@@ -176,8 +183,9 @@ function onAfterDisplayContent ( &$article, &$params, $limitstart ) //onAfterDis
 					if (GBrowserIsCompatible()) {
 					var map = new GMap (document.getElementById('gmap'));
 					map.addControl(new ".$zooms.");
-					map.addControl(new GMapTypeControl()); 
+					map.addControl(new GMapTypeControl());
 					map.setCenter( new GLatLng( ".$params->get("keyref")."), ".$zoomlevel.");
+					map.setMapType(".$maptypes.");
 					map.enableDragging();
 					map.disableScrollWheelZoom();
 					var control;
@@ -313,13 +321,6 @@ function onAfterDisplayContent ( &$article, &$params, $limitstart ) //onAfterDis
 				$where_cond_newer = ' AND a.created > '. $db->Quote($acreated);
 				break;
 		}
-		if ($maptype==0){
-			$maptypes= 'G_NORMAL_MAP, G_SATELLITE_MAP, G_HYBRID_MAP';
-			} else if ($maptype==1){
-			$maptypes= 'G_SATELLITE_MAP, G_NORMAL_MAP, G_HYBRID_MAP';
-			} else if ($maptype==2){
-			$maptypes= 'G_HYBRID_MAP, G_SATELLITE_MAP, G_NORMAL_MAP';
-			} 
 		if ($showdate){
 			$data= $article->created;
 			} else{
