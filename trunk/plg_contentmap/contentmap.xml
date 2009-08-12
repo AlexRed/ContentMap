@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install version="1.5" type="plugin" group="content">
+	<name>Content - ContentMap</name>
+	<author>Turismo.eu</author>
+	<creationDate>12 August 2009</creationDate>
+	<copyright>(C) 2008 Luyenkim.net. All rights reserved. - (C) 2009 Turismo.eu All rights reserved.</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GPLv2.0</license>
+	<authorEmail>info@joomla.it</authorEmail>
+	<authorUrl>www.turismo.eu</authorUrl>
+	<version>1.0.2</version>
+	<description>CIAO FROM ITALY</description>
+		<files>
+		<filename plugin="contentmap">contentmap.php</filename>
+		<filename>contentmap/js/dhtmltooltip.js</filename>
+		<filename>contentmap/js/mootools.js</filename>    		
+		<filename>contentmap/images/tooltiparrow.gif</filename>
+		<filename>contentmap/images/selector-arrow.png</filename>
+		<filename>contentmap/images/nostreetview.gif</filename>	
+		<filename>contentmap/css/dhtmltooltip.css</filename>
+		<filename>contentmap/css/contentmap.css</filename>	
+		<filename>contentmap/css/googlemap.php</filename>		
+	</files>
+	<languages>
+        <language tag="en-GB">en-GB.plg_content_contentmap.ini</language>
+        <language tag="it-IT">it-IT.plg_content_contentmap.ini</language>
+    </languages>
+	<params>
+		 <param name="enabled" type="radio" default="1" label="Enable Plugin" description="ENABLE PLUGIN DESC">
+		<option value="0">No</option>
+		<option value="1">Yes</option>
+	 </param>
+		<param name="cache" type="radio" default="0" label="ENABLE CACHE" description="ENABLE CACHE DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param description="" label="" default="SPACER1" type="spacer" name="a" />
+		<param name="mapenabled" type="radio" default="1" label="ENABLE MAP" description="ENABLE MAP DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="streetviewenabled" type="radio" default="0" label="STREET VIEW" description="STREET VIEW DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="apikey" type="text" default="" label="APIKEY" size="50" description="APIKEY DESC"/>
+		<param name="mapwidth" type="text" default="650" label="MAPWIDTH" description="MAPWIDTHDESC"/>
+		<param name="mapheight" type="text" default="400" label="MAPHEIGHT" description="MAPHEIGHTDESC"/>
+		<param name="zoom" type="radio" default="0" label="MAP ZOOM" description="MAP ZOOM DESC">
+			<option value="0">Esteso</option>
+			<option value="1">Ridotto</option>
+		</param>
+		<param name="zoomlevel" type="list" default="14" label="ZOOM LEVEL" description="ZOOM LEVEL DESC">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+			<option value="8">8</option>
+			<option value="9">9</option>
+			<option value="10">10</option>
+			<option value="11">11</option>
+			<option value="12">12</option>
+			<option value="13">13</option>
+			<option value="14">14</option>
+			<option value="15">15</option>
+			<option value="16">16</option>
+			<option value="17">17</option>
+	  	</param>
+		<param name="maptype" type="radio" default="0" label="MAP TYPE" description="MAP TYPE DESC">
+			<option value="0">MAPPA</option>
+			<option value="1">SATELLITE</option>
+			<option value="2">IBRIDA</option>
+		</param>
+		<param name="googlesearch" type="radio" default="1" label="GOOGLE SERCH" description="GOOGLE SERCH DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param description="" label="" default="SPACER2" type="spacer" name="b" />
+		<param name="sectionid_list" type="text" size="6" default="-" label="DISABLE SECTION ID LIST" description="DISABLE SECTION ID LIST DESC" />
+		<param name="catid_list" type="text" size="6" default="-" label="DISABLE CATEGORY ID LIST" description="DISABLE CATEGORY ID LIST DESC" />
+		<param name="id_list" type="text" size="6" default="-" label="DISABLE ARTICLE ID LIST" description="DISABLE ARTICLE ID LIST DESC" />	
+		<param name="queryby" type="list" default="c_dsc" label="QUERY BY" description="QUERY BY DESC">
+			<option value="c_dsc">Recently Added</option>
+			<option value="i_dsc">Article id</option>
+	  	</param>
+	    <param description="" label="" default="SPACER3" type="spacer" name="c" />
+		<param name="char_count_title" type="text" size="6" default="0" label="LINKED TITLE CHAR COUNT" description="LINKED TITLE CHAR COUNT DESC" />
+		<param name="relateditemscount" type="text" default="5" label="NUMBER OF RELATED ITEMS" description="NUMBER OF RELATED ITEMS DESC" />
+		<param name="neweritemscount" type="text" default="5" label="NUMBER OF NEWER NEWS ITEMS" description="NUMBER OF NEWER NEWS ITEMS DESC" />
+		<param name="showdate" type="radio" default="1" label="SHOW DATE WITH TITLE" description="SHOW DATE WITH TITLE DESC">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+		<param name="showdateformat" type="text" default="d/m/Y H:i" label="CREATED DATE DISPLAY" description="CREATED DATE DISPLAY DESC"/>
+		<param name="linkedtitleformat" type="text" default="%1$s - %2$s" label="LINKED TITLE FORMAT WITH DATE" description="LINKED TITLE FORMAT WITH DATE DESC"/>
+		<param description="" label="" default="SPACER4" type="spacer" name="d" />
+		<param name="textbefore" type="text" default="&lt;hr align=&quot;center&quot; width=&quot;85%&quot;&gt;&lt;/hr&gt;" label="TEXT BEFORE" description="TEXT BEFORE DESC"/>
+		<param name="textafter" type="text" default="&lt;hr align=&quot;center&quot; width=&quot;85%&quot;&gt;&lt;/hr&gt;" label="TEXT AFTER" description="TEXT AFTER DESC"/>
+		<param name="marginleft" type="text" default="5%" label="MARGINLEFT" description="MARGINLEFT DESC"/>
+		<param name="marginright" type="text" default="5%" label="MARGINRIGHT" description="MARGINRIGHT DESC"/>
+		<param description="" label="" default="SPACER5" type="spacer" name="e" />
+		<param name="enable_tooltip" type="radio" default="no" label="ENABLE TOOLTIP" description="ENABLE TOOLTIP DESC">
+			<option value="yes">Yes</option>
+			<option value="no">No</option>
+		</param>
+		<param name="script_tooltip" type="radio" default="0" label="TOOLTIP SCRIPT" description="TOOLTIP SCRIPT DESC">
+			<option value="0">Joomla Mootool</option>
+			<option value="1">Overlib</option>
+			<option value="2">Dhtml tooltip</option>
+		</param>
+		<param name="load_mootools" type="radio" default="no" label="LOAD MOOTOOLS SCRIPT" description="LOAD MOOTOOLS SCRIPT">
+			<option value="yes">Yes</option>
+			<option value="no">No</option>
+		</param>
+		<param name="scriptIE6_tooltip" type="radio" default="2" label="IE6 TOOLTIP SCRIPT" description="IE6 TOOLTIP SCRIPT DESC">
+			<option value="2">Dhtml tooltip</option>
+			<option value="1">Overlib</option>
+		</param>
+		<param name="t_char_count_title" type="text" size="6" default="0" label="TOOLTIP TITLE CHAR COUNT" description="TOOLTIP TITLE CHAR COUNT DESC" />
+		<param name="t_char_count_desc" type="text" size="6" default="150" label="TOOLTIP DESCRIPTION CHAR COUNT" description="TOOLTIP DESCRIPTION CHAR COUNT DESC" />
+		<param name="tooltip_desc_images" type="radio" default="No" label="TOOLTIP DESCRIPTION TEXT IMAGES" description="TOOLTIP DESCRIPTION TEXT IMAGES DESC">
+			<option value="yes">Yes</option>
+			<option value="no">No</option>
+		</param>
+		<param name="img_width" type="text" default="100" label="IMAGE WIDTH" description="IMAGE WIDTH DESC" />
+		<param name="img_height" type="text" default="100" label="IMAGE HEIGHT" description="IMAGE HEIGHT DESC" />
+		<param description="" label="" default="SPACER6" type="spacer" name="f" />
+		<param name="tooltip_width" type="text" default="270" size="4" label="TOOLTIP WIDTH" description="TOOLTIP WIDTH DESC" />
+		<param name="tooltip_height" type="text" default="120" size="4" label="TOOLTIP HEIGHT" description="TOOLTIP HEIGHT DESC" />
+		<param name="tooltip_bgcolor" type="text" default="#000000" size="8" label="TOOLTIP CAPTION BACKGROUND COLOR" description="TOOLTIP CAPTION BACKGROUND COLOR DESC" />
+		<param name="tooltip_capcolor" type="text" default="#ffffff" size="8" label="TOOLTIP CAPTION FONT COLOR" description="TOOLTIP CAPTION FONT COLOR DESC" />
+		<param name="tooltip_fgcolor" type="text" default="#ffffff" size="8" label="TOOLTIP BODY BACKGROUND COLOR" description="TOOLTIP BODY BACKGROUND COLOR DESC" />
+		<param name="tooltip_textcolor" type="text" default="#000000" size="8" label="TOOLTIP BODY FONT COLOR" description="TOOLTIP BODY FONT COLOR DESC" />
+		<param name="tooltip_border" type="text" default="1" size="5" label="TOOLTIP BORDER WIDTH" description="TOOLTIP BORDER WIDTH DESC" />
+	</params>
+</install>
