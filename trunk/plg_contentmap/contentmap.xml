@@ -72,6 +72,7 @@
 			<option value="0">MAPPA</option>
 			<option value="1">SATELLITE</option>
 			<option value="2">IBRIDA</option>
+			<option value="3">TERRAIN</option>
 		</param>
 		<param name="googlesearch" type="radio" default="1" label="GOOGLE SERCH" description="GOOGLE SERCH DESC">
 			<option value="0">No</option>
