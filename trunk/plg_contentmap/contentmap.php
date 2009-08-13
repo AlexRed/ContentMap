@@ -173,7 +173,7 @@ function onAfterDisplayContent ( &$article, &$params, $limitstart ) //onAfterDis
 			$maptypes= 'G_PHYSICAL_MAP, G_HYBRID_MAP, G_SATELLITE_MAP, G_NORMAL_MAP';
 	}
 			if ($showdate){
-			$data= $article->created;
+			$data= $this->mygetdate($article->created,$offset,$showdateformat);
 			} else{
 			$data= '';
 		}
