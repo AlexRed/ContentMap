@@ -172,11 +172,6 @@ function onAfterDisplayContent ( &$article, &$params, $limitstart ) //onAfterDis
 			} else if ($maptype==3){
 			$maptypes= 'G_PHYSICAL_MAP, G_HYBRID_MAP, G_SATELLITE_MAP, G_NORMAL_MAP';
 	}
-			if ($showdate){
-			$data= $this->mygetdate($article->created,$offset,$showdateformat);
-			} else{
-			$data= '';
-		}
 	if ($mapenabled==1){ // inserito if per aggiungere lo script nell'head della pagina
 				$linkarticolo= '<a style=\"color: '.$titlecolor.';\" href=\"'.JRoute::_(ContentHelperRoute::getArticleRoute($article->slug, $article->catslug, $article->sectionid.":testset")).'\">'.$article->title.'<\/a>';
 		        $initial_tooltip = "
@@ -199,7 +194,7 @@ function onAfterDisplayContent ( &$article, &$params, $limitstart ) //onAfterDis
 					map.disableScrollWheelZoom();
 					var control;
 					var marker = new GMarker( new GLatLng( ".$params->get("keyref")."));
-					marker.bindInfoWindow(\" ".$linkarticolo."<br />".$article->created_by_alias."<br />".$data."<br />\");
+					marker.bindInfoWindow(\" ".$linkarticolo."<br />".$article->created_by_alias."\");
 					map.addOverlay(marker);
 					if ($googlesearch==1){map.enableGoogleBar();}
 					}
