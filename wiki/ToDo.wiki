@@ -19,8 +19,12 @@ Sono previsti sviluppi in tal senso ?
 = IMPLEMENTATO=
 
 - MOD E PLG there should be a way to configure the default view: map/satellite/hybrid (please see http://iveg.ro/resurse.html)
+
 - SOLO MODULO the minimap in some cases covers markers so it also should have a way to minimize or remove it
+
 - SOLO MODULO Inserire la possibilità di mettere l'indirizzo anche nei file in release, come su turismo.eu
+
 - How can I make the terrain button shown? I want to present hiking destinations. There is terrain better than street map or satelite.
+
 - Usufruisco di questo post per chiede se in futuro sarà possibile inserire steet view.  ho cercato in giro ma non ho trovato nessun componente o plugin che possa integrare questa funzione nei siti.
 grazie.
