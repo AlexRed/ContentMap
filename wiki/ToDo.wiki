@@ -4,7 +4,7 @@
 Caratteristiche richieste dagli utenti
   * Text in *bold* or _italic_
 
-= Details =
+= DA IMPLEMENTARE=
 
 - inserire il parametro che cambia il colore dei titoli nel fumetto anche nel modulo
 - I have one suggestion for making it even more useful - an option to  specify a geographic name as a Key Reference instead of longitude/ latitude coordinates.  For a news-related site, the geotag for an  article is often just a city name, not precise coordinates.  In my  case, I am the administrator of an aviation-related website.  I would  like to geotag articles with their associated airport designator (e.g.  KLAX for Los Angeles airport - Google Maps understands an input such  as KLAX).  I realize that I can use you Geo web app to create the  coordinates (this is also a very nice application), but it would be  easier to allow non-technical editors using my site to simply type in  KLAX as a Key Reference instead of going through the extra steps of  generating the Lat/Long coordinates. 
@@ -16,7 +16,7 @@ Caratteristiche richieste dagli utenti
 - Da quanto ho capito leggendo il codice del modulo, non è possibile elencare nel baloon visualizzato per ogni marker l'elenco di tutti i contenuti che hanno come riferimento chiave le medesime coordinate
 Sono previsti sviluppi in tal senso ?
 
-IMPLEMENTATO:
+= IMPLEMENTATO=
 
 - MOD E PLG there should be a way to configure the default view: map/satellite/hybrid (please see http://iveg.ro/resurse.html)
 - SOLO MODULO the minimap in some cases covers markers so it also should have a way to minimize or remove it
