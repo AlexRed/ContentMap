@@ -1,7 +1,5 @@
 #summary Nuove funzionalità da implementare segnalate dagli utenti.
 
-= Introduction =
-Caratteristiche richieste dagli utenti
   * Text in *bold* or _italic_
 
 = DA IMPLEMENTARE=
