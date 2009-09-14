@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#summary Nuove funzionalità da implementare segnalate dagli utenti.
 
 = Introduction =
 Caratteristiche richieste dagli utenti
@@ -15,6 +15,9 @@ Caratteristiche richieste dagli utenti
 
 - Da quanto ho capito leggendo il codice del modulo, non è possibile elencare nel baloon visualizzato per ogni marker l'elenco di tutti i contenuti che hanno come riferimento chiave le medesime coordinate
 Sono previsti sviluppi in tal senso ?
+
+- inserire in una mappa di google diversi punti di interessi appartenenti a categorie diverse e la possibilità di visualizzare solo una categoria (es. http://www.parcoabruzzo.it/map.php)
+http://forum.joomla.it/index.php/topic,81188.0.html
 
 = IMPLEMENTATO=
 
