@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="1.7.0" method="upgrade">
+	<name>COM_CONTENTMAP</name>
+	<creationDate>13/02/2012</creationDate>
+	<author>Turismo.eu</author>
+	<authorEmail>info@joomla.it</authorEmail>
+	<authorUrl>http://www.turismo.eu/</authorUrl>
+	<copyright>Turismo.eu</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html</license>
+	<version>1.2.5</version>
+	<description>COM_CONTENTMAP_DESCRIPTION</description>
+
+	<files folder="site">
+		<filename>index.html</filename>
+		<filename>contentmap.php</filename>
+	</files>
+
+	<administration>
+		<menu img="../media/contentmap/images/map-16.png">COM_CONTENTMAP_MENU</menu>
+		<files folder="admin">
+			<filename>index.html</filename>
+			<filename>contentmap.php</filename>
+			<folder>language</folder>
+		</files>
+	</administration>
+
+	<scriptfile>install.php</scriptfile>
+
+	<updateservers>
+		<server type="extension" priority="1" name="ContentMap update site"><![CDATA[http://www.turismo.eu/download/contentmap.xml]]></server>
+	</updateservers>
+
+	<chain>
+		<extension directory="extras" name="lib_contentmap" />
+		<extension directory="extras" name="mod_contentmap" />
+		<extension directory="extras" name="plg_contentmap" />
+	</chain>
+
+</extension>
