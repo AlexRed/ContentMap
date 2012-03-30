@@ -7,7 +7,7 @@
 	<authorUrl>http://www.turismo.eu/</authorUrl>
 	<copyright>Turismo.eu</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-	<version>1.2.5</version>
+	<version>1.2.6</version>
 	<description>MOD_CONTENTMAP_DESCRIPTION</description> <!-- Used in Module Manager > New > Select a Module Type. Translation in modules/mod_contentmap/language/xx-XX/xx-XX.mod_contentmap.ini -->
 
 	<files>
