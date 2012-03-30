@@ -50,6 +50,36 @@ class plgContentcontentmap extends JPlugin
 		$this->document->addScript("../plugins/content/contentmap/js/api.js");
 		$this->document->addScript(JURI::root(true) . "/libraries/contentmap/js/geopicker-min.js");
 
+/*
+		if (preg_match('/ 1$/', $GLOBALS["contentmap"]["version"])) return "";
+
+		$name = basename(realpath(dirname(__FILE__) . "/../.."));
+
+		$direction = intval(JFactory::getLanguage()->get('rtl', 0));
+		$left  = $direction ? "right" : "left";
+		$right = $direction ? "left" : "right";
+
+		echo '<div class="clr"></div>';
+		$image = '';
+		$icon	= (string)$this->element['icon'];
+		if (!empty($icon))
+		{
+			$image .= '<img style="margin:0; float:' . $left . ';" src="' . JURI::base(true) . '/../media/' . $name . '/images/' . $icon . '">';
+		}
+
+		$style = 'background:#f4f4f4; border:1px solid silver; padding:5px; margin:5px 0;';
+
+		return '<div style="' . $style . '">' .
+		$image .
+		'<span style="padding-' . $left . ':5px; line-height:16px;">' .
+		JText::_($this->element['text']) .
+		' <a href="' . $this->element['url'] . '" target="_blank">' .
+		JText::_(strtoupper($name) . '_DOCUMENTATION') .
+		'</a>' .
+		'</span>' .
+		'</div>';
+
+*/
 		return true;
 	}
 
