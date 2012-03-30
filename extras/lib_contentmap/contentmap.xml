@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="library" version="1.7" method="upgrade">
+	<name>ContentMap</name>
+	<creationDate>13/02/2012</creationDate>
+	<author>Turismo.eu</author>
+	<authorEmail>info@joomla.it</authorEmail>
+	<authorUrl>http://www.turismo.eu/</authorUrl>
+	<copyright>Turismo.eu</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<version>1.2.5</version>
+	<libraryname>contentmap</libraryname>
+
+	<files>
+		<folder>css</folder>
+		<folder>js</folder>
+		<folder>language</folder>
+		<folder>loader</folder>
+		<folder>models</folder>
+	</files>
+
+	<media destination="contentmap" folder="media">
+		<filename>index.html</filename>
+		<folder>images</folder>
+		<folder>markers</folder>
+	</media>
+
+</extension>
