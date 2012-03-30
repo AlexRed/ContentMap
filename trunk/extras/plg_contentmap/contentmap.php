@@ -48,7 +48,7 @@ class plgContentcontentmap extends JPlugin
 		$this->document->addStyleSheet("../plugins/content/contentmap/css/picker.css");
 		//$this->document->addScript("http://api.mygeoposition.com/api/geopicker/api.js");
 		$this->document->addScript("../plugins/content/contentmap/js/api.js");
-		$this->document->addScript(JURI::root(true) . "/libraries/contentmap/js/geopicker.js");
+		$this->document->addScript(JURI::root(true) . "/libraries/contentmap/js/geopicker-min.js");
 
 		return true;
 	}
