@@ -12,7 +12,7 @@ Copy from this source using another file name and select your own new created cs
 #contentmap_container_/*owner*/_/*id*/
 {
 	padding: 6px; /*inner spacer*/
-	margin: 0px 1px 0px 1px; /*outer spacer*/
+	margin: 24px 1px 0px 1px; /*outer spacer*/
 	border-width: 1px;
 	border-style: solid;
 	border-color: #ccc #ccc #999 #ccc;
@@ -24,6 +24,12 @@ Copy from this source using another file name and select your own new created cs
 #contentmap_/*owner*/_/*id*/
 {
 	height: /*map_height*/px;
+	color: #505050;
+}
+
+#contentmap_/*owner*/_/*id*/ a, #contentmap_/*owner*/_/*id*/ a:hover, #contentmap_/*owner*/_/*id*/ a:visited
+{
+	color: #0055ff;
 }
 
 /* Article image inside the balloon */
