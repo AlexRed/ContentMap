@@ -66,8 +66,11 @@
 					<option value="HYBRID">CONTENTMAP_MAPTYPE_HYBRID</option>
 					<option value="TERRAIN">CONTENTMAP_MAPTYPE_TERRAIN</option>
 				</field>
+
 				<field type="ossheader" default="CONTENTMAP_MARKERS_OPTIONS" icon="marker-16.png"/>
 				<field name="markers_icon" type="filelist" label="CONTENTMAP_MARKERS_ICON_LBL" description="CONTENTMAP_MARKERS_ICON_DSC" default="" hide_none="true" directory="media/contentmap/markers/icons" filter="\.png$" exclude="" stripext="" />
+				<field name="markers_action" type="hidden" default="infowindow"/>
+
 				<field type="ossheader" default="CONTENTMAP_INFOWINDOWS" icon="infowindow-16.png"/>
 				<field name="infowindow_event" type="list" default="click" label="CONTENTMAP_INFOWINDOW_ACTION_LBL" description="CONTENTMAP_INFOWINDOW_ACTION_DSC">
 					<option value="click">CONTENTMAP_INFOWINDOW_ACTION_CLICK</option>
@@ -109,7 +112,7 @@
 			</fieldset>
 
 			<fieldset name="advanced">
-				<field name="stylesheet" type="filelist" label="CONTENTMAP_ALT_CSS_LBL" description="CONTENTMAP_ALT_CSS_DSC" default="plugin.css" hide_none="true" directory="libraries/contentmap/css" filter="\.css$" exclude="" stripext="" />
+				<field name="stylesheet" type="filelist" label="CONTENTMAP_ALT_CSS_LBL" description="CONTENTMAP_ALT_CSS_DSC" default="default.css" hide_none="true" directory="libraries/contentmap/css" filter="\.css$" exclude="" stripext="" />
 				<field name="javascript" type="hidden" default="map.js" />
 				<field name="markers" type="hidden" default="markers.json" />
 				<field name="api_key" type="text" label="CONTENTMAP_API_KEY_LBL" description="CONTENTMAP_API_KEY_DSC" size="26"/>

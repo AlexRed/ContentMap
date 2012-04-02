@@ -3,8 +3,8 @@
 This file is part of "Content Map Joomla Extension".
 Author: Open Source solutions http://www.opensourcesolutions.es
 
-You can redistribute and/or modify it under the terms of the GNU 
-General Public License as published by the Free Software Foundation, 
+You can redistribute and/or modify it under the terms of the GNU
+General Public License as published by the Free Software Foundation,
 either version 2 of the License, or (at your option) any later version.
 
 GNU/GPL license gives you the freedom:
@@ -150,7 +150,7 @@ abstract class OSSLoader
 	protected function load()
 	{
 		// Complete the script name with its path
-		$local_name = realpath(dirname(__FILE__) . DS . ".." . DS . $this->Type . DS . $this->Params->get($this->ParamName));
+		$local_name = realpath(dirname(__FILE__) . "/../" . $this->Type . "/" . $this->Params->get($this->ParamName));
 
 		// Open source file
 		$handle = @fopen($local_name, 'r');

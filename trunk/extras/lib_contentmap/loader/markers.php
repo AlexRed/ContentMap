@@ -3,8 +3,8 @@
 This file is part of "Content Map Joomla Extension".
 Author: Open Source solutions http://www.opensourcesolutions.es
 
-You can redistribute and/or modify it under the terms of the GNU 
-General Public License as published by the Free Software Foundation, 
+You can redistribute and/or modify it under the terms of the GNU
+General Public License as published by the Free Software Foundation,
 either version 2 of the License, or (at your option) any later version.
 
 GNU/GPL license gives you the freedom:
@@ -124,7 +124,7 @@ class GoogleMapMarkers
 
 		foreach ($this->Contents as &$content)
 		{
-			// xreference database field is empty. 
+			// xreference database field is empty.
 			// For some strange reason, it is stored in metadata field on the database
 			$registry = new JRegistry($content["metadata"]); // Equivalent to $registry->loadJSON($content["metadata"])
 			$coordinates = explode(",", $registry->get("xreference"));
@@ -161,7 +161,7 @@ class GoogleMapMarkers
 		}
 
 		// Problematic infowindows are near the upper border, so start preload from them
-		// Sort by Latitude, 
+		// Sort by Latitude,
 		usort($this->Contents, "sort_markers");
 	}
 
@@ -203,7 +203,7 @@ class GoogleMapMarkers
 
 		foreach ($this->Contents as &$content)
 		{
-			// xreference database field is empty. 
+			// xreference database field is empty.
 			// For some strange reason, it is stored in metadata field on the database
 			$registry = new JRegistry($content["metadata"]); // Equivalent to $registry->loadJSON($content["metadata"])
 			$coordinates = explode(",", $registry->get("xreference"));
@@ -288,6 +288,8 @@ class GoogleMapMarkers
 			unset($content["id"]);
 			unset($content["alias"]);
 			unset($content["catid"]);
+			// Article url is useful when Marker action is set to "directly redirect", rather than "open the infowindow"
+			$content["article_url"] = $sef_link;
 
 			// Prepare the image
 			if ($this->Params->get('show_image', 0) && $content["image"])
@@ -304,7 +306,7 @@ class GoogleMapMarkers
 				$content["html"] .=
 				"<div style=\"float:" . $content["float_image"] . ";\">" .
 				"<img class=\"intro_image\"" .
-				$format . 	
+				$format .
 				" src=\"" . JURI::base(true) . "/" . $content["image"] . "\"";
 				if ($content["image_intro_alt"]) $content["html"] .= " alt=\"" . $content["image_intro_alt"] . "\"";
 				if ($content["image_intro_caption"]) $content["html"] .= " title=\"" . $content["image_intro_caption"] . "\"";

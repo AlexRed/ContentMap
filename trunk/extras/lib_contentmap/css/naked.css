@@ -15,6 +15,12 @@ Copy from this source using another file name and select your own new created cs
 {
 	width: /*map_width*//*map_width_unit*/;
 	height: /*map_height*/px;
+	color: #505050;
+}
+
+#contentmap_/*owner*/_/*id*/ a, #contentmap_/*owner*/_/*id*/ a:hover, #contentmap_/*owner*/_/*id*/ a:visited
+{
+	color: #0055ff;
 }
 
 /* Article image inside the balloon */
