@@ -3,8 +3,8 @@
 This file is part of "Content Map Joomla Extension".
 Author: Open Source solutions http://www.opensourcesolutions.es
 
-You can redistribute and/or modify it under the terms of the GNU 
-General Public License as published by the Free Software Foundation, 
+You can redistribute and/or modify it under the terms of the GNU
+General Public License as published by the Free Software Foundation,
 either version 2 of the License, or (at your option) any later version.
 
 GNU/GPL license gives you the freedom:
@@ -54,7 +54,7 @@ class OSSmarkersLoader extends OSSLoader
 		$markers->PrepareInfoWindows();
 
 		// Load additional data
-		$markers_icon = $this->Params->get('markers_icon', NULL);
+		$markers_icon = $this->Params->get("markers_icon", NULL);
 		$markers_icon = $markers_icon ? '"icon":' . json_encode(JURI::base(true) . '/media/contentmap/markers/icons/' . $markers_icon) . ',' : "";
 
 		$this->Source =
@@ -66,6 +66,7 @@ class OSSmarkersLoader extends OSSLoader
 		'"baseurl":' . json_encode(JURI::base(true) . '/') . ',' .
 		$markers_icon .
 		'"nodata_msg":' . json_encode(JText::_("CONTENTMAP_NO_DATA")) . ',' .
+		'"markers_action":"' . $this->Params->get("markers_action", "infowindow") . '",' .
 		'"places":' . $markers->asJSON();
 	}
 }

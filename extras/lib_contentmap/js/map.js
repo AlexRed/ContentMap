@@ -58,11 +58,23 @@ function init_/*owner*/_/*id*/()
 		if ("icon" in data_/*owner*/_/*id*/)
 		marker.setIcon(data_/*owner*/_/*id*/.icon);
 
-		// InfoWindow handling event
-		google.maps.event.addListener(marker, '/*infowindow_event*/', function() {
-			infowindow.setContent(data_/*owner*/_/*id*/.places[this.getZIndex()].html);
-			infowindow.open(map, this);
-		});
+//alert(data_/*owner*/_/*id*/.markers_action);
+
+		if (data_/*owner*/_/*id*/.markers_action == 'infowindow')
+		{
+			// InfoWindow handling event
+			google.maps.event.addListener(marker, '/*infowindow_event*/', function() {
+				infowindow.setContent(data_/*owner*/_/*id*/.places[this.getZIndex()].html);
+				infowindow.open(map, this);
+			});
+		}
+		else
+		{
+			// InfoWindow handling event
+			google.maps.event.addListener(marker, '/*infowindow_event*/', function() {
+				location.href = data_/*owner*/_/*id*/.places[this.getZIndex()].article_url;
+			});
+		}
 
 		markers.push(marker);
 	}
