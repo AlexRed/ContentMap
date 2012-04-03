@@ -3,8 +3,8 @@
 	This file is part of "Content Map Joomla Extension".
 	Author: Open Source solutions http://www.opensourcesolutions.es
 
-	You can redistribute and/or modify it under the terms of the GNU 
-	General Public License as published by the Free Software Foundation, 
+	You can redistribute and/or modify it under the terms of the GNU
+	General Public License as published by the Free Software Foundation,
 	either version 2 of the License, or (at your option) any later version.
 
 	GNU/GPL license gives you the freedom:
@@ -25,11 +25,11 @@
 	@copyright Copyright (C) 2012 Open Source Solutions S.L.U. All rights reserved.
 	*/
 
-	$document->addStyleSheet($prefix . "&id=" . $module->id . "&type=css");
+	$document->addStyleSheet($prefix . "&amp;id=" . $module->id . "&amp;type=css");
 	$document->addScript("http://maps.google.com/maps/api/js?sensor=false" . $language . $api_key);
-	$document->addScript($prefix . "&id=" . $module->id . "&type=markers" . $itemid);
+	$document->addScript($prefix . "&amp;id=" . $module->id . "&amp;type=markers" . $itemid);
 	$document->addScript(JURI::base(true) . "/libraries/contentmap/js/markerclusterer_compiled.js");
-	$document->addScript($prefix . "&id=" . $module->id . "&type=js");
+	$document->addScript($prefix . "&amp;id=" . $module->id . "&amp;type=js");
 ?>
 
 <div id="contentmap_wrapper_mid_<?php echo $module->id; ?>">

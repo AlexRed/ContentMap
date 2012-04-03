@@ -132,13 +132,13 @@ class plgContentcontentmap extends JPlugin
 		//$document = JFactory::getDocument();
 
 		// Slash is intentionally "/" since it refers to URLs, not actually paths
-		$prefix = JURI::base(true) . "/index.php?option=com_contentmap&owner=pid";
+		$prefix = JURI::base(true) . "/index.php?option=com_contentmap&amp;owner=pid";
 
-		$this->document->addStyleSheet($prefix . "&id=" . $id . "&type=css");
+		$this->document->addStyleSheet($prefix . "&amp;id=" . $id . "&amp;type=css");
 		$this->document->addScript("http://maps.google.com/maps/api/js?sensor=false" . $language . $api_key);
-		$this->document->addScript($prefix . "&id=" . $id . "&type=markers" . "&contentid=" . $params->id . $itemid);
+		$this->document->addScript($prefix . "&amp;id=" . $id . "&amp;type=markers" . "&amp;contentid=" . $params->id . $itemid);
 		$this->document->addScript(JURI::base(true) . "/libraries/contentmap/js/markerclusterer_compiled.js");
-		$this->document->addScript($prefix . "&id=" . $id . "&type=js");
+		$this->document->addScript($prefix . "&amp;id=" . $id . "&amp;type=js");
 		$params->text .= $template($id, JText::_("CONTENTMAP_JAVASCRIPT_REQUIRED"));
 	}
 }
