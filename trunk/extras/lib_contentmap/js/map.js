@@ -58,8 +58,6 @@ function init_/*owner*/_/*id*/()
 		if ("icon" in data_/*owner*/_/*id*/)
 		marker.setIcon(data_/*owner*/_/*id*/.icon);
 
-//alert(data_/*owner*/_/*id*/.markers_action);
-
 		if (data_/*owner*/_/*id*/.markers_action == 'infowindow')
 		{
 			// InfoWindow handling event
@@ -70,7 +68,7 @@ function init_/*owner*/_/*id*/()
 		}
 		else
 		{
-			// InfoWindow handling event
+			// Redirect handling event
 			google.maps.event.addListener(marker, '/*infowindow_event*/', function() {
 				location.href = data_/*owner*/_/*id*/.places[this.getZIndex()].article_url;
 			});
