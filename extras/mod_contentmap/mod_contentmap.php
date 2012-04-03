@@ -3,8 +3,8 @@
 This file is part of "Content Map Joomla Extension".
 Author: Open Source solutions http://www.opensourcesolutions.es
 
-You can redistribute and/or modify it under the terms of the GNU 
-General Public License as published by the Free Software Foundation, 
+You can redistribute and/or modify it under the terms of the GNU
+General Public License as published by the Free Software Foundation,
 either version 2 of the License, or (at your option) any later version.
 
 GNU/GPL license gives you the freedom:
@@ -34,28 +34,28 @@ require_once(JPATH_ROOT . DS . "libraries" . DS . "contentmap" . DS . "language"
 
 // Api key parameter for Google map
 $api_key = $params->get('api_key', NULL);
-$api_key = $api_key ? "&key=" . $api_key : "";
+$api_key = $api_key ? "&amp;key=" . $api_key : "";
 
 // Language parameter for Google map
 // See Google maps Language coverage at https://spreadsheets.google.com/pub?key=p9pdwsai2hDMsLkXsoM05KQ&gid=1
 // Use JFactory::getLanguage(), because we can't rely on $lang variable
 $language = JFactory::getLanguage()->get("tag", NULL);
-$language = $language ? "&language=" . $language : "";
+$language = $language ? "&amp;language=" . $language : "";
 
 // Itemid required in order to build SEF links (see markers.php)
 /*
 $itemid = JFactory::getApplication()->getMenu()->getActive();
-$itemid = $itemid ? "&Itemid=" . $itemid->id : "";
+$itemid = $itemid ? "&amp;Itemid=" . $itemid->id : "";
 */
 $menu = JFactory::getApplication()->getMenu();
 $itemid = $menu->getActive() or $itemid = $menu->getDefault();
-$itemid = "&Itemid=" . $itemid->id;
+$itemid = "&amp;Itemid=" . $itemid->id;
 
 // Used by templates
 $document = JFactory::getDocument();
 
 echo "<!-- mod_contentmap " . $GLOBALS["contentmap"]["version"] . "-->";
 // Slash is intentionally "/" since it refers to URLs, not actually paths
-$prefix = JURI::base(true) . "/index.php?option=com_contentmap&owner=mid";
+$prefix = JURI::base(true) . "/index.php?option=com_contentmap&amp;owner=mid";
 require JModuleHelper::getLayoutPath($app->scope, $params->get('layout', 'default'));
 $icons = icons_path(JPATH_ROOT . DS . "media" . DS . "contentmap") . DS . "markers" . DS . "icons";
