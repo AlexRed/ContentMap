@@ -252,6 +252,16 @@ class GoogleMapMarkers
 		{
 			$content["html"] = "";
 
+			// We haven't the active menu item, since we are acting in background, so we hope it is in the URL request
+			// Itemid variable influences ContentHelperRoute::getArticleRoute() link creation
+			$unsef_link = ContentHelperRoute::getArticleRoute($content["id"], $content["catid"]);
+
+			// Sef Link examples:
+			// without &Itemid : http://site/index.php/component/content/article/2-categoryalias/2-articlealias - This is always valid
+			// with &Itemid :    http://site/index.php/2-categoryalias/2-articlealias - Generated if the homepage is a blog item
+			// with &Itemid :    http://site/index.php/blog/2-categoryalias/2-articlealias - Generated if the homepage is *not* a blog item
+			$sef_link = JRoute::_($unsef_link);
+
 			// Prepare the title
 			if ($this->Params->get('show_title', 0))
 			{
@@ -267,16 +277,6 @@ class GoogleMapMarkers
 
 				if ($this->Params->get('link_titles', 0))
 				{
-					// We haven't the active menu item, since we are acting in background, so we hope it is in the URL request
-					// Itemid variable influences ContentHelperRoute::getArticleRoute() link creation
-					$unsef_link = ContentHelperRoute::getArticleRoute($content["id"], $content["catid"]);
-
-					// Sef Link examples:
-					// without &Itemid : http://site/index.php/component/content/article/2-categoryalias/2-articlealias - This is always valid
-					// with &Itemid :    http://site/index.php/2-categoryalias/2-articlealias - Generated if the homepage is a blog item
-					// with &Itemid :    http://site/index.php/blog/2-categoryalias/2-articlealias - Generated if the homepage is *not* a blog item
-					$sef_link = JRoute::_($unsef_link);
-
 					$content["html"] =
 					'<a href="' . $sef_link . '"' . $target . '>' .
 					$content["html"] .
