@@ -63,7 +63,7 @@ class JFormFieldTranschecker extends JFormField
 
 		if (!file_exists(JPATH_ROOT . "/libraries/" . $name . "/language/" . $lang->get("tag")))
 			{
-			return sprintf($msg_skel, $lang->get("name"), "missing") . $suffix;
+			return sprintf($msg_skel, $lang->get("name"), "missing");
 			}
 
 		return "";

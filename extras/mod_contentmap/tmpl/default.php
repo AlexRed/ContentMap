@@ -24,12 +24,12 @@
 
 	@copyright Copyright (C) 2012 Open Source Solutions S.L.U. All rights reserved.
 	*/
-
-	$document->addStyleSheet($prefix . "&amp;id=" . $module->id . "&amp;type=css");
+	$stylesheet = pathinfo($params->get("stylesheet", "default.css"));
+	$document->addStyleSheet($prefix . "&amp;id=" . $module->id . "&amp;type=css" . "&amp;filename=" . $stylesheet["filename"]);
 	$document->addScript("http://maps.google.com/maps/api/js?sensor=false" . $language . $api_key);
 	$document->addScript($prefix . "&amp;id=" . $module->id . "&amp;type=markers" . $itemid);
 	$document->addScript(JURI::base(true) . "/libraries/contentmap/js/markerclusterer_compiled.js");
-	$document->addScript($prefix . "&amp;id=" . $module->id . "&amp;type=js");
+	$document->addScript($prefix . "&amp;id=" . $module->id . "&amp;type=js&amp;filename=map");
 ?>
 
 <div id="contentmap_wrapper_mid_<?php echo $module->id; ?>">

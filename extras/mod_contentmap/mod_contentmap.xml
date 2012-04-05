@@ -29,6 +29,7 @@
 			<fieldset name="basic">
 				<field type="langloader"/>
 				<field type="wizard" icon="exclamation-16.png" text="CONTENTMAP_NO_DATA" url="index.php?option=com_contentmap"/>
+				<field type="transchecker"/>
 
 				<field type="ossheader" default="CONTENTMAP_MAP_LAYOUT" icon="map-16.png"/>
 				<field name="map_width" type="text" size="6" label="CONTENTMAP_WIDTH" description="CONTENTMAP_MAPWIDTH_DSC" default="100" required="true"/>
@@ -122,8 +123,7 @@
 			<fieldset name="advanced">
 				<field name="layout" type="modulelayout" label="JFIELD_ALT_LAYOUT_LABEL" description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
 				<field name="stylesheet" type="filelist" label="CONTENTMAP_ALT_CSS_LBL" description="CONTENTMAP_ALT_CSS_DSC" default="default.css" hide_none="true" directory="libraries/contentmap/css" filter="\.css$" exclude="" stripext="" />
-				<field name="javascript" type="hidden" default="map.js" />
-				<field name="markers" type="hidden" default="markers.json" />
+				<!-- <field name="markers" type="hidden" default="markers.json" /> -->
 				<field name="moduleclass_sfx" type="text" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
 				<field name="api_key" type="text" label="CONTENTMAP_API_KEY_LBL" description="CONTENTMAP_API_KEY_DSC" size="26"/>
 			</fieldset>

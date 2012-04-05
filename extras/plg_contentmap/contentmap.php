@@ -46,9 +46,16 @@ class plgContentcontentmap extends JPlugin
 		JHtml::_('behavior.framework', true);
 
 		$this->document->addStyleSheet("../plugins/content/contentmap/css/picker.css");
-		//$this->document->addScript("http://api.mygeoposition.com/api/geopicker/api.js");
 		$this->document->addScript("../plugins/content/contentmap/js/api.js");
-		$this->document->addScript(JURI::root(true) . "/libraries/contentmap/js/geopicker-min.js");
+		//$this->document->addScript(JURI::root(true) . "/libraries/contentmap/js/geopicker-min.js");
+		$this->document->addScript(JURI::root(true)
+		. "/index.php"
+		. "?option=com_contentmap"
+		. "&amp;view=smartloader"
+		. "&amp;owner=article"
+		. "&amp;id=" . $data->id
+		. "&amp;type=js"
+		. "&amp;filename=geopicker");
 
 /*
 		if (preg_match('/ 1$/', $GLOBALS["contentmap"]["version"])) return "";
@@ -132,13 +139,14 @@ class plgContentcontentmap extends JPlugin
 		//$document = JFactory::getDocument();
 
 		// Slash is intentionally "/" since it refers to URLs, not actually paths
-		$prefix = JURI::base(true) . "/index.php?option=com_contentmap&amp;owner=pid";
+		$prefix = JURI::base(true) . "/index.php?option=com_contentmap&amp;owner=pid&amp;view=loader";
 
-		$this->document->addStyleSheet($prefix . "&amp;id=" . $id . "&amp;type=css");
+		$stylesheet = pathinfo($this->params->get("stylesheet", "default.css"));
+		$this->document->addStyleSheet($prefix . "&amp;id=" . $id . "&amp;type=css" . "&amp;filename=" . $stylesheet["filename"]);
 		$this->document->addScript("http://maps.google.com/maps/api/js?sensor=false" . $language . $api_key);
 		$this->document->addScript($prefix . "&amp;id=" . $id . "&amp;type=markers" . "&amp;contentid=" . $params->id . $itemid);
 		$this->document->addScript(JURI::base(true) . "/libraries/contentmap/js/markerclusterer_compiled.js");
-		$this->document->addScript($prefix . "&amp;id=" . $id . "&amp;type=js");
+		$this->document->addScript($prefix . "&amp;id=" . $id . "&amp;type=js&amp;filename=map");
 		$params->text .= $template($id, JText::_("CONTENTMAP_JAVASCRIPT_REQUIRED"));
 	}
 }
