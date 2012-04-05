@@ -34,7 +34,6 @@ class OSSmarkersLoader extends OSSLoader
 	{
 		parent::__construct();
 		$this->Type = "js";
-		$this->ParamName = "markers";  // The name of the parameter in component / module options
 		$this->SourceHeader = "var data_" . JRequest::getVar("owner", "", 'GET') . "_" . JRequest::getVar("id", 0, 'GET') . "={";
 		$this->SourceFooter = "}";
 	}

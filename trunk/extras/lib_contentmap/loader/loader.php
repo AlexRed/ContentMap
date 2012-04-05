@@ -27,19 +27,16 @@ along with this software.  If not, see http://www.gnu.org/licenses/gpl-2.0.html.
 
 jimport('joomla.log.log');
 
-abstract class OSSLoader
+class OSSLoader
 {
 	private $Placeholders = array();
 	private $Values = array();
 	private $Mid;
 	protected $Source;
 	protected $Type;
-	protected $ParamName;
 	protected $SourceHeader;
 	protected $SourceFooter;
 	public $Params;
-
-	//abstract protected function source_header();
 
 	public function __construct()
 	{
@@ -81,11 +78,11 @@ abstract class OSSLoader
 		$query = $db->getQuery(true);
 		$query->select('params');
 		$query->from('#__modules');
-		$query->where("id = " . intval(JRequest::getVar("id", 0, 'GET')));
+		$query->where("id = " . intval(JRequest::getVar("id", 0, "GET")));
 		$db->setQuery($query);
 
 		// Load parameters from database
-		$json = $db->loadResult() or JLog::add("Database error.", JLog::ERROR, 'loader');
+		$json = $db->loadResult() or JLog::add("Database error.", JLog::ERROR, "loader");
 
 		// Transform them as JRegistry
 		$this->Params = new JRegistry($json);
@@ -117,7 +114,7 @@ abstract class OSSLoader
 		$db->setQuery($query);
 
 		// Load parameters from database
-		$json = $db->loadResult() or JLog::add("Database error.", JLog::ERROR, 'loader');
+		$json = $db->loadResult() or JLog::add("Database error.", JLog::ERROR, "loader");
 
 		// Transform them as JRegistry
 		$this->Params = new JRegistry($json);
@@ -150,14 +147,20 @@ abstract class OSSLoader
 	protected function load()
 	{
 		// Complete the script name with its path
-		$local_name = realpath(dirname(__FILE__) . "/../" . $this->Type . "/" . $this->Params->get($this->ParamName));
+		//$local_name = realpath(dirname(__FILE__) . "/../" . $this->Type . "/" . $this->Params->get($this->ParamName));
+
+		$filename = JRequest::getVar("filename", "", "GET");
+		// Only admit lowercase a-z, underscore and minus. No numbers, no symbols, no slashes.
+		// For your security, *don't* touch the following regular expression.
+		preg_match('/^[a-z_-]+$/', $filename) or $filename = "invalid";
+		$local_name = realpath(dirname(__FILE__) . "/../" . $this->Type . "/" . $filename . "." . $this->Type);
 
 		// Open source file
 		$handle = @fopen($local_name, 'r');
 		// Read the content
-		$this->Source = fread($handle, filesize($local_name));
+		$this->Source = @fread($handle, filesize($local_name));
 		// Close source file
-		fclose($handle);
+		@fclose($handle);
 
 		// swap variables values
 		$this->Source = str_replace($this->Placeholders, $this->Values, $this->Source);
