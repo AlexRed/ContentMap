@@ -29,7 +29,7 @@ along with this software.  If not, see http://www.gnu.org/licenses/gpl-2.0.html.
 require_once(JPATH_SITE . DS . "components" . DS . "com_content" . DS . "helpers" . DS . "route.php");
 require_once(JPATH_ROOT . DS . "libraries" . DS . "contentmap" . DS . "language" . DS . "contentmap.inc");
 
-class GoogleMapMarkers
+abstract class GoogleMapMarkers
 {
 	public $Contents;
 	// Values used in order to automatically scale and center the map
@@ -40,208 +40,17 @@ class GoogleMapMarkers
 	public $Zoom;
 	protected $Params;
 
+	abstract protected function Load();
+
 	public function __construct(&$params)
 	{
 		$this->Params = $params;
-		$load = "load_" . JRequest::getVar("owner", "", "GET");
-		$this->$load();
+		//$load = "load_" . JRequest::getVar("owner", "", "GET");
+		//$this->$load();
+		$this->Load();
 
 		// Set default zoom level to 17, just in case we are on the module and (sad but true, it can happen) there is only one marker
 		$this->Zoom = $this->Params->get('zoom', 17);
-	}
-
-
-	// Todo: duplicated code
-	protected function load_mid()
-	{
-		$db = JFactory::getDBO();
-		$query = $db->getQuery(true);
-		$query->select("id, title, alias, introtext, catid, created, created_by_alias, images, metadata");
-		$query->from("#__content");
-
-		// Condition: metadata field contains "xreference":"coordinates"
-		// {\"xreference\":\"} the string "xreference":"
-		// {[+-]?} One character. It can be + or - sign. It is optional.
-		// {([0-9]+)} At least one number. They are mandatory.
-		// {(\.[0-9]+)?} A point followed by other numbers. The whole expression is optional.
-		// {,} a comma
-		// {( +)?} one or more spaces. Optional.
-		// {[+-]?} One character. It can be + or - sign. It is optional.
-		// {([0-9]+)} At least one number. They are mandatory.
-		// {(\.[0-9]+)?} A point followed by other numbers. The whole expression is optional.
-		// {\"} the string "
-		$query->where("metadata REGEXP '\"xreference\":\"[+-]?([0-9]+)(\.[0-9]+)?,( +)?[+-]?([0-9]+)(\.[0-9]+)?\"'");
-
-		// Condition: Published
-		$query->where("state = '1'");
-
-		$now = JFactory::getDate()->$GLOBALS["toSql"]();
-
-		// Condition: Start Publishing in the past
-		$query->where("publish_up <= " . $db->Quote($now));
-
-		// Condition: Finish Publishing in the future or unset
-		$query->where("(publish_down >= " . $db->Quote($now) . " OR publish_down = " . $db->Quote($db->getNullDate()) . ")");
-
-		// Condition: Access level
-		$user   = JFactory::getUser();
-		$groups = implode(',', $user->getAuthorisedViewLevels());
-		$query->where("access IN (" . $groups .")");
-
-		// Condition: Categories inclusive | exclusive filter
-		$category_filter_type = $this->Params->get('category_filter_type', 0);  // Can be "IN", "NOT IN" or "0"
-		if ($category_filter_type)
-		{
-			$categories = $this->Params->get('catid', array("0")); // Defaults to non-existing category (the system root category with id "1" would have worked as well)
-			$categories = implode(',', $categories);         // Converted to string
-			$query->where("catid " . $category_filter_type . " (" . $categories . ")");
-		}
-
-		// Condition: Author inclusive | exclusive filter
-		$author_filtering_type = $this->Params->get('author_filtering_type', 0);  // Can be "IN", "NOT IN" or "0"
-		if ($author_filtering_type)
-		{
-			$authors = $this->Params->get('created_by', array("0")); // Defaults to non-existing user
-			$authors = implode(',', $authors);         // Converted to string
-			$query->where("created_by " . $author_filtering_type . " (" . $authors . ")");
-		}
-
-		// Condition: Featured
-		$query->where("featured IN (" . $this->Params->get('featured', "0,1") . ")");
-
-		// "Order by is intentionally ignored. We don't need to sort point on the map.
-
-		$db->setQuery($query);
-		$this->Contents = $db->loadAssocList() or $this->Contents = array();
-
-		// Global data
-		$query->clear();
-		$query->select("params");
-		$query->from("#__extensions");
-		$query->where("name = 'com_content'");
-		$db->setQuery($query);
-		$contents_global_params = new JRegistry($db->loadResult());
-
-		foreach ($this->Contents as &$content)
-		{
-			// xreference database field is empty.
-			// For some strange reason, it is stored in metadata field on the database
-			$registry = new JRegistry($content["metadata"]); // Equivalent to $registry->loadJSON($content["metadata"])
-			$coordinates = explode(",", $registry->get("xreference"));
-
-			// Google map js needs them as two separate values (See constructor: google.maps.LatLng(lat, lon))
-			$content["latitude"] = floatval($coordinates[0]);
-			$content["longitude"] = floatval($coordinates[1]);
-
-			// Todo: pass data directly as jregistry, avoiding assign operations
-			$registry->loadJSON($content["images"]);
-			$content["image"] = $registry->get("image_intro");
-			$content["float_image"] = $registry->get("float_intro") or $content["float_image"] = $contents_global_params->get("float_intro");
-			$content["image_intro_alt"] = $registry->get("image_intro_alt");
-			$content["image_intro_caption"] = $registry->get("image_intro_caption");
-
-			// Store max e min values
-			$this->MinLatitude = min($content["latitude"], $this->MinLatitude);
-			$this->MaxLatitude = max($content["latitude"], $this->MaxLatitude);
-			$this->MinLongitude = min($content["longitude"], $this->MinLongitude);
-			$this->MaxLongitude = max($content["longitude"], $this->MaxLongitude);
-
-			// '&' in '&amp;' and other similar conversions
-			$content["title"] = htmlspecialchars($content["title"]);
-			$content["created_by_alias"] = htmlspecialchars($content["created_by_alias"]);
-			$content["created"] = htmlspecialchars($content["created"]);
-
-			// Remove html tags and keeps plain text
-			$content["introtext"] = JFilterInput::getInstance()->clean($content["introtext"], "string");
-
-			// Remove elements useless for the map purposes in order to increase performance
-			// by saving bandwidth when sending JSON data to the client :)
-			unset($content["metadata"]);
-			unset($content["images"]);
-		}
-
-		// Problematic infowindows are near the upper border, so start preload from them
-		// Sort by Latitude,
-		usort($this->Contents, "sort_markers");
-	}
-
-
-	// Todo: duplicated code
-	protected function load_pid()
-	{
-		$db = JFactory::getDBO();
-		$query = $db->getQuery(true);
-		$query->select("id, title, alias, introtext, catid, created, created_by_alias, images, metadata");
-		$query->from("#__content");
-
-		// Condition: content id passed py plugin
-		$query->where("id = '" . JRequest::getVar("contentid", 0, "GET") . "'");
-
-		// Condition: metadata field contains "xreference":"coordinates"
-		// {\"xreference\":\"} the string "xreference":"
-		// {[+-]?} One character. It can be + or - sign. It is optional.
-		// {([0-9]+)} At least one number. They are mandatory.
-		// {(\.[0-9]+)?} A point followed by other numbers. The whole expression is optional.
-		// {,} a comma
-		// {( +)?} one or more spaces. Optional.
-		// {[+-]?} One character. It can be + or - sign. It is optional.
-		// {([0-9]+)} At least one number. They are mandatory.
-		// {(\.[0-9]+)?} A point followed by other numbers. The whole expression is optional.
-		// {\"} the string "
-		$query->where("metadata REGEXP '\"xreference\":\"[+-]?([0-9]+)(\.[0-9]+)?,( +)?[+-]?([0-9]+)(\.[0-9]+)?\"'");
-
-		$db->setQuery($query);
-		$this->Contents = $db->loadAssocList() or $this->Contents = array();
-
-		// Global data
-		$query->clear();
-		$query->select("params");
-		$query->from("#__extensions");
-		$query->where("name = 'com_content'");
-		$db->setQuery($query);
-		$contents_global_params = new JRegistry($db->loadResult());
-
-		foreach ($this->Contents as &$content)
-		{
-			// xreference database field is empty.
-			// For some strange reason, it is stored in metadata field on the database
-			$registry = new JRegistry($content["metadata"]); // Equivalent to $registry->loadJSON($content["metadata"])
-			$coordinates = explode(",", $registry->get("xreference"));
-
-			// Google map js needs them as two separate values (See constructor: google.maps.LatLng(lat, lon))
-			$content["latitude"] = floatval($coordinates[0]);
-			$content["longitude"] = floatval($coordinates[1]);
-
-			// Todo: pass data directly as jregistry, avoiding assign operations
-			$registry->loadJSON($content["images"]);
-			$content["image"] = $registry->get("image_intro");
-			$content["float_image"] = $registry->get("float_intro") or $content["float_image"] = $contents_global_params->get("float_intro");
-			$content["image_intro_alt"] = $registry->get("image_intro_alt");
-			$content["image_intro_caption"] = $registry->get("image_intro_caption");
-
-			// Store max e min values
-			$this->MinLatitude = min($content["latitude"], $this->MinLatitude);
-			$this->MaxLatitude = max($content["latitude"], $this->MaxLatitude);
-			$this->MinLongitude = min($content["longitude"], $this->MinLongitude);
-			$this->MaxLongitude = max($content["longitude"], $this->MaxLongitude);
-
-			// '&' in '&amp;' and other similar conversions
-			$content["title"] = htmlspecialchars($content["title"]);
-			$content["created_by_alias"] = htmlspecialchars($content["created_by_alias"]);
-			$content["created"] = htmlspecialchars($content["created"]);
-
-			// Remove html tags and keeps plain text
-			$content["introtext"] = JFilterInput::getInstance()->clean($content["introtext"], "string");
-
-			// Remove elements useless for the map purposes in order to increase performance
-			// by saving bandwidth when sending JSON data to the client :)
-			unset($content["metadata"]);
-			unset($content["images"]);
-		}
-
-		// Problematic infowindows are near the upper border, so start preload from them
-		// Sort by Latitude
-		usort($this->Contents, "sort_markers");
 	}
 
 
@@ -354,7 +163,6 @@ class GoogleMapMarkers
 
 	}
 
-
 	public function asArray()
 	{
 		return $this->Contents;
@@ -375,9 +183,327 @@ class GoogleMapMarkers
 }
 
 
+class articleGoogleMapMarkers extends GoogleMapMarkers
+{
+	protected function Load()
+	{
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+		$query->select("id, title, alias, introtext, catid, created, created_by_alias, images, metadata");
+		$query->from("#__content");
+
+		// Condition: content id passed py plugin
+		$query->where("id = '" . JRequest::getVar("contentid", 0, "GET") . "'");
+
+		// Condition: metadata field contains "xreference":"coordinates"
+		// {\"xreference\":\"} the string "xreference":"
+		// {[+-]?} One character. It can be + or - sign. It is optional.
+		// {([0-9]+)} At least one number. They are mandatory.
+		// {(\.[0-9]+)?} A point followed by other numbers. The whole expression is optional.
+		// {( +)?} one or more spaces. Optional.
+		// {,} a comma
+		// {( +)?} one or more spaces. Optional.
+		// {[+-]?} One character. It can be + or - sign. It is optional.
+		// {([0-9]+)} At least one number. They are mandatory.
+		// {(\.[0-9]+)?} A point followed by other numbers. The whole expression is optional.
+		// {\"} the string "
+		$query->where("metadata REGEXP '\"xreference\":\"[+-]?([0-9]+)(\.[0-9]+)?( +)?,( +)?[+-]?([0-9]+)(\.[0-9]+)?\"'");
+
+		$db->setQuery($query);
+		$this->Contents = $db->loadAssocList() or $this->Contents = array();
+
+		// Global data
+		$query->clear();
+		$query->select("params");
+		$query->from("#__extensions");
+		$query->where("name = 'com_content'");
+		$db->setQuery($query);
+		$contents_global_params = new JRegistry($db->loadResult());
+
+		foreach ($this->Contents as &$content)
+		{
+			// xreference database field is empty.
+			// For some strange reason, it is stored in metadata field on the database
+			$registry = new JRegistry($content["metadata"]); // Equivalent to $registry->loadJSON($content["metadata"])
+			$coordinates = explode(",", $registry->get("xreference"));
+
+			// Google map js needs them as two separate values (See constructor: google.maps.LatLng(lat, lon))
+			$content["latitude"] = floatval($coordinates[0]);
+			$content["longitude"] = floatval($coordinates[1]);
+
+			// Todo: pass data directly as jregistry, avoiding assign operations
+			$registry->loadJSON($content["images"]);
+			$content["image"] = $registry->get("image_intro");
+			$content["float_image"] = $registry->get("float_intro") or $content["float_image"] = $contents_global_params->get("float_intro");
+			$content["image_intro_alt"] = $registry->get("image_intro_alt");
+			$content["image_intro_caption"] = $registry->get("image_intro_caption");
+
+			// Store max e min values
+			$this->MinLatitude = min($content["latitude"], $this->MinLatitude);
+			$this->MaxLatitude = max($content["latitude"], $this->MaxLatitude);
+			$this->MinLongitude = min($content["longitude"], $this->MinLongitude);
+			$this->MaxLongitude = max($content["longitude"], $this->MaxLongitude);
+
+			// '&' in '&amp;' and other similar conversions
+			$content["title"] = htmlspecialchars($content["title"]);
+			$content["created_by_alias"] = htmlspecialchars($content["created_by_alias"]);
+			$content["created"] = htmlspecialchars($content["created"]);
+
+			// Remove html tags and keeps plain text
+			$content["introtext"] = JFilterInput::getInstance()->clean($content["introtext"], "string");
+
+			// Remove elements useless for the map purposes in order to increase performance
+			// by saving bandwidth when sending JSON data to the client :)
+			unset($content["metadata"]);
+			unset($content["images"]);
+		}
+
+		// Problematic infowindows are near the upper border, so start preload from them
+		// Sort by Latitude
+		usort($this->Contents, "sort_markers");
+	}
+}
+
+class articlesGoogleMapMarkers extends GoogleMapMarkers
+{
+	protected function Load()
+	{
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+		$query->select("id, title, alias, introtext, catid, created, created_by_alias, images, metadata");
+		$query->from("#__content");
+
+		// Condition: metadata field contains "xreference":"coordinates"
+		// {\"xreference\":\"} the string "xreference":"
+		// {[+-]?} One character. It can be + or - sign. It is optional.
+		// {([0-9]+)} At least one number. They are mandatory.
+		// {(\.[0-9]+)?} A point followed by other numbers. The whole expression is optional.
+		// {( +)?} one or more spaces. Optional.
+		// {,} a comma
+		// {( +)?} one or more spaces. Optional.
+		// {[+-]?} One character. It can be + or - sign. It is optional.
+		// {([0-9]+)} At least one number. They are mandatory.
+		// {(\.[0-9]+)?} A point followed by other numbers. The whole expression is optional.
+		// {\"} the string "
+		$query->where("metadata REGEXP '\"xreference\":\"[+-]?([0-9]+)(\.[0-9]+)?( +)?,( +)?[+-]?([0-9]+)(\.[0-9]+)?\"'");
+
+		// Condition: Published
+		$query->where("state = '1'");
+
+		$now = JFactory::getDate()->$GLOBALS["toSql"]();
+
+		// Condition: Start Publishing in the past
+		$query->where("publish_up <= " . $db->Quote($now));
+
+		// Condition: Finish Publishing in the future or unset
+		$query->where("(publish_down >= " . $db->Quote($now) . " OR publish_down = " . $db->Quote($db->getNullDate()) . ")");
+
+		// Condition: Access level
+		$user   = JFactory::getUser();
+		$groups = implode(',', $user->getAuthorisedViewLevels());
+		$query->where("access IN (" . $groups .")");
+
+		// Condition: Categories inclusive | exclusive filter
+		$category_filter_type = $this->Params->get('category_filter_type', 0);  // Can be "IN", "NOT IN" or "0"
+		if ($category_filter_type)
+		{
+			$categories = $this->Params->get('catid', array("0")); // Defaults to non-existing category (the system root category with id "1" would have worked as well)
+			$categories = implode(',', $categories);         // Converted to string
+			$query->where("catid " . $category_filter_type . " (" . $categories . ")");
+		}
+
+		// Condition: Author inclusive | exclusive filter
+		$author_filtering_type = $this->Params->get('author_filtering_type', 0);  // Can be "IN", "NOT IN" or "0"
+		if ($author_filtering_type)
+		{
+			$authors = $this->Params->get('created_by', array("0")); // Defaults to non-existing user
+			$authors = implode(',', $authors);         // Converted to string
+			$query->where("created_by " . $author_filtering_type . " (" . $authors . ")");
+		}
+
+		// Condition: Featured
+		$query->where("featured IN (" . $this->Params->get('featured', "0,1") . ")");
+
+		// "Order by is intentionally ignored. We don't need to sort point on the map.
+
+		$db->setQuery($query);
+		$this->Contents = $db->loadAssocList() or $this->Contents = array();
+
+		// Global data
+		$query->clear();
+		$query->select("params");
+		$query->from("#__extensions");
+		$query->where("name = 'com_content'");
+		$db->setQuery($query);
+		$contents_global_params = new JRegistry($db->loadResult());
+
+		foreach ($this->Contents as &$content)
+		{
+			// xreference database field is empty.
+			// For some strange reason, it is stored in metadata field on the database
+			$registry = new JRegistry($content["metadata"]); // Equivalent to $registry->loadJSON($content["metadata"])
+			$coordinates = explode(",", $registry->get("xreference"));
+
+			// Google map js needs them as two separate values (See constructor: google.maps.LatLng(lat, lon))
+			$content["latitude"] = floatval($coordinates[0]);
+			$content["longitude"] = floatval($coordinates[1]);
+
+			// Todo: pass data directly as jregistry, avoiding assign operations
+			$registry->loadJSON($content["images"]);
+			$content["image"] = $registry->get("image_intro");
+			$content["float_image"] = $registry->get("float_intro") or $content["float_image"] = $contents_global_params->get("float_intro");
+			$content["image_intro_alt"] = $registry->get("image_intro_alt");
+			$content["image_intro_caption"] = $registry->get("image_intro_caption");
+
+			// Store max e min values
+			$this->MinLatitude = min($content["latitude"], $this->MinLatitude);
+			$this->MaxLatitude = max($content["latitude"], $this->MaxLatitude);
+			$this->MinLongitude = min($content["longitude"], $this->MinLongitude);
+			$this->MaxLongitude = max($content["longitude"], $this->MaxLongitude);
+
+			// '&' in '&amp;' and other similar conversions
+			$content["title"] = htmlspecialchars($content["title"]);
+			$content["created_by_alias"] = htmlspecialchars($content["created_by_alias"]);
+			$content["created"] = htmlspecialchars($content["created"]);
+
+			// Remove html tags and keeps plain text
+			$content["introtext"] = JFilterInput::getInstance()->clean($content["introtext"], "string");
+
+			// Remove elements useless for the map purposes in order to increase performance
+			// by saving bandwidth when sending JSON data to the client :)
+			unset($content["metadata"]);
+			unset($content["images"]);
+		}
+
+		// Problematic infowindows are near the upper border, so start preload from them
+		// Sort by Latitude,
+		usort($this->Contents, "sort_markers");
+	}
+}
+
+
+class remoteGoogleMapMarkers extends GoogleMapMarkers
+{
+	protected function Load()
+	{
+		// Get the file
+		$urlwrapper = new UrlWrapper();
+		$url = "http://forum.joomla.it/" . "utenti" . ".php";
+		$data = $urlwrapper->Get($url);
+
+		$xml = new SimpleXMLElement($data);
+
+		// Converts objects to arrays
+		$this->Contents = array();
+//		$contatore = 0;
+		foreach ($xml->marker as $marker)
+		{
+//		++$contatore;
+			$this->Contents[] = (array)$marker;
+//			if ($contatore > 1286) break;
+		}
+
+		// Global data
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+		$query->select("params");
+		$query->from("#__extensions");
+		$query->where("name = 'com_content'");
+		$db->setQuery($query);
+		$contents_global_params = new JRegistry($db->loadResult());
+
+		foreach ($this->Contents as &$content)
+		{
+			// xreference database field is empty.
+			// For some strange reason, it is stored in metadata field on the database
+			$registry = new JRegistry($content["metadata"]); // Equivalent to $registry->loadJSON($content["metadata"])
+			$coordinates = explode(",", $registry->get("xreference"));
+
+			// Google map js needs them as two separate values (See constructor: google.maps.LatLng(lat, lon))
+			$content["latitude"] = floatval($coordinates[0]);
+			$content["longitude"] = floatval($coordinates[1]);
+
+			// Todo: pass data directly as jregistry, avoiding assign operations
+			$registry->loadJSON($content["images"]);
+			$content["image"] = $registry->get("image_intro");
+			$content["float_image"] = $registry->get("float_intro") or $content["float_image"] = $contents_global_params->get("float_intro");
+			$content["image_intro_alt"] = $registry->get("image_intro_alt");
+			$content["image_intro_caption"] = $registry->get("image_intro_caption");
+
+			// Store max e min values
+			$this->MinLatitude = min($content["latitude"], $this->MinLatitude);
+			$this->MaxLatitude = max($content["latitude"], $this->MaxLatitude);
+			$this->MinLongitude = min($content["longitude"], $this->MinLongitude);
+			$this->MaxLongitude = max($content["longitude"], $this->MaxLongitude);
+
+			// '&' in '&amp;' and other similar conversions
+			$content["title"] = htmlspecialchars($content["title"]);
+			$content["created_by_alias"] = htmlspecialchars($content["created_by_alias"]);
+			$content["created"] = htmlspecialchars($content["created"]);
+
+			// Remove html tags and keeps plain text
+			$content["introtext"] = JFilterInput::getInstance()->clean($content["introtext"], "string");
+
+			// Remove elements useless for the map purposes in order to increase performance
+			// by saving bandwidth when sending JSON data to the client :)
+			unset($content["metadata"]);
+			unset($content["images"]);
+		}
+
+		// Problematic infowindows are near the upper border, so start preload from them
+		// Sort by Latitude,
+		//usort($this->Contents, "sort_markers");
+
+	}
+}
+
 function sort_markers($a, $b)
 {
 	// Sort descending
 	return $b["latitude"] - $a["latitude"];
 }
 
+
+class UrlWrapper
+{
+	protected $method;
+
+	public function __construct()
+	{
+		// Todo: cosi' non va bene. Setta il metodo e continua con gli altri controlli
+		if (!ini_get('allow_url_fopen')) $this->method = "none";
+
+		if (function_exists('file_get_contents'))
+			$this->method = "file_get_contents";
+		else if (function_exists('curl_init'))
+				$this->method = "curl";
+			else
+				$this->method = "none";
+	}
+
+	public function Get($url)
+	{
+		return $this->{$this->method}($url);
+	}
+
+	protected function file_get_contents($url)
+	{
+		return file_get_contents($url);
+	}
+
+	protected function curl($url)
+	{
+		$handle = curl_init($url);
+		curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt ($handle, CURLOPT_CONNECTTIMEOUT, 5);
+		$data = curl_exec($handle);
+		curl_close($handle);
+		return $data;
+	}
+
+	protected function none()
+	{
+		// Server lacks. Returns an empty page.
+		return "";
+	}
+}

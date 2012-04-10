@@ -24,17 +24,23 @@
 
 	@copyright Copyright (C) 2012 Open Source Solutions S.L.U. All rights reserved.
 	*/
+	if (empty($GLOBALS["contentmap"]["gapi"]))
+	{
+		// Add Google api to the document only once
+		$document->addScript("http://maps.google.com/maps/api/js?sensor=false" . $language . $api_key);
+		$GLOBALS["contentmap"]["gapi"] = true;
+	}
+
 	$stylesheet = pathinfo($params->get("stylesheet", "default.css"));
 	$document->addStyleSheet($prefix . "&amp;id=" . $module->id . "&amp;type=css" . "&amp;filename=" . $stylesheet["filename"]);
-	$document->addScript("http://maps.google.com/maps/api/js?sensor=false" . $language . $api_key);
-	$document->addScript($prefix . "&amp;id=" . $module->id . "&amp;type=markers" . $itemid);
+	$document->addScript(JURI::base(true) . "/index.php?option=com_contentmap&amp;view=smartloader&amp;owner=module&amp;type=json&amp;filename=articlesmarkers&amp;source=remote" . "&amp;id=" . $module->id . $itemid);
 	$document->addScript(JURI::base(true) . "/libraries/contentmap/js/markerclusterer_compiled.js");
 	$document->addScript($prefix . "&amp;id=" . $module->id . "&amp;type=js&amp;filename=map");
 ?>
 
-<div id="contentmap_wrapper_mid_<?php echo $module->id; ?>">
-	<div id="contentmap_container_mid_<?php echo $module->id; ?>">
-		<div id="contentmap_mid_<?php echo $module->id; ?>">
+<div id="contentmap_wrapper_module_<?php echo $module->id; ?>">
+	<div id="contentmap_container_module_<?php echo $module->id; ?>">
+		<div id="contentmap_module_<?php echo $module->id; ?>">
 			<noscript><?php echo JText::_("CONTENTMAP_JAVASCRIPT_REQUIRED"); ?></noscript>
 		</div>
 	</div>

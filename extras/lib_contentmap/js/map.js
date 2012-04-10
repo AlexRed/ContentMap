@@ -35,9 +35,7 @@ function init_/*owner*/_/*id*/()
 	}
 
 	// InfoWindow creation
-	// maxWidth doesn't work as expected
 	var infowindow = new google.maps.InfoWindow({maxWidth: /*infowindow_width*/});
-	//var infowindow = new google.maps.InfoWindow();
 
 	// Markers creation
 	var markers = [];
@@ -79,6 +77,7 @@ function init_/*owner*/_/*id*/()
 
 	// Marker Cluster creation
 	var markerCluster = new MarkerClusterer(map, markers);
+
 }
 
 

@@ -57,36 +57,6 @@ class plgContentcontentmap extends JPlugin
 		. "&amp;type=js"
 		. "&amp;filename=geopicker");
 
-/*
-		if (preg_match('/ 1$/', $GLOBALS["contentmap"]["version"])) return "";
-
-		$name = basename(realpath(dirname(__FILE__) . "/../.."));
-
-		$direction = intval(JFactory::getLanguage()->get('rtl', 0));
-		$left  = $direction ? "right" : "left";
-		$right = $direction ? "left" : "right";
-
-		echo '<div class="clr"></div>';
-		$image = '';
-		$icon	= (string)$this->element['icon'];
-		if (!empty($icon))
-		{
-			$image .= '<img style="margin:0; float:' . $left . ';" src="' . JURI::base(true) . '/../media/' . $name . '/images/' . $icon . '">';
-		}
-
-		$style = 'background:#f4f4f4; border:1px solid silver; padding:5px; margin:5px 0;';
-
-		return '<div style="' . $style . '">' .
-		$image .
-		'<span style="padding-' . $left . ':5px; line-height:16px;">' .
-		JText::_($this->element['text']) .
-		' <a href="' . $this->element['url'] . '" target="_blank">' .
-		JText::_(strtoupper($name) . '_DOCUMENTATION') .
-		'</a>' .
-		'</span>' .
-		'</div>';
-
-*/
 		return true;
 	}
 
@@ -136,15 +106,19 @@ class plgContentcontentmap extends JPlugin
 		$template = "template";
 		$params->text .= "<!-- plg_contentmap " . $GLOBALS["contentmap"]["version"] . "-->";
 
-		//$document = JFactory::getDocument();
+		if (empty($GLOBALS["contentmap"]["gapi"]))
+		{
+			// Add Google api to the document only once
+			$this->document->addScript("http://maps.google.com/maps/api/js?sensor=false" . $language . $api_key);
+			$GLOBALS["contentmap"]["gapi"] = true;
+		}
 
-		// Slash is intentionally "/" since it refers to URLs, not actually paths
-		$prefix = JURI::base(true) . "/index.php?option=com_contentmap&amp;owner=pid&amp;view=loader";
+		//$document = JFactory::getDocument();
+		$prefix = JURI::base(true) . "/index.php?option=com_contentmap&amp;owner=plugin&amp;view=loader";
 
 		$stylesheet = pathinfo($this->params->get("stylesheet", "default.css"));
 		$this->document->addStyleSheet($prefix . "&amp;id=" . $id . "&amp;type=css" . "&amp;filename=" . $stylesheet["filename"]);
-		$this->document->addScript("http://maps.google.com/maps/api/js?sensor=false" . $language . $api_key);
-		$this->document->addScript($prefix . "&amp;id=" . $id . "&amp;type=markers" . "&amp;contentid=" . $params->id . $itemid);
+		$this->document->addScript(JURI::base(true) . "/index.php?option=com_contentmap&amp;view=smartloader&amp;owner=plugin&amp;type=json&amp;filename=articlesmarkers&amp;source=article" . "&amp;id=" . $id . "&amp;contentid=" . $params->id . $itemid);
 		$this->document->addScript(JURI::base(true) . "/libraries/contentmap/js/markerclusterer_compiled.js");
 		$this->document->addScript($prefix . "&amp;id=" . $id . "&amp;type=js&amp;filename=map");
 		$params->text .= $template($id, JText::_("CONTENTMAP_JAVASCRIPT_REQUIRED"));
