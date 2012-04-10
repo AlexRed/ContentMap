@@ -34,7 +34,7 @@ class OSSmarkersLoader extends OSSLoader
 	{
 		parent::__construct();
 		$this->Type = "js";
-		$this->SourceHeader = "var data_" . JRequest::getVar("owner", "", 'GET') . "_" . JRequest::getVar("id", 0, 'GET') . "={";
+		$this->SourceHeader = "var data_" . JRequest::getVar("owner", "", "GET") . "_" . JRequest::getVar("id", 0, "GET") . "={";
 		$this->SourceFooter = "}";
 	}
 

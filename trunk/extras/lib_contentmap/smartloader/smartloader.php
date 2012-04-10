@@ -122,3 +122,27 @@ class cssSmartLoader extends SmartLoader
 	}
 }
 
+
+class jsonSmartLoader extends SmartLoader
+{
+	protected function type()
+	{
+		return "json";
+	}
+
+	protected function http_headers()
+	{
+		header('content-type: application/json');
+	}
+
+	protected function content_header()
+	{
+		echo "var data_" . JRequest::getVar("owner", "", "GET") . "_" . JRequest::getVar("id", 0, "GET") . "={\n";
+	}
+
+	protected function content_footer()
+	{
+		echo "\n}";
+	}
+}
+

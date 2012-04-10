@@ -71,6 +71,11 @@ class OSSLoader
 
 
 	// Todo: Duplicated code
+	private function get_params_module()
+	{
+	return $this->get_params_mid();
+	}
+
 	private function get_params_mid()
 	{
 		$db = JFactory::getDbo();
@@ -101,6 +106,11 @@ class OSSLoader
 
 
 	// Todo: Duplicated code
+	private function get_params_plugin()
+	{
+	return $this->get_params_pid();
+	}
+
 	private function get_params_pid()
 	{
 		$db = JFactory::getDbo();
