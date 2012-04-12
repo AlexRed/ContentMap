@@ -38,6 +38,32 @@
 					<option value="%">CONTENTMAP_PERCENT</option>
 				</field>
 				<field name="map_height" type="text" size="6" label="CONTENTMAP_HEIGHT" description="CONTENTMAP_MAPHEIGHT_DSC" default="400" required="true"/>
+				<field name="zoom" type="list" label="CONTENTMAP_ZOOM_LBL" description="CONTENTMAP_ZOOM_DSC" default="0">
+					<option value="0">CONTENTMAP_AUTOMATIC</option>
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+					<option value="7">7</option>
+					<option value="8">8</option>
+					<option value="9">9</option>
+					<option value="10">10</option>
+					<option value="11">11</option>
+					<option value="12">12</option>
+					<option value="13">13</option>
+					<option value="14">14</option>
+					<option value="15">15</option>
+					<option value="16">16</option>
+					<option value="17">17</option>
+					<option value="18">18</option>
+					<option value="19">19</option>
+					<option value="20">20</option>
+					<option value="21">21</option>
+				</field>
+				<field name="center" type="text" label="CONTENTMAP_CENTER_LBL" description="CONTENTMAP_CENTER_DSC" />
+
 				<field name="map_type" type="list" label="CONTENTMAP_MAPTYPE_LBL" default="ROADMAP">
 					<option value="ROADMAP">CONTENTMAP_MAPTYPE_ROADMAP</option>
 					<option value="SATELLITE">CONTENTMAP_MAPTYPE_SATELLITE</option>

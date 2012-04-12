@@ -207,7 +207,8 @@ class articleGoogleMapMarkers extends GoogleMapMarkers
 		// {([0-9]+)} At least one number. They are mandatory.
 		// {(\.[0-9]+)?} A point followed by other numbers. The whole expression is optional.
 		// {\"} the string "
-		$query->where("metadata REGEXP '\"xreference\":\"[+-]?([0-9]+)(\.[0-9]+)?( +)?,( +)?[+-]?([0-9]+)(\.[0-9]+)?\"'");
+		//$query->where("metadata REGEXP '\"xreference\":\"[+-]?([0-9]+)(\.[0-9]+)?( +)?,( +)?[+-]?([0-9]+)(\.[0-9]+)?\"'");
+		$query->where("metadata REGEXP '\"xreference\":\"[+-]?[0-9]{1,2}([.][0-9]{1,})?[ ]{0,},[ ]{0,}[+-]?[0-9]{1,3}([.][0-9]{1,})?\"'");
 
 		$db->setQuery($query);
 		$this->Contents = $db->loadAssocList() or $this->Contents = array();
@@ -395,12 +396,9 @@ class remoteGoogleMapMarkers extends GoogleMapMarkers
 
 		// Converts objects to arrays
 		$this->Contents = array();
-//		$contatore = 0;
 		foreach ($xml->marker as $marker)
 		{
-//		++$contatore;
 			$this->Contents[] = (array)$marker;
-//			if ($contatore > 1286) break;
 		}
 
 		// Global data
@@ -470,15 +468,18 @@ class UrlWrapper
 
 	public function __construct()
 	{
-		// Todo: cosi' non va bene. Setta il metodo e continua con gli altri controlli
-		if (!ini_get('allow_url_fopen')) $this->method = "none";
+		$this->method = "none";
+		if (!ini_get('allow_url_fopen')) return;
 
-		if (function_exists('file_get_contents'))
-			$this->method = "file_get_contents";
-		else if (function_exists('curl_init'))
-				$this->method = "curl";
-			else
-				$this->method = "none";
+		$functions = array("file_get_contents", "curl_init");
+		foreach ($functions as $function)
+		{
+			if (function_exists($function))
+			{
+				$this->method = $function;
+				return;
+			}
+		}
 	}
 
 	public function Get($url)
@@ -491,7 +492,7 @@ class UrlWrapper
 		return file_get_contents($url);
 	}
 
-	protected function curl($url)
+	protected function curl_init($url)
 	{
 		$handle = curl_init($url);
 		curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
