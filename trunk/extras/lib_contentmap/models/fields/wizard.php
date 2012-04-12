@@ -3,8 +3,8 @@
 This file is part of "Content Map Joomla Extension".
 Author: Open Source solutions http://www.opensourcesolutions.es
 
-You can redistribute and/or modify it under the terms of the GNU 
-General Public License as published by the Free Software Foundation, 
+You can redistribute and/or modify it under the terms of the GNU
+General Public License as published by the Free Software Foundation,
 either version 2 of the License, or (at your option) any later version.
 
 GNU/GPL license gives you the freedom:
@@ -49,7 +49,8 @@ class JFormFieldWizard extends JFormField
 		$query = $db->getQuery(true);
 		$query->select("COUNT(*)");
 		$query->from("#__content");
-		$query->where("metadata REGEXP '\"xreference\":\"[+-]?([0-9]+)(\.[0-9]+)?,( +)?[+-]?([0-9]+)(\.[0-9]+)?\"'");
+		//$query->where("metadata REGEXP '\"xreference\":\"[+-]?([0-9]+)(\.[0-9]+)?,( +)?[+-]?([0-9]+)(\.[0-9]+)?\"'");
+		$query->where("metadata REGEXP '\"xreference\":\"[+-]?[0-9]{1,2}([.][0-9]{1,})?[ ]{0,},[ ]{0,}[+-]?[0-9]{1,3}([.][0-9]{1,})?\"'");
 		$db->setQuery($query);
 
 		$counter = $db->loadResult();
@@ -60,7 +61,7 @@ class JFormFieldWizard extends JFormField
 		}
 
 		echo '<div class="clr"></div>';
-		$image = '';		
+		$image = '';
 		$icon	= (string)$this->element['icon'];
 		if (!empty($icon))
 		{

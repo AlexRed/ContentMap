@@ -66,7 +66,7 @@ abstract class SmartLoader
 		// Only admit lowercase a-z, underscore and minus. Forbid numbers, symbols, slashes and other stuff.
 		// For your security, *don't* touch the following regular expression.
 		preg_match('/^[a-z_-]+$/', $filename) or $filename = "invalid";
-		$local_name = realpath(dirname(__FILE__) . "/../" . $this->type() . "/" . $filename . ".php.js");
+		$local_name = realpath(dirname(__FILE__) . "/../" . $this->type() . "/" . $filename . ".php");
 
 		require $local_name;
 	}

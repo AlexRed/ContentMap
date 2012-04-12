@@ -9,9 +9,15 @@ function init_/*owner*/_/*id*/()
 		return;
 	}
 
-	// Center point is currently unknown
-	//var center = new google.maps.LatLng(0.0, 0.0);
-	var center = new google.maps.LatLng(data_/*owner*/_/*id*/.places[0].latitude, data_/*owner*/_/*id*/.places[0].longitude);
+	if ("center" in data_/*owner*/_/*id*/)
+	{
+		var center = new google.maps.LatLng(data_/*owner*/_/*id*/.center.latitude, data_/*owner*/_/*id*/.center.longitude);
+	}
+	else
+	{
+		//var center = new google.maps.LatLng(0.0, 0.0);
+		var center = new google.maps.LatLng(data_/*owner*/_/*id*/.places[0].latitude, data_/*owner*/_/*id*/.places[0].longitude);
+	}
 
 	// Map creation
 	var map = new google.maps.Map(document.getElementById('contentmap_/*owner*/_/*id*/'),
@@ -23,7 +29,8 @@ function init_/*owner*/_/*id*/()
 	});
 
 	// Used only by the module which contains more than one marker
-	if (data_/*owner*/_/*id*/.places.length > 1)
+	//if (data_/*owner*/_/*id*/.places.length > 1)
+	if (!("center" in data_/*owner*/_/*id*/))
 	{
 		// Automatic scale and center the map based on the marker points
 		var bounds = new google.maps.LatLngBounds();

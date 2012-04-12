@@ -31,9 +31,15 @@
 		$GLOBALS["contentmap"]["gapi"] = true;
 	}
 
+	$zoom = $params->get("zoom", NULL);
+	$zoom = $zoom ? "&amp;zoom=" . $zoom : "";
+
+	$center = $params->get("center", NULL);
+	$center = $center ? "&amp;center=" . $center : "";
+
 	$stylesheet = pathinfo($params->get("stylesheet", "default.css"));
 	$document->addStyleSheet($prefix . "&amp;id=" . $module->id . "&amp;type=css" . "&amp;filename=" . $stylesheet["filename"]);
-	$document->addScript(JURI::base(true) . "/index.php?option=com_contentmap&amp;view=smartloader&amp;owner=module&amp;type=json&amp;filename=articlesmarkers&amp;source=articles" . "&amp;id=" . $module->id . $itemid);
+	$document->addScript(JURI::base(true) . "http://forum.joomla.it/markersutenti.php?owner=module" . $zoom . $center . "&amp;id=" . $module->id);
 	$document->addScript(JURI::base(true) . "/libraries/contentmap/js/markerclusterer_compiled.js");
 	$document->addScript($prefix . "&amp;id=" . $module->id . "&amp;type=js&amp;filename=map");
 ?>
