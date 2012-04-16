@@ -29,6 +29,7 @@
 				<field type="langloader"/>
 				<field type="wizard" icon="exclamation-16.png" text="CONTENTMAP_NO_DATA" url="index.php?option=com_contentmap"/>
 				<field type="transchecker"/>
+				<field type="register"/>
 
 				<field type="ossheader" default="CONTENTMAP_MAP_LAYOUT" icon="map-16.png"/>
 				<field name="map_width" type="text" size="6" label="CONTENTMAP_WIDTH" description="CONTENTMAP_MAPWIDTH_DSC" default="100" required="true"/>

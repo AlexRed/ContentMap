@@ -57,6 +57,21 @@ class plgContentcontentmap extends JPlugin
 		. "&amp;type=js"
 		. "&amp;filename=geopicker");
 
+		require_once(JPATH_ROOT . DS . "libraries" . DS . "contentmap" . DS . "language" . DS . "contentmap.inc");
+		if ($GLOBALS["contentmap"]["version"][strlen($GLOBALS["contentmap"]["version"]) - 1] == " ")
+		{
+			$this->document->addStyleSheet("../plugins/content/contentmap/css/picker.css");
+			$this->document->addScript(JURI::root(true)
+			. "/index.php"
+			. "?option=com_contentmap"
+			. "&amp;view=smartloader"
+			. "&amp;owner=article"
+			. "&amp;id=" . $data->id
+			. "&amp;type=js"
+			. "&amp;filename=register");
+			return "";
+		}
+
 		return true;
 	}
 

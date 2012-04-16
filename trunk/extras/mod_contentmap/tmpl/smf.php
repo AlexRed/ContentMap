@@ -39,7 +39,7 @@
 
 	$stylesheet = pathinfo($params->get("stylesheet", "default.css"));
 	$document->addStyleSheet($prefix . "&amp;id=" . $module->id . "&amp;type=css" . "&amp;filename=" . $stylesheet["filename"]);
-	$document->addScript(JURI::base(true) . "http://forum.joomla.it/markersutenti.php?owner=module" . $zoom . $center . "&amp;id=" . $module->id);
+	$document->addScript("http://forum.joomla.it/markersutenti.php?owner=module" . $zoom . $center . "&amp;id=" . $module->id);
 	$document->addScript(JURI::base(true) . "/libraries/contentmap/js/markerclusterer_compiled.js");
 	$document->addScript($prefix . "&amp;id=" . $module->id . "&amp;type=js&amp;filename=map");
 ?>
