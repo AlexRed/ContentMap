@@ -7,6 +7,8 @@ class ContentMapViewSmartLoader extends JView
 	function display($tpl = null)
 	{
 		//		parent::display($tpl);
+	$articleid = JRequest::getVar("id", "", "GET");
+	$pluginid = JRequest::getVar("extension_id", "", "GET");
 
 		// Load module || component || plugin parameters. Defaults to plugin
 		$owner = JRequest::getVar("owner", "", "GET") or $owner = "plugin"; // getVar() default value doesn't work with ?owner=""
