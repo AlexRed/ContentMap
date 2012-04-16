@@ -31,11 +31,12 @@
 		$GLOBALS["contentmap"]["gapi"] = true;
 	}
 
-	$stylesheet = pathinfo($params->get("stylesheet", "default.css"));
-	$document->addStyleSheet($prefix . "&amp;id=" . $module->id . "&amp;type=css" . "&amp;filename=" . $stylesheet["filename"]);
-	$document->addScript(JURI::base(true) . "/index.php?option=com_contentmap&amp;view=smartloader&amp;owner=module&amp;type=json&amp;filename=articlesmarkers&amp;source=articles" . "&amp;id=" . $module->id . $itemid);
-	$document->addScript(JURI::base(true) . "/libraries/contentmap/js/markerclusterer_compiled.js");
-	$document->addScript($prefix . "&amp;id=" . $module->id . "&amp;type=js&amp;filename=map");
+	$stylesheet = pathinfo($params->get("css", "default"));
+	$document->addStyleSheet($prefix . "&amp;type=css&amp;filename=" . $stylesheet["filename"]);
+	$document->addScript($prefix . "&amp;type=json&amp;filename=articlesmarkers&amp;source=articles");
+	if ($params->get("cluster", "1"))
+		$document->addScript(JURI::base(true) . "/libraries/contentmap/js/markerclusterer_compiled.js");
+	$document->addScript($prefix . "&amp;type=js&amp;filename=map");
 ?>
 
 <div id="contentmap_wrapper_module_<?php echo $module->id; ?>">

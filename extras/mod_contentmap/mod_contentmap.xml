@@ -78,6 +78,10 @@
 					<option value="infowindow">CONTENTMAP_MARKERS_ACTION_BALLOON</option>
 					<option value="redirect">CONTENTMAP_MARKERS_ACTION_REDIRECT</option>
 				</field>
+				<field name="cluster" type="list" label="CONTENTMAP_MARKERS_CLUSTER_LBL" description="CONTENTMAP_MARKERS_CLUSTER_DSC" default="1">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
 
 				<field type="ossheader" default="CONTENTMAP_INFOWINDOWS" icon="infowindow-16.png"/>
 				<field name="infowindow_event" type="list" default="click" label="CONTENTMAP_INFOWINDOW_ACTION_LBL" description="CONTENTMAP_INFOWINDOW_ACTION_DSC">
@@ -96,7 +100,7 @@
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-				<field name="target" type="list" default="0" label="CONTENTMAP_INFOWINDOW_TARGET_LBL" description="CONTENTMAP_INFOWINDOW_TARGET_DSC">
+				<field name="target" type="list" label="CONTENTMAP_INFOWINDOW_TARGET_LBL" description="CONTENTMAP_INFOWINDOW_TARGET_DSC" default="_self">
 					<option value="0">JBROWSERTARGET_PARENT</option>
 					<option value="1">JBROWSERTARGET_NEW</option>
 				</field>
@@ -149,7 +153,7 @@
 
 			<fieldset name="advanced">
 				<field name="layout" type="modulelayout" label="JFIELD_ALT_LAYOUT_LABEL" description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
-				<field name="stylesheet" type="filelist" label="CONTENTMAP_ALT_CSS_LBL" description="CONTENTMAP_ALT_CSS_DSC" default="default.css" hide_none="true" directory="libraries/contentmap/css" filter="\.css$" exclude="" stripext="" />
+				<field name="css" type="filelist" label="CONTENTMAP_ALT_CSS_LBL" description="CONTENTMAP_ALT_CSS_DSC" default="default.php" hide_none="true" directory="libraries/contentmap/css" filter="\.php$" exclude="" stripext="true"/>
 				<!-- <field name="markers" type="hidden" default="markers.json" /> -->
 				<field name="moduleclass_sfx" type="text" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
 				<field name="api_key" type="text" label="CONTENTMAP_API_KEY_LBL" description="CONTENTMAP_API_KEY_DSC" size="26"/>

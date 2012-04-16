@@ -37,11 +37,12 @@
 	$center = $params->get("center", NULL);
 	$center = $center ? "&amp;center=" . $center : "";
 
-	$stylesheet = pathinfo($params->get("stylesheet", "default.css"));
-	$document->addStyleSheet($prefix . "&amp;id=" . $module->id . "&amp;type=css" . "&amp;filename=" . $stylesheet["filename"]);
+	$stylesheet = pathinfo($params->get("css", "default"));
+	$document->addStyleSheet($prefix . "&amp;type=css&amp;filename=" . $stylesheet["filename"]);
 	$document->addScript("http://forum.joomla.it/markersutenti.php?owner=module" . $zoom . $center . "&amp;id=" . $module->id);
-	$document->addScript(JURI::base(true) . "/libraries/contentmap/js/markerclusterer_compiled.js");
-	$document->addScript($prefix . "&amp;id=" . $module->id . "&amp;type=js&amp;filename=map");
+	if ($params->get("cluster", "1"))
+		$document->addScript(JURI::base(true) . "/libraries/contentmap/js/markerclusterer_compiled.js");
+	$document->addScript($prefix . "&amp;type=js&amp;filename=map");
 ?>
 
 <div id="contentmap_wrapper_module_<?php echo $module->id; ?>">

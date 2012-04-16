@@ -82,7 +82,8 @@ class plgContentcontentmap extends JPlugin
 
 		// Does current article have a map?
 		$xreference = $params->metadata->get("xreference");
-		$pattern = '/[+-]?([0-9]+)(\.[0-9]+)?,( +)?[+-]?([0-9]+)(\.[0-9]+)?/';
+		//$pattern = '/[+-]?([0-9]+)(\.[0-9]+)?,( +)?[+-]?([0-9]+)(\.[0-9]+)?/';
+		$pattern = '/[+-]?[0-9]{1,2}([.][0-9]{1,})?[ ]{0,},[ ]{0,}[+-]?[0-9]{1,3}([.][0-9]{1,})?/';
 		if (!(bool)preg_match($pattern, $xreference)) return;
 
 		// Load shared language files for frontend side
@@ -90,13 +91,13 @@ class plgContentcontentmap extends JPlugin
 
 		// Api key parameter for Google map
 		$api_key = $this->params->get('api_key', NULL);
-		$api_key = $api_key ? "&key=" . $api_key : "";
+		$api_key = $api_key ? "&amp;key=" . $api_key : "";
 
 		// Language parameter for Google map
 		// See Google maps Language coverage at https://spreadsheets.google.com/pub?key=p9pdwsai2hDMsLkXsoM05KQ&gid=1
 		// Use JFactory::getLanguage(), because we can't rely on $lang variable
 		$language = JFactory::getLanguage()->get("tag", NULL);
-		$language = $language ? "&language=" . $language : "";
+		$language = $language ? "&amp;language=" . $language : "";
 
 		// Plugin id passed to the component
 		$db = JFactory::getDbo();
@@ -117,7 +118,7 @@ class plgContentcontentmap extends JPlugin
 		*/
 		$menu = JFactory::getApplication()->getMenu();
 		$itemid = $menu->getActive() or $itemid = $menu->getDefault();
-		$itemid = "&Itemid=" . $itemid->id;
+		$itemid = "&amp;Itemid=" . $itemid->id;
 		$template = "template";
 		$params->text .= "<!-- plg_contentmap " . $GLOBALS["contentmap"]["version"] . "-->";
 
@@ -128,14 +129,13 @@ class plgContentcontentmap extends JPlugin
 			$GLOBALS["contentmap"]["gapi"] = true;
 		}
 
-		//$document = JFactory::getDocument();
-		$prefix = JURI::base(true) . "/index.php?option=com_contentmap&amp;owner=plugin&amp;view=loader";
+		$prefix = JURI::base(true) . "/index.php?option=com_contentmap&amp;owner=plugin&amp;view=smartloader&amp;id=" . $id . $itemid;
 
-		$stylesheet = pathinfo($this->params->get("stylesheet", "default.css"));
-		$this->document->addStyleSheet($prefix . "&amp;id=" . $id . "&amp;type=css" . "&amp;filename=" . $stylesheet["filename"]);
-		$this->document->addScript(JURI::base(true) . "/index.php?option=com_contentmap&amp;view=smartloader&amp;owner=plugin&amp;type=json&amp;filename=articlesmarkers&amp;source=article" . "&amp;id=" . $id . "&amp;contentid=" . $params->id . $itemid);
-		$this->document->addScript(JURI::base(true) . "/libraries/contentmap/js/markerclusterer_compiled.js");
-		$this->document->addScript($prefix . "&amp;id=" . $id . "&amp;type=js&amp;filename=map");
+		$stylesheet = pathinfo($this->params->get("css", "default"));
+		$this->document->addStyleSheet($prefix . "&amp;type=css&amp;filename=" . $stylesheet["filename"]);
+		$this->document->addScript($prefix . "&amp;type=json&amp;filename=articlesmarkers&amp;source=article&amp;contentid=" . $params->id);
+		$this->document->addScript($prefix . "&amp;type=js&amp;filename=map");
+
 		$params->text .= $template($id, JText::_("CONTENTMAP_JAVASCRIPT_REQUIRED"));
 	}
 }
