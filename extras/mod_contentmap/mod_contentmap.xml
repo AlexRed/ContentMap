@@ -100,9 +100,11 @@
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-				<field name="target" type="list" label="CONTENTMAP_INFOWINDOW_TARGET_LBL" description="CONTENTMAP_INFOWINDOW_TARGET_DSC" default="_self">
-					<option value="0">JBROWSERTARGET_PARENT</option>
-					<option value="1">JBROWSERTARGET_NEW</option>
+				<field name="link_target" type="list" label="CONTENTMAP_INFOWINDOW_TARGET_LBL" description="CONTENTMAP_INFOWINDOW_TARGET_DSC" default="_self">
+					<option value="_self">CONTENTMAP_TARGET_SELF</option>
+					<option value="_blank">CONTENTMAP_TARGET_BLANK</option>
+					<option value="_parent">CONTENTMAP_TARGET_PARENT</option>
+					<option value="_top">CONTENTMAP_TARGET_TOP</option>
 				</field>
 				<field name="show_image" type="list" default="1" label="CONTENTMAP_INFOWINDOW_SHOWIMAGE_LBL" description="CONTENTMAP_INFOWINDOW_SHOWIMAGE_DSC">
 					<option value="0">JHIDE</option>
