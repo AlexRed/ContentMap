@@ -43,7 +43,8 @@ abstract class SmartLoader
 		$this->load();
 		$this->content_footer();
 
-		die();
+		//die();
+		JFactory::getApplication()->close();
 	}
 
 

@@ -75,17 +75,11 @@ abstract class GoogleMapMarkers
 			if ($this->Params->get('show_title', 0))
 			{
 				$content["html"] .= "<h3>";
-
-				$target = "";
-				if ($this->Params->get('target', 0))
-				{
-					$target = " target=\"_blank\"";
-				}
-
 				$content["html"] .= $content["title"];
 
 				if ($this->Params->get('link_titles', 0))
 				{
+					$target = ' target="' . $this->Params->get("link_target", "_self") . '"';
 					$content["html"] =
 					'<a href="' . $sef_link . '"' . $target . '>' .
 					$content["html"] .
