@@ -30,7 +30,7 @@ if (isset($GLOBALS["contentmap_mid_" . $module->id])) return;
 else $GLOBALS["contentmap_mid_" . $module->id] = true;
 
 // Load shared language files for frontend side
-require_once(JPATH_ROOT . DS . "libraries" . DS . "contentmap" . DS . "language" . DS . "contentmap.inc");
+require_once(JPATH_ROOT . "/libraries/contentmap/language/contentmap.inc");
 
 // Api key parameter for Google map
 $api_key = $params->get('api_key', NULL);

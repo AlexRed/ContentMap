@@ -2,10 +2,10 @@
 <extension type="module" version="1.7" method="upgrade" client="site">
 	<name>mod_contentmap</name>
 	<creationDate>13/02/2012</creationDate>
-	<author>Turismo.eu</author>
-	<authorEmail>info@joomla.it</authorEmail>
-	<authorUrl>http://www.turismo.eu/</authorUrl>
-	<copyright>Turismo.eu</copyright>
+	<author>Open Source Solutions SLU</author>
+	<authorEmail>info@opensourcesolutions.es</authorEmail>
+	<authorUrl>http://www.opensourcesolutions.es/</authorUrl>
+	<copyright>Open Source Solutions SLU</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<version>1.2.6</version>
 	<description>MOD_CONTENTMAP_DESCRIPTION</description> <!-- Used in Module Manager > New > Select a Module Type. Translation in modules/mod_contentmap/language/xx-XX/xx-XX.mod_contentmap.ini -->
