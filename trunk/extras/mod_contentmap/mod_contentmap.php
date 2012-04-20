@@ -55,6 +55,7 @@ $itemid = "&amp;Itemid=" . $itemid->id;
 $document = JFactory::getDocument();
 
 echo "<!-- mod_contentmap " . $GLOBALS["contentmap"]["version"] . "-->";
-$prefix = JURI::base(true) . "/index.php?option=com_contentmap&amp;owner=module&amp;view=smartloader&amp;id=" . $module->id . $itemid;
+$prefix = JURI::base(true) . "/index.php?option=com_contentmap&amp;view=smartloader";
+$postfix = "&amp;owner=module&amp;id=" . $module->id . $itemid;
 require JModuleHelper::getLayoutPath($app->scope, $params->get('layout', 'default'));
 $icons = icons_path(JPATH_ROOT . DS . "media" . DS . "contentmap") . DS . "markers" . DS . "icons";

@@ -13,27 +13,30 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 		return;
 	}
 
-	if ("center" in data_<?php echo $owner; ?>_<?php echo $id; ?>)
-	{
-		var center = new google.maps.LatLng(data_<?php echo $owner; ?>_<?php echo $id; ?>.center.latitude, data_<?php echo $owner; ?>_<?php echo $id; ?>.center.longitude);
-	}
-	else
-	{
-		//var center = new google.maps.LatLng(0.0, 0.0);
-		var center = new google.maps.LatLng(data_<?php echo $owner; ?>_<?php echo $id; ?>.places[0].latitude, data_<?php echo $owner; ?>_<?php echo $id; ?>.places[0].longitude);
-	}
+<?php if ($center = $this->Params->get("center", NULL)) {
+	$coordinates = explode(",", $center);
+	// Google map js needs them as two separate values (See constructor: google.maps.LatLng(lat, lon))
+	$center = new stdClass();
+	$center->latitude = floatval($coordinates[0]);
+	$center->longitude = floatval($coordinates[1]);
+ ?>
+ 	var center = new google.maps.LatLng(<?php echo $center->latitude; ?>, <?php echo $center->longitude; ?>);
+<?php } else { ?>
+	var center = new google.maps.LatLng(data_<?php echo $owner; ?>_<?php echo $id; ?>.places[0].latitude, data_<?php echo $owner; ?>_<?php echo $id; ?>.places[0].longitude);
+<?php } ?>
 
 	// Map creation
 	var map = new google.maps.Map(document.getElementById('contentmap_<?php echo $owner; ?>_<?php echo $id; ?>'),
 	{
-		//zoom: 1, //zoom factor is currently unknown too
-		zoom: data_<?php echo $owner; ?>_<?php echo $id; ?>.zoom,
+		zoom: <?php echo $this->Params->get("zoom", 0); ?>,
 		center: center,
-		mapTypeId: google.maps.MapTypeId.<?php echo $this->Params->get("map_type", "200"); ?>
+		mapTypeId: google.maps.MapTypeId.<?php echo $this->Params->get("map_type", "ROADMAP"); ?>
 	});
 
-	// Used only by the module which contains more than one marker but only when a center is not defined
-	if (!("center" in data_<?php echo $owner; ?>_<?php echo $id; ?>) && (data_<?php echo $owner; ?>_<?php echo $id; ?>.places.length > 1))
+<?php if (!$center) {
+// Used only by the module which contains more than one marker but only when a center is not defined
+?>
+	if (data_<?php echo $owner; ?>_<?php echo $id; ?>.places.length > 1)
 	{
 		// Automatic scale and center the map based on the marker points
 		var bounds = new google.maps.LatLngBounds();
@@ -43,6 +46,7 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 		bounds.extend(pmax);
 		map.fitBounds(bounds);
 	}
+<?php } ?>
 
 	// InfoWindow creation
 	var infowindow = new google.maps.InfoWindow({maxWidth: <?php echo $this->Params->get("infowindow_width", "200"); ?>});
