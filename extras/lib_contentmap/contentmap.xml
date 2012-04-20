@@ -15,7 +15,6 @@
 		<folder>js</folder>
 		<folder>json</folder>
 		<folder>language</folder>
-		<folder>loader</folder>
 		<folder>models</folder>
 		<folder>smartloader</folder>
 	</files>

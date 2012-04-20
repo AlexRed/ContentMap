@@ -159,6 +159,12 @@
 				<!-- <field name="markers" type="hidden" default="markers.json" /> -->
 				<field name="moduleclass_sfx" type="text" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
 				<field name="api_key" type="text" label="CONTENTMAP_API_KEY_LBL" description="CONTENTMAP_API_KEY_DSC" size="26"/>
+				<field name="data_source" type="list" label="CONTENTMAP_DATASOURCE_LBL" default="0">
+					<option value="0">CONTENTMAP_JOOMLA_ARTICLES</option>
+					<option value="1">CONTENTMAP_CONNECTOR</option>
+				</field>
+				<field name="data_url" type="text" label="CONTENTMAP_CONNECTOR_URL_LBL" description="CONTENTMAP_CONNECTOR_URL_DSC" />
+
 			</fieldset>
 
 		</fields>

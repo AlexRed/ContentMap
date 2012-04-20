@@ -6,7 +6,7 @@ class ContentMapViewContentMap extends JView
 {
 	function display($tpl = null)
 	{
-		$this->msg = "Hello World";
+		$this->msg = "ContentMap component is still under development";
 		parent::display($tpl);
 	}
 }

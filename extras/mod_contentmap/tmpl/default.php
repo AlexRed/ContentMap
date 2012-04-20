@@ -32,11 +32,16 @@
 	}
 
 	$stylesheet = pathinfo($params->get("css", "default"));
-	$document->addStyleSheet($prefix . "&amp;type=css&amp;filename=" . $stylesheet["filename"]);
-	$document->addScript($prefix . "&amp;type=json&amp;filename=articlesmarkers&amp;source=articles");
+	$document->addStyleSheet($prefix . "&amp;type=css&amp;filename=" . $stylesheet["filename"] . $postfix);
+
+	if ($params->get("data_source", NULL))
+		$document->addScript($params->get("data_url") . "?source=custom" . $postfix);
+	else
+		$document->addScript($prefix . "&amp;type=json&amp;filename=articlesmarkers&amp;source=articles" . $postfix);
+
 	if ($params->get("cluster", "0"))
 		$document->addScript(JURI::base(true) . "/libraries/contentmap/js/markerclusterer_compiled.js");
-	$document->addScript($prefix . "&amp;type=js&amp;filename=map");
+	$document->addScript($prefix . "&amp;type=js&amp;filename=map" . $postfix);
 ?>
 
 <div id="contentmap_wrapper_module_<?php echo $module->id; ?>">
