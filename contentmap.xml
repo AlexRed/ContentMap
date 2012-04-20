@@ -2,10 +2,10 @@
 <extension type="component" version="1.7.0" method="upgrade">
 	<name>COM_CONTENTMAP</name>
 	<creationDate>13/02/2012</creationDate>
-	<author>Turismo.eu</author>
-	<authorEmail>info@joomla.it</authorEmail>
-	<authorUrl>http://www.turismo.eu/</authorUrl>
-	<copyright>Turismo.eu</copyright>
+	<author>Open Source Solutions SLU</author>
+	<authorEmail>info@opensourcesolutions.es</authorEmail>
+	<authorUrl>http://www.opensourcesolutions.es/</authorUrl>
+	<copyright>Open Source Solutions SLU</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html</license>
 	<version>1.2.6</version>
 	<description>COM_CONTENTMAP_DESCRIPTION</description>
@@ -22,6 +22,7 @@
 		<files folder="admin">
 			<filename>index.html</filename>
 			<filename>contentmap.php</filename>
+			<folder>css</folder>
 			<folder>language</folder>
 		</files>
 	</administration>
@@ -33,9 +34,9 @@
 	</updateservers>
 
 	<chain>
-		<extension directory="extras" name="lib_contentmap" />
-		<extension directory="extras" name="mod_contentmap" />
-		<extension directory="extras" name="plg_contentmap" />
+		<extension directory="extras" name="lib_contentmap" type="LIBRARY" />
+		<extension directory="extras" name="mod_contentmap" type="MODULE" />
+		<extension directory="extras" name="plg_contentmap" type="PLUGIN" />
 	</chain>
 
 </extension>

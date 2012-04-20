@@ -2,10 +2,10 @@
 <extension type="plugin" version="1.7" method="upgrade" group="content">
 	<name>plg_content_contentmap</name>
 	<creationDate>13/02/2012</creationDate>
-	<author>Turismo.eu</author>
-	<authorEmail>info@joomla.it</authorEmail>
-	<authorUrl>http://www.turismo.eu/</authorUrl>
-	<copyright>Turismo.eu</copyright>
+	<author>Open Source Solutions SLU</author>
+	<authorEmail>info@opensourcesolutions.es</authorEmail>
+	<authorUrl>http://www.opensourcesolutions.es/</authorUrl>
+	<copyright>Open Source Solutions SLU</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<version>1.2.6</version>
 	<description>PLG_CONTENTMAP_DESCRIPTION</description>
