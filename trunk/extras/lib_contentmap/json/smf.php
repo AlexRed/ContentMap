@@ -17,13 +17,7 @@ $markers = new smfGoogleMapMarkers();
 $baseurl = json_encode('http://forum.joomla.it/');
 
 echo
-'"minlatitude":' . $markers->MinLatitude . ',' .
-'"maxlatitude":' . $markers->MaxLatitude . ',' .
-'"minlongitude":' . $markers->MinLongitude . ',' .
-'"maxlongitude":' . $markers->MaxLongitude . ',' .
 '"baseurl":' . $baseurl . ',' .
-'"nodata_msg":' . json_encode("There are no places viewable by this module.") . ',' .
-'"markers_action":"' . "infowindow" . '",' .
 '"places":' . $markers->asJSON();
 
 

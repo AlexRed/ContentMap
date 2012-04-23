@@ -15,11 +15,6 @@ $markers_icon = $this->Params->get("markers_icon", NULL);
 $markers_icon = $markers_icon ? '"icon":' . json_encode(JURI::base(true) . '/media/contentmap/markers/icons/' . $markers_icon) . ',' : "";
 
 $source =
-'"minlatitude":' . $markers->MinLatitude . ',' .
-'"maxlatitude":' . $markers->MaxLatitude . ',' .
-'"minlongitude":' . $markers->MinLongitude . ',' .
-'"maxlongitude":' . $markers->MaxLongitude . ',' .
-'"zoom":' . $markers->Zoom . ',' .
 '"baseurl":' . json_encode(JURI::base(true) . '/') . ',' .
 $markers_icon .
 '"nodata_msg":' . json_encode(JText::_("CONTENTMAP_NO_DATA")) . ',' .
