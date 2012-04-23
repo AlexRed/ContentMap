@@ -1,6 +1,7 @@
 <?php
 $owner = JRequest::getVar("owner", "", "GET");
 $id = JRequest::getVar("id", "", "GET");
+JFactory::getLanguage()->load("contentmap", JPATH_LIBRARIES . "/contentmap");
 ?>
 imageObjs = new Array();
 
@@ -9,7 +10,7 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 	if (!data_<?php echo $owner; ?>_<?php echo $id; ?>.places.length)
 	{
 		// There is no places viewable in this module
-		document.getElementById('contentmap_<?php echo $owner; ?>_<?php echo $id; ?>').innerHTML += data_<?php echo $owner; ?>_<?php echo $id; ?>.nodata_msg;
+		document.getElementById('contentmap_<?php echo $owner; ?>_<?php echo $id; ?>').innerHTML += '<?php echo JText::_("CONTENTMAP_NO_DATA"); ?>';
 		return;
 	}
 
@@ -36,6 +37,7 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 <?php if (!$center) {
 // Used only by the module which contains more than one marker but only when a center is not defined
 ?>
+/*
 	if (data_<?php echo $owner; ?>_<?php echo $id; ?>.places.length > 1)
 	{
 		// Automatic scale and center the map based on the marker points
@@ -46,6 +48,7 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 		bounds.extend(pmax);
 		map.fitBounds(bounds);
 	}
+*/
 <?php } ?>
 
 	// InfoWindow creation
@@ -53,8 +56,19 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 
 	// Markers creation
 	var markers = [];
+	var minlatitude = 90.0;
+	var maxlatitude = -90.0;
+	var minlongitude = 180.0;
+	var maxlongitude = -180.0;
+
 	for (var i = 0; i < data_<?php echo $owner; ?>_<?php echo $id; ?>.places.length; ++i)
 	{
+		// Compute bounds rectangle
+		minlatitude = Math.min(data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].latitude, minlatitude);
+		maxlatitude = Math.max(data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].latitude, maxlatitude);
+		minlongitude = Math.min(data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].longitude, minlongitude);
+		maxlongitude = Math.max(data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].longitude, maxlongitude);
+
 		// Set marker position
 		var pos = new google.maps.LatLng(data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].latitude, data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].longitude);
 
@@ -71,24 +85,38 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 		if ("icon" in data_<?php echo $owner; ?>_<?php echo $id; ?>)
 		marker.setIcon(data_<?php echo $owner; ?>_<?php echo $id; ?>.icon);
 
-		if (data_<?php echo $owner; ?>_<?php echo $id; ?>.markers_action == 'infowindow')
+		google.maps.event.addListener(marker, '<?php echo $this->Params->get("infowindow_event", "click"); ?>',
+		function()
 		{
+<?php if ($this->Params->get("markers_action") == "infowindow") { ?>
 			// InfoWindow handling event
-			google.maps.event.addListener(marker, '<?php echo $this->Params->get("infowindow_event", "200"); ?>', function() {
-				infowindow.setContent(data_<?php echo $owner; ?>_<?php echo $id; ?>.places[this.getZIndex()].html);
-				infowindow.open(map, this);
-			});
-		}
-		else
-		{
+			infowindow.setContent(data_<?php echo $owner; ?>_<?php echo $id; ?>.places[this.getZIndex()].html);
+			infowindow.open(map, this);
+<?php } else { ?>
 			// Redirect handling event
-			google.maps.event.addListener(marker, '<?php echo $this->Params->get("infowindow_event", "200"); ?>', function() {
-				location.href = data_<?php echo $owner; ?>_<?php echo $id; ?>.places[this.getZIndex()].article_url;
-			});
-		}
+			location.href = data_<?php echo $owner; ?>_<?php echo $id; ?>.places[this.getZIndex()].article_url;
+<?php } ?>
+		});
 
 		markers.push(marker);
 	}
+
+<?php if (!$center) {
+// Set bounds rectangle
+// Used only by the module which contains more than one marker but only when a center is not defined
+?>
+	if (data_<?php echo $owner; ?>_<?php echo $id; ?>.places.length > 1)
+	{
+		// Automatic scale and center the map based on the marker points
+		var bounds = new google.maps.LatLngBounds();
+		var pmin = new google.maps.LatLng(minlatitude, minlongitude);
+		var pmax = new google.maps.LatLng(maxlatitude, maxlongitude);
+		bounds.extend(pmin);
+		bounds.extend(pmax);
+		map.fitBounds(bounds);
+	}
+<?php } ?>
+
 <?php if ($this->Params->get("cluster", "0")) { ?>
 	// Marker Cluster creation
 	var markerCluster = new MarkerClusterer(map, markers);
