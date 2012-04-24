@@ -132,7 +132,8 @@ function preload_<?php echo $owner; ?>_<?php echo $id; ?>()
 		if (data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].image)
 		{
 			imageObj = new Image();
-			imageObj.src = data_<?php echo $owner; ?>_<?php echo $id; ?>.baseurl + data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].image;
+			//imageObj.src = data_<?php echo $owner; ?>_<?php echo $id; ?>.baseurl + data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].image;
+			imageObj.src = data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].image;
 			imageObjs.push(imageObj);
 		}
 	}

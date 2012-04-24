@@ -17,8 +17,6 @@ $markers_icon = $markers_icon ? '"icon":' . json_encode(JURI::base(true) . '/med
 $source =
 '"baseurl":' . json_encode(JURI::base(true) . '/') . ',' .
 $markers_icon .
-'"nodata_msg":' . json_encode(JText::_("CONTENTMAP_NO_DATA")) . ',' .
-'"markers_action":"' . $this->Params->get("markers_action", "infowindow") . '",' .
 '"places":' . $markers->asJSON();
 echo $source;
 
@@ -105,12 +103,14 @@ abstract class GoogleMapMarkers
 					$format = " " . $size[3];
 				}
 
+				// Add the base url to the image. Used by both infowindow innerhtml and preload() function
+				$content["image"] = JURI::base(true) . "/" . $content["image"];
 				// Image URL
 				$content["html"] .=
 				"<div style=\"float:" . $content["float_image"] . ";\">" .
 				"<img class=\"intro_image\"" .
 				$format .
-				" src=\"" . JURI::base(true) . "/" . $content["image"] . "\"";
+				" src=\"" . $content["image"] . "\"";
 				if ($content["image_intro_alt"]) $content["html"] .= " alt=\"" . $content["image_intro_alt"] . "\"";
 				if ($content["image_intro_caption"]) $content["html"] .= " title=\"" . $content["image_intro_caption"] . "\"";
 				$content["html"] .= ">" .
