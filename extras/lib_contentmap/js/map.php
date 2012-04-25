@@ -117,7 +117,7 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 	}
 <?php } ?>
 
-<?php if ($this->Params->get("cluster", "0")) { ?>
+<?php if ($this->Params->get("cluster", "1")) { ?>
 	// Marker Cluster creation
 	var markerCluster = new MarkerClusterer(map, markers);
 <?php } ?>

@@ -33,14 +33,29 @@
 
 	$stylesheet = pathinfo($params->get("css", "default"));
 	$document->addStyleSheet($prefix . "&amp;type=css&amp;filename=" . $stylesheet["filename"] . $postfix);
-
+	/*
 	if ($params->get("data_source", NULL))
-		$document->addScript($params->get("data_url") . "?source=custom" . $postfix);
+	$document->addScript($params->get("data_url") . "?source=custom" . $postfix);
 	else
-		$document->addScript($prefix . "&amp;type=json&amp;filename=articlesmarkers&amp;source=articles" . $postfix);
+	$document->addScript($prefix . "&amp;type=json&amp;filename=articlesmarkers&amp;source=articles" . $postfix);
+	*/
+	switch ($params->get("data_source", "0"))
+	{
+		case "0":
+			$document->addScript($prefix . "&amp;type=json&amp;filename=articlesmarkers&amp;source=articles" . $postfix);
+			break;
+		case "1":
+			$document->addScript($params->get("data_url") . "?source=custom" . $postfix);
+			break;
+		default:
+			$document->addScript(JURI::base(true) . "/libraries/contentmap/json/" . $params->get("data_source") . ".php?source=custom" . $postfix);
+	}
 
-	if ($params->get("cluster", "0"))
+	if ($params->get("cluster", "1"))
+	{
 		$document->addScript(JURI::base(true) . "/libraries/contentmap/js/markerclusterer_compiled.js");
+	}
+
 	$document->addScript($prefix . "&amp;type=js&amp;filename=map" . $postfix);
 ?>
 
