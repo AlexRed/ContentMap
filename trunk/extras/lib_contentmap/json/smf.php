@@ -47,7 +47,7 @@ class smfGoogleMapMarkers extends GoogleMapMarkers
 			// Infowindow content
 			$content["html"] =
 			'<div style="font-weight:bold;">' . $record["member_name"] . "</div>" .
-			"<div class=\"created\">" . $gender[$record["gender"]] . "</div>" .
+			'<div class="created">' . $gender[$record["gender"]] . "</div>" .
 			'<div class="created"><a href="http://forum.joomla.it/index.php?action=profile;area=showposts;u=' . $record["id_member"] . '" target="_blank">Post: ' . $record["posts"] . "</a></div>" .
 			'<div class="created"><a href="http://forum.joomla.it/index.php?action=profile;u=' . $record["id_member"] . '" target="_blank">Visualizza profilo</a></div>';
 

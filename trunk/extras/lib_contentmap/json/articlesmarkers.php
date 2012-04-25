@@ -15,7 +15,6 @@ $markers_icon = $this->Params->get("markers_icon", NULL);
 $markers_icon = $markers_icon ? '"icon":' . json_encode(JURI::base(true) . '/media/contentmap/markers/icons/' . $markers_icon) . ',' : "";
 
 $source =
-'"baseurl":' . json_encode(JURI::base(true) . '/') . ',' .
 $markers_icon .
 '"places":' . $markers->asJSON();
 echo $source;
@@ -29,10 +28,6 @@ abstract class GoogleMapMarkers
 {
 	public $Contents;
 	// Values used in order to automatically scale and center the map
-	public $MinLatitude = 90.0;
-	public $MaxLatitude = -90.0;
-	public $MinLongitude = 180.0;
-	public $MaxLongitude = -180.0;
 	public $Zoom;
 	protected $Params;
 
@@ -233,12 +228,6 @@ class articleGoogleMapMarkers extends GoogleMapMarkers
 			$content["image_intro_alt"] = $registry->get("image_intro_alt");
 			$content["image_intro_caption"] = $registry->get("image_intro_caption");
 
-			// Store max e min values
-			$this->MinLatitude = min($content["latitude"], $this->MinLatitude);
-			$this->MaxLatitude = max($content["latitude"], $this->MaxLatitude);
-			$this->MinLongitude = min($content["longitude"], $this->MinLongitude);
-			$this->MaxLongitude = max($content["longitude"], $this->MaxLongitude);
-
 			// '&' in '&amp;' and other similar conversions
 			$content["title"] = htmlspecialchars($content["title"]);
 			$content["created_by_alias"] = htmlspecialchars($content["created_by_alias"]);
@@ -350,12 +339,6 @@ class articlesGoogleMapMarkers extends GoogleMapMarkers
 			$content["image_intro_alt"] = $registry->get("image_intro_alt");
 			$content["image_intro_caption"] = $registry->get("image_intro_caption");
 
-			// Store max e min values
-			$this->MinLatitude = min($content["latitude"], $this->MinLatitude);
-			$this->MaxLatitude = max($content["latitude"], $this->MaxLatitude);
-			$this->MinLongitude = min($content["longitude"], $this->MinLongitude);
-			$this->MaxLongitude = max($content["longitude"], $this->MaxLongitude);
-
 			// '&' in '&amp;' and other similar conversions
 			$content["title"] = htmlspecialchars($content["title"]);
 			$content["created_by_alias"] = htmlspecialchars($content["created_by_alias"]);
@@ -421,12 +404,6 @@ class remoteGoogleMapMarkers extends GoogleMapMarkers
 			$content["float_image"] = $registry->get("float_intro") or $content["float_image"] = $contents_global_params->get("float_intro");
 			$content["image_intro_alt"] = $registry->get("image_intro_alt");
 			$content["image_intro_caption"] = $registry->get("image_intro_caption");
-
-			// Store max e min values
-			$this->MinLatitude = min($content["latitude"], $this->MinLatitude);
-			$this->MaxLatitude = max($content["latitude"], $this->MaxLatitude);
-			$this->MinLongitude = min($content["longitude"], $this->MinLongitude);
-			$this->MaxLongitude = max($content["longitude"], $this->MaxLongitude);
 
 			// '&' in '&amp;' and other similar conversions
 			$content["title"] = htmlspecialchars($content["title"]);
