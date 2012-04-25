@@ -156,13 +156,13 @@
 			<fieldset name="advanced">
 				<field name="layout" type="modulelayout" label="JFIELD_ALT_LAYOUT_LABEL" description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
 				<field name="css" type="filelist" label="CONTENTMAP_ALT_CSS_LBL" description="CONTENTMAP_ALT_CSS_DSC" default="default.php" hide_none="true" directory="libraries/contentmap/css" filter="\.php$" exclude="" stripext="true"/>
-				<!-- <field name="markers" type="hidden" default="markers.json" /> -->
 				<field name="moduleclass_sfx" type="text" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
 				<field name="api_key" type="text" label="CONTENTMAP_API_KEY_LBL" description="CONTENTMAP_API_KEY_DSC" size="26"/>
+				<field type="ossheader" default="CONTENTMAP_DATASOURCE_WARNING" icon="database-16.png" helpurl="http://www.opensourcesolutions.es/index.php?option=com_content&amp;view=article&amp;id=9&amp;catid=7&amp;Itemid=8&amp;lang=en"/>
 				<field name="data_source" type="list" label="CONTENTMAP_DATASOURCE_LBL" default="0">
 					<option value="0">CONTENTMAP_JOOMLA_ARTICLES</option>
 					<option value="joomlausers">CONTENTMAP_JOOMLA_USERS</option>
-					<option value="smf">CONTENTMAP_CONNECTOR_SMF</option>
+					<!-- <option value="smf">CONTENTMAP_CONNECTOR_SMF</option> -->
 					<option value="1">CONTENTMAP_CONNECTOR</option>
 				</field>
 				<field name="data_url" type="text" label="CONTENTMAP_CONNECTOR_URL_LBL" description="CONTENTMAP_CONNECTOR_URL_DSC" default="http://forum.joomla.it/libraries/contentmap/json/smf.php"/>
