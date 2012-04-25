@@ -3,8 +3,8 @@
 This file is part of "Content Map Joomla Extension".
 Author: Open Source solutions http://www.opensourcesolutions.es
 
-You can redistribute and/or modify it under the terms of the GNU 
-General Public License as published by the Free Software Foundation, 
+You can redistribute and/or modify it under the terms of the GNU
+General Public License as published by the Free Software Foundation,
 either version 2 of the License, or (at your option) any later version.
 
 GNU/GPL license gives you the freedom:
@@ -44,8 +44,8 @@ class JFormFieldOSSHeader extends JFormField
 		$left  = $direction ? "right" : "left";
 		$right = $direction ? "left" : "right";
 
-		echo '<div class="clr"></div>';		
-		$image = '';		
+		echo '<div class="clr"></div>';
+		$image = '';
 		$icon	= (string)$this->element['icon'];
 		if (!empty($icon))
 		{
@@ -55,12 +55,12 @@ class JFormFieldOSSHeader extends JFormField
 		$helpurl	= (string)$this->element['helpurl'];
 		if (!empty($helpurl))
 		{
-			$image .= '<a href="' . $helpurl . '" target="_blank"><img style="margin:0; float:' . $right . ';" src="' . JURI::base(true) . '/../media/' . $cn . '/images/question-button-16.png"></a>';
+			$image .= '<a href="' . $helpurl . '" target="_blank"><img style="margin:0; float:' . $right . ';" src="' . JURI::base(true) . '/../media/contentmap/images/question-button-16.png"></a>';
 		}
 
 		$style = 'background:#f4f4f4; color:#025a8d; border:1px solid silver; padding:5px; margin:5px 0;';
 		if ($this->element['default'])
-		{		
+		{
 			return '<div style="' . $style . '">' .
 			$image .
 			'<span style="padding-' . $left . ':5px; font-weight:bold; line-height:16px;">' .
