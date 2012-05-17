@@ -18,7 +18,7 @@ class ContentMapViewSmartLoader extends JView
 		$db->setQuery($query);
 
 		// Load parameters from database
-		$json = $db->loadResult() or JLog::add("Database error.", JLog::ERROR, "loader");
+		$json = $db->loadResult();
 		// Convert to JRegistry
 		$params = new JRegistry($json);
 		// $params = $params->toArray();
