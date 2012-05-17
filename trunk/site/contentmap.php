@@ -28,13 +28,10 @@ along with this software.  If not, see http://www.gnu.org/licenses/gpl-2.0.html.
 
 // @ avoids "Warning: ini_set() has been disabled for security reasons in /var/www/libraries/joomla/[...]"
 $application = @JFactory::getApplication('site');
-
-JLog::addLogger(array(
-"text_file" => substr($application->scope, 4) . ".log.php"
-));
-
 jimport("joomla.application.component.controller");
 
 $controller = JController::getInstance("ContentMap");
 $controller->execute(JRequest::getCmd("task"));
 $controller->redirect();
+
+

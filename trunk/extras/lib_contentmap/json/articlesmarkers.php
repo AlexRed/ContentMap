@@ -214,7 +214,7 @@ class articleGoogleMapMarkers extends GoogleMapMarkers
 		{
 			// xreference database field is empty.
 			// For some strange reason, it is stored in metadata field on the database
-			$registry = new JRegistry($content["metadata"]); // Equivalent to $registry->loadJSON($content["metadata"])
+			$registry = new JRegistry($content["metadata"]); // Equivalent to $registry->loadString($content["metadata"], "JSON")
 			$coordinates = explode(",", $registry->get("xreference"));
 
 			// Google map js needs them as two separate values (See constructor: google.maps.LatLng(lat, lon))
@@ -222,7 +222,7 @@ class articleGoogleMapMarkers extends GoogleMapMarkers
 			$content["longitude"] = floatval($coordinates[1]);
 
 			// Todo: pass data directly as jregistry, avoiding assign operations
-			$registry->loadJSON($content["images"]);
+			$registry->loadString($content["images"], "JSON");
 			$content["image"] = $registry->get("image_intro");
 			$content["float_image"] = $registry->get("float_intro") or $content["float_image"] = $contents_global_params->get("float_intro");
 			$content["image_intro_alt"] = $registry->get("image_intro_alt");
@@ -253,7 +253,17 @@ class articlesGoogleMapMarkers extends GoogleMapMarkers
 	protected function Load()
 	{
 		$db = JFactory::getDBO();
+
+		// Detect the language associated to the module. It will be used as articles filter
 		$query = $db->getQuery(true);
+		$query->select("language");
+		$query->from("#__modules");
+		$query->where("`id` = " . intval(JRequest::getVar("id", 0, "GET")));
+		$query->where("`module` = 'mod_contentmap'");
+		$db->setQuery($query);
+		$language = $db->loadResult();
+
+		$query->clear();
 		$query->select("id, title, alias, introtext, catid, created, created_by_alias, images, metadata");
 		$query->from("#__content");
 
@@ -308,6 +318,12 @@ class articlesGoogleMapMarkers extends GoogleMapMarkers
 		// Condition: Featured
 		$query->where("featured IN (" . $this->Params->get('featured', "0,1") . ")");
 
+		// Condition: Same language as the module or article associated to "ALL" languages or module associated to "ALL" languages
+		if ($language !== "*")
+		{
+			$query->where("(`language` = " . $db->quote($language) . " OR `language` = '*')");
+		}
+
 		// "Order by is intentionally ignored. We don't need to sort point on the map.
 
 		$db->setQuery($query);
@@ -325,7 +341,7 @@ class articlesGoogleMapMarkers extends GoogleMapMarkers
 		{
 			// xreference database field is empty.
 			// For some strange reason, it is stored in metadata field on the database
-			$registry = new JRegistry($content["metadata"]); // Equivalent to $registry->loadJSON($content["metadata"])
+			$registry = new JRegistry($content["metadata"]); // Equivalent to $registry->loadString($content["metadata"], "JSON")
 			$coordinates = explode(",", $registry->get("xreference"));
 
 			// Google map js needs them as two separate values (See constructor: google.maps.LatLng(lat, lon))
@@ -333,7 +349,7 @@ class articlesGoogleMapMarkers extends GoogleMapMarkers
 			$content["longitude"] = floatval($coordinates[1]);
 
 			// Todo: pass data directly as jregistry, avoiding assign operations
-			$registry->loadJSON($content["images"]);
+			$registry->loadString($content["images"], "JSON");
 			$content["image"] = $registry->get("image_intro");
 			$content["float_image"] = $registry->get("float_intro") or $content["float_image"] = $contents_global_params->get("float_intro");
 			$content["image_intro_alt"] = $registry->get("image_intro_alt");
@@ -391,7 +407,7 @@ class remoteGoogleMapMarkers extends GoogleMapMarkers
 		{
 			// xreference database field is empty.
 			// For some strange reason, it is stored in metadata field on the database
-			$registry = new JRegistry($content["metadata"]); // Equivalent to $registry->loadJSON($content["metadata"])
+			$registry = new JRegistry($content["metadata"]); // Equivalent to $registry->loadString($content["metadata"], "JSON")
 			$coordinates = explode(",", $registry->get("xreference"));
 
 			// Google map js needs them as two separate values (See constructor: google.maps.LatLng(lat, lon))
@@ -399,7 +415,7 @@ class remoteGoogleMapMarkers extends GoogleMapMarkers
 			$content["longitude"] = floatval($coordinates[1]);
 
 			// Todo: pass data directly as jregistry, avoiding assign operations
-			$registry->loadJSON($content["images"]);
+			$registry->loadString($content["images"], "JSON");
 			$content["image"] = $registry->get("image_intro");
 			$content["float_image"] = $registry->get("float_intro") or $content["float_image"] = $contents_global_params->get("float_intro");
 			$content["image_intro_alt"] = $registry->get("image_intro_alt");

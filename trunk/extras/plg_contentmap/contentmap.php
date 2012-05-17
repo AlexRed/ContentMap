@@ -109,7 +109,7 @@ class plgContentcontentmap extends JPlugin
 		$query->where("client_id = 0");
 		$query->where("type = 'plugin'");
 		$db->setQuery($query);
-		$id = $db->loadResult() or JLog::add("Database error.", JLog::ERROR, 'plugin');
+		$id = $db->loadResult() or $id = 0;
 
 		// Itemid required in order to build SEF links (see markers.php)
 		/*
