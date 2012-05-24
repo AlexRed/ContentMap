@@ -10,7 +10,7 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 	if (!data_<?php echo $owner; ?>_<?php echo $id; ?>.places.length)
 	{
 		// There is no places viewable in this module
-		document.getElementById('contentmap_<?php echo $owner; ?>_<?php echo $id; ?>').innerHTML += '<?php echo JText::_("CONTENTMAP_NO_DATA"); ?>';
+		document.getElementById('contentmap_<?php echo $owner; ?>_<?php echo $id; ?>').innerHTML += '<?php echo str_replace("'", "\\'", JText::_("CONTENTMAP_NO_DATA")); ?>';
 		return;
 	}
 
