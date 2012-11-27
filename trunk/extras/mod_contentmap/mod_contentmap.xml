@@ -7,7 +7,7 @@
 	<authorUrl>http://www.opensourcesolutions.es/</authorUrl>
 	<copyright>Open Source Solutions SLU</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-	<version>1.2.8</version>
+	<version>1.2.9</version>
 	<description>MOD_CONTENTMAP_DESCRIPTION</description> <!-- Used in Module Manager > New > Select a Module Type. Translation in modules/mod_contentmap/language/xx-XX/xx-XX.mod_contentmap.ini -->
 
 	<files>
