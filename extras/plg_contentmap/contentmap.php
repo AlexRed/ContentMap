@@ -76,12 +76,18 @@ class plgContentcontentmap extends JPlugin
 	}
 
 
-	function onContentAfterDisplay($article, $params, $limitstart)
+	function onContentAfterDisplay($context, $article, $params, $offset)
 	{
 		if (JRequest::getCmd("option") != "com_content" || JRequest::getCmd("view") != "article" ) return;
 
+		// Beware:
+		// components/com_content/views/article/view.html.php trigs onContentAfterDisplay and passes $article->metadata as JRegistry while
+		// modules/mod_articles_news/helper.php trigs onContentAfterDisplay but passes $article->metadata as string
+		// String to JRegistry conversion if needed
+		if (is_string($article->metadata)) $article->metadata = new JRegistry($article->metadata);
+
 		// Does current article have a map?
-		$xreference = $params->metadata->get("xreference");
+		$xreference = $article->metadata->get("xreference");
 		//$pattern = '/[+-]?([0-9]+)(\.[0-9]+)?,( +)?[+-]?([0-9]+)(\.[0-9]+)?/';
 		$pattern = '/[+-]?[0-9]{1,2}([.][0-9]{1,})?[ ]{0,},[ ]{0,}[+-]?[0-9]{1,3}([.][0-9]{1,})?/';
 		if (!(bool)preg_match($pattern, $xreference)) return;
@@ -120,7 +126,7 @@ class plgContentcontentmap extends JPlugin
 		$itemid = $menu->getActive() or $itemid = $menu->getDefault();
 		$itemid = "&amp;Itemid=" . $itemid->id;
 		$template = "template";
-		$params->text .= "<!-- plg_contentmap " . $GLOBALS["contentmap"]["version"] . "-->";
+		$article->text .= "<!-- plg_contentmap " . $GLOBALS["contentmap"]["version"] . "-->";
 
 		if (empty($GLOBALS["contentmap"]["gapi"]))
 		{
@@ -135,9 +141,9 @@ class plgContentcontentmap extends JPlugin
 		$this->document->addStyleSheet($prefix . "&amp;type=css&amp;filename=" . $stylesheet["filename"]);
 		// Necessario perche' in map.php per default il raggruppamento e' attivo per chiunque, plugin compreso! :(
 		$this->document->addScript(JURI::base(true) . "/libraries/contentmap/js/markerclusterer_compiled.js");
-		$this->document->addScript($prefix . "&amp;type=json&amp;filename=articlesmarkers&amp;source=article&amp;contentid=" . $params->id);
+		$this->document->addScript($prefix . "&amp;type=json&amp;filename=articlesmarkers&amp;source=article&amp;contentid=" . $article->id);
 		$this->document->addScript($prefix . "&amp;type=js&amp;filename=map");
 
-		$params->text .= $template($id, JText::_("CONTENTMAP_JAVASCRIPT_REQUIRED"));
+		$article->text .= $template($id, JText::_("CONTENTMAP_JAVASCRIPT_REQUIRED"));
 	}
 }

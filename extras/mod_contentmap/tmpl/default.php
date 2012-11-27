@@ -39,6 +39,7 @@
 	else
 	$document->addScript($prefix . "&amp;type=json&amp;filename=articlesmarkers&amp;source=articles" . $postfix);
 	*/
+
 	switch ($params->get("data_source", "0"))
 	{
 		case "0":
