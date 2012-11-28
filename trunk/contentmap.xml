@@ -30,7 +30,7 @@
 	<scriptfile>install.php</scriptfile>
 
 	<updateservers>
-		<server type="extension" priority="1" name="ContentMap update site"><![CDATA[http://www.turismo.eu/download/contentmap.xml]]></server>
+		<server type="extension" priority="1" name="ContentMap update site"><![CDATA[http://www.opensourcesolutions.es/download/contentmap.xml]]></server>
 	</updateservers>
 
 	<chain>
