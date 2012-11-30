@@ -76,7 +76,7 @@ class plgContentcontentmap extends JPlugin
 	}
 
 
-	function onContentAfterDisplay($context, $article, $params, $offset)
+	function onContentAfterDisplay($context, $article, $params, $offset = 0)
 	{
 		if (JRequest::getCmd("option") != "com_content" || JRequest::getCmd("view") != "article" ) return;
 
