@@ -1,4 +1,4 @@
-<?php
+<?php defined('_JEXEC') or die('Restricted access');
 // Core connection functions are provided by the api. We need to include this file.
 require "contentmap-api.php";
 

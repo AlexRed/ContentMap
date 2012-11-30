@@ -1,4 +1,4 @@
-<?php
+<?php defined('_JEXEC') or die('Restricted access');
 $owner = JRequest::getVar("owner", "", "GET");
 $id = JRequest::getVar("id", "", "GET");
 JFactory::getLanguage()->load("contentmap", JPATH_LIBRARIES . "/contentmap");

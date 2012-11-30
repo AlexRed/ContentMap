@@ -1,3 +1,5 @@
+<?php defined('_JEXEC') or die('Restricted access'); ?>
+
 window.addEvent('domready',function()
 {
 	<?php
