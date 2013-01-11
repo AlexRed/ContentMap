@@ -35,7 +35,7 @@
 
 <?php if ($GLOBALS["contentmap"]["version"][strlen($GLOBALS["contentmap"]["version"]) - 1] == " ") { ?>
 	<div style="float:left;margin-right:16px;margin-left:10px;">
-		<a href="http://www.opensourcesolutions.es/index.php?option=com_content&view=article&id=9&Itemid=8&lang=<?php echo($langcode); ?>" target="_blank">
+		<a href="http://www.opensourcesolutions.es/<?php echo($langcode); ?>/ext/contentmap.html" target="_blank">
 			<img src="../media/contentmap/images/buy_now.jpg" border="0" alt="Buy now">
 		</a>
 	</div>
