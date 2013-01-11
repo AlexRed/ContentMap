@@ -22,7 +22,7 @@ window.addEvent('domready',function()
 	new_element.innerHTML =
 	'<img style="margin:0; float:left' + ';" src="../media/contentmap/images/cross-circle-frame.png">' +
 	'<span style="padding-left' + ':5px; line-height:16px;">' +
-	'<?php echo($language->_("COM_CONTENTMAP_PURCHASE")); ?> <a href="http://www.opensourcesolutions.es/index.php?option=com_content&view=article&id=9&Itemid=8&lang=<?php echo($langcode); ?>" target="_blank"><?php echo($language->_("COM_CONTENTMAP_BUYNOW")); ?></a>' +
+	'<?php echo($language->_("COM_CONTENTMAP_PURCHASE")); ?> <a href="http://www.opensourcesolutions.es/<?php echo($langcode); ?>/ext/contentmap.html" target="_blank"><?php echo($language->_("COM_CONTENTMAP_BUYNOW")); ?></a>' +
 	'</span>';
 
 	if (container) container.appendChild(new_element);
