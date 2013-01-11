@@ -51,7 +51,7 @@ class JFormFieldTranschecker extends JFormField
 			'<div style="' . $style . '">' .
 			$image .
 			'<span style="padding-' . $left . ':5px; line-height:16px;">' .
-			'Language files for %s language are still %s. We offer a ContentMap commercial license to language contributors. <a href="http://www.opensourcesolutions.es/docs/19-contentmap-documentation/30-language-support.html" target="_blank">Learn more.</a>' .
+			'Language files for %s language are still %s. We offer a ContentMap commercial license to language contributors. <a href="http://www.opensourcesolutions.es/en/docs/19-contentmap-documentation/30-language-support.html" target="_blank">Learn more.</a>' .
 			'</span>' .
 			'</div>';
 
