@@ -25,11 +25,12 @@ along with this software.  If not, see http://www.gnu.org/licenses/gpl-2.0.html.
 @copyright Copyright (C) 2012 Open Source Solutions S.L.U. All rights reserved.
 */
 
-jimport( 'joomla.event.plugin' );
+jimport('joomla.event.plugin');
 
 class plgContentcontentmap extends JPlugin
 {
 	protected $document;
+
 
 	public function __construct(&$subject, $config = array())
 	{
@@ -40,8 +41,15 @@ class plgContentcontentmap extends JPlugin
 
 	function onContentPrepareForm($form, $data)
 	{
+		// Only works on JForms
 		if (!($form instanceof JForm)) return false;
-		if ($form->getName() != "com_content.article") return true;
+
+		// which belong to the following components
+		$components_list = array(
+			"com_content.article",
+			"com_flexicontent.item"
+		);
+		if (!in_array($form->getName(), $components_list)) return true;
 
 		JHtml::_('behavior.framework', true);
 
@@ -49,26 +57,26 @@ class plgContentcontentmap extends JPlugin
 		$this->document->addScript("../plugins/content/contentmap/js/api.js");
 		//$this->document->addScript(JURI::root(true) . "/libraries/contentmap/js/geopicker-min.js");
 		$this->document->addScript(JURI::root(true)
-		. "/index.php"
-		. "?option=com_contentmap"
-		. "&amp;view=smartloader"
-		. "&amp;owner=article"
-		. "&amp;id=" . $data->id
-		. "&amp;type=js"
-		. "&amp;filename=geopicker");
-
-		require_once(JPATH_ROOT . DS . "libraries" . DS . "contentmap" . DS . "language" . DS . "contentmap.inc");
-		if ($GLOBALS["contentmap"]["version"][strlen($GLOBALS["contentmap"]["version"]) - 1] == " ")
-		{
-			$this->document->addStyleSheet("../plugins/content/contentmap/css/picker.css");
-			$this->document->addScript(JURI::root(true)
 			. "/index.php"
 			. "?option=com_contentmap"
 			. "&amp;view=smartloader"
 			. "&amp;owner=article"
 			. "&amp;id=" . $data->id
 			. "&amp;type=js"
-			. "&amp;filename=register");
+			. "&amp;filename=geopicker");
+
+		require_once(JPATH_ROOT . DS . "libraries" . DS . "contentmap" . DS . "language" . DS . "contentmap.inc");
+		if ($GLOBALS["contentmap"]["version"][strlen($GLOBALS["contentmap"]["version"]) - 1] == " ")
+		{
+			$this->document->addStyleSheet("../plugins/content/contentmap/css/picker.css");
+			$this->document->addScript(JURI::root(true)
+				. "/index.php"
+				. "?option=com_contentmap"
+				. "&amp;view=smartloader"
+				. "&amp;owner=article"
+				. "&amp;id=" . $data->id
+				. "&amp;type=js"
+				. "&amp;filename=register");
 			return "";
 		}
 
@@ -78,7 +86,7 @@ class plgContentcontentmap extends JPlugin
 
 	function onContentAfterDisplay($context, $article, $params, $offset = 0)
 	{
-		if (JRequest::getCmd("option") != "com_content" || JRequest::getCmd("view") != "article" ) return;
+		if (JRequest::getCmd("option") != "com_content" || JRequest::getCmd("view") != "article") return;
 
 		// Beware:
 		// components/com_content/views/article/view.html.php trigs onContentAfterDisplay and passes $article->metadata as JRegistry while
