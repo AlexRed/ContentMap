@@ -82,9 +82,12 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 		});
 
 		// Custom marker icon if present
+		if (data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].marker) {
+		    marker.setIcon(data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].marker);
+		} else {
 		if ("icon" in data_<?php echo $owner; ?>_<?php echo $id; ?>)
 		marker.setIcon(data_<?php echo $owner; ?>_<?php echo $id; ?>.icon);
-
+		}
 		google.maps.event.addListener(marker, '<?php echo $this->Params->get("infowindow_event", "click"); ?>',
 		function()
 		{
