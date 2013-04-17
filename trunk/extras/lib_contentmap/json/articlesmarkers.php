@@ -220,6 +220,13 @@ class articleGoogleMapMarkers extends GoogleMapMarkers
 			// Google map js needs them as two separate values (See constructor: google.maps.LatLng(lat, lon))
 			$content["latitude"] = floatval($coordinates[0]);
 			$content["longitude"] = floatval($coordinates[1]);
+			
+			// Specify marker
+			// prepend with path 
+			$marker = $registry->get("marker");
+			if (isset($marker)) {
+			    $content["marker"] = JURI::base(true) . '/media/contentmap/markers/icons/' . $marker;
+			}
 
 			// Todo: pass data directly as jregistry, avoiding assign operations
 			$registry->loadString($content["images"], "JSON");
@@ -348,6 +355,13 @@ class articlesGoogleMapMarkers extends GoogleMapMarkers
 			$content["latitude"] = floatval($coordinates[0]);
 			$content["longitude"] = floatval($coordinates[1]);
 
+			// Specify marker
+			// prepend with path 
+			$marker = $registry->get("marker");
+			if (isset($marker)) {
+			    $content["marker"] = JURI::base(true) . '/media/contentmap/markers/icons/' . $marker;
+			}
+
 			// Todo: pass data directly as jregistry, avoiding assign operations
 			$registry->loadString($content["images"], "JSON");
 			$content["image"] = $registry->get("image_intro");
@@ -413,6 +427,13 @@ class remoteGoogleMapMarkers extends GoogleMapMarkers
 			// Google map js needs them as two separate values (See constructor: google.maps.LatLng(lat, lon))
 			$content["latitude"] = floatval($coordinates[0]);
 			$content["longitude"] = floatval($coordinates[1]);
+
+			// Specify marker
+			// prepend with path 
+			$marker = $registry->get("marker");
+			if (isset($marker)) {
+			    $content["marker"] = JURI::base(true) . '/media/contentmap/markers/icons/' . $marker;
+			}
 
 			// Todo: pass data directly as jregistry, avoiding assign operations
 			$registry->loadString($content["images"], "JSON");

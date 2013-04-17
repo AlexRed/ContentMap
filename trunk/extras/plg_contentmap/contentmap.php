@@ -50,6 +50,12 @@ class plgContentcontentmap extends JPlugin
 			"com_flexicontent.item"
 		);
 		if (!in_array($form->getName(), $components_list)) return true;
+		
+		$form->load('<form>
+				<fields name="metadata">
+					<field name="marker" type="imagelist" default="" label="Marker style" description="Select a marker" directory="media/contentmap/markers/icons" exclude="" stripext="" />
+			      </fields>
+			  </form>');
 
 		JHtml::_('behavior.framework', true);
 
@@ -79,7 +85,6 @@ class plgContentcontentmap extends JPlugin
 				. "&amp;filename=register");
 			return "";
 		}
-
 		return true;
 	}
 

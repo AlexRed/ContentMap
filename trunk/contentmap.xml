@@ -7,7 +7,7 @@
 	<authorUrl>http://www.opensourcesolutions.es/</authorUrl>
 	<copyright>Open Source Solutions SLU</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html</license>
-	<version>1.2.10</version>
+	<version>1.2.11</version>
 	<description>COM_CONTENTMAP_DESCRIPTION</description>
 
 	<files folder="site">
