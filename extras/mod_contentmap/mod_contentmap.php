@@ -58,4 +58,4 @@ echo "<!-- mod_contentmap " . $GLOBALS["contentmap"]["version"] . "-->";
 $prefix = JURI::base(true) . "/index.php?option=com_contentmap&amp;view=smartloader";
 $postfix = "&amp;owner=module&amp;id=" . $module->id . $itemid;
 require JModuleHelper::getLayoutPath($app->scope, $params->get('layout', 'default'));
-$icons = icons_path(JPATH_ROOT . DS . "media" . DS . "contentmap") . DS . "markers" . DS . "icons";
+$icons = icons_path(JPATH_ROOT . '/' . "media" . '/' . "contentmap") . '/' . "markers" . '/' . "icons";

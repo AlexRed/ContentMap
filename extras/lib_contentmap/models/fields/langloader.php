@@ -38,7 +38,7 @@ class JFormFieldLangLoader extends JFormField
 
 	protected function getLabel()
 	{
-		JFactory::getLanguage()->load("contentmap.admin", JPATH_ROOT . DS . "libraries" . DS . "contentmap");
+		JFactory::getLanguage()->load("contentmap.admin", JPATH_ROOT . '/' . "libraries" . '/' . "contentmap");
 		return "";
 	}
 }

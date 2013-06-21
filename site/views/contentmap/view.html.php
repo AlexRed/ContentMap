@@ -2,7 +2,7 @@
 
 jimport("joomla.application.component.view");
 
-class ContentMapViewContentMap extends JView
+class ContentMapViewContentMap extends JViewLegacy
 {
 	function display($tpl = null)
 	{

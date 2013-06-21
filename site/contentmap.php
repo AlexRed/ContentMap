@@ -30,7 +30,7 @@ along with this software.  If not, see http://www.gnu.org/licenses/gpl-2.0.html.
 $application = @JFactory::getApplication('site');
 jimport("joomla.application.component.controller");
 
-$controller = JController::getInstance("ContentMap");
+$controller = JControllerLegacy::getInstance("ContentMap");
 $controller->execute(JRequest::getCmd("task"));
 $controller->redirect();
 

@@ -38,7 +38,7 @@ class JFormFieldRegister extends JFormField
 
 	protected function getLabel()
 	{
-		require_once(JPATH_ROOT . DS . "libraries" . DS . "contentmap" . DS . "language" . DS . "contentmap.inc");
+		require_once(JPATH_ROOT . '/' . "libraries" . '/' . "contentmap" . '/' . "language" . '/' . "contentmap.inc");
 		if ($GLOBALS["contentmap"]["version"][strlen($GLOBALS["contentmap"]["version"]) - 1] == " ")
 		{
 			$document = JFactory::getDocument();

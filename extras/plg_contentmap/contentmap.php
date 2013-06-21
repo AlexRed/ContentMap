@@ -27,7 +27,7 @@ along with this software.  If not, see http://www.gnu.org/licenses/gpl-2.0.html.
 
 jimport('joomla.event.plugin');
 
-class plgContentcontentmap extends JPlugin
+class plgContentContentmap extends JPlugin
 {
 	protected $document;
 
@@ -50,12 +50,25 @@ class plgContentcontentmap extends JPlugin
 			"com_flexicontent.item"
 		);
 		if (!in_array($form->getName(), $components_list)) return true;
-		
-		$form->load('<form>
-				<fields name="metadata">
-					<field name="marker" type="imagelist" default="" label="Marker style" description="Select a marker" directory="media/contentmap/markers/icons" exclude="" stripext="" />
-			      </fields>
+
+        if(version_compare(JVERSION, '3.0', 'ge'))
+        {
+            $form->load('<form>
+				<fieldset name="jmetadata">
+				    <fields name="metadata">
+					    <field name="marker" type="imagelist" default="" label="Marker style" description="Select a marker" directory="media/contentmap/markers/icons" exclude="" stripext="" />
+					</fields>
+			      </fieldset>
 			  </form>');
+        }
+        else
+        {
+            $form->load('<form>
+                    <fields name="metadata">
+                        <field name="marker" type="imagelist" default="" label="Marker style" description="Select a marker" directory="media/contentmap/markers/icons" exclude="" stripext="" />
+                      </fields>
+                  </form>');
+        }
 
 		JHtml::_('behavior.framework', true);
 
@@ -71,7 +84,7 @@ class plgContentcontentmap extends JPlugin
 			. "&amp;type=js"
 			. "&amp;filename=geopicker");
 
-		require_once(JPATH_ROOT . DS . "libraries" . DS . "contentmap" . DS . "language" . DS . "contentmap.inc");
+		require_once(JPATH_ROOT . '/' . "libraries" . '/' . "contentmap" . '/' . "language" . '/' . "contentmap.inc");
 		if ($GLOBALS["contentmap"]["version"][strlen($GLOBALS["contentmap"]["version"]) - 1] == " ")
 		{
 			$this->document->addStyleSheet("../plugins/content/contentmap/css/picker.css");
@@ -106,7 +119,7 @@ class plgContentcontentmap extends JPlugin
 		if (!(bool)preg_match($pattern, $xreference)) return;
 
 		// Load shared language files for frontend side
-		require_once(JPATH_ROOT . DS . "libraries" . DS . "contentmap" . DS . "language" . DS . "contentmap.inc");
+		require_once(JPATH_ROOT . '/' . "libraries" . '/' . "contentmap" . '/' . "language" . '/' . "contentmap.inc");
 
 		// Api key parameter for Google map
 		$api_key = $this->params->get('api_key', NULL);

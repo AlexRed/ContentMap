@@ -96,7 +96,7 @@ class com_contentmapInstallerScript
 			$installer = new JInstaller();
 
 			$attributes = $extension->attributes();
-			$item = $parent->getParent()->getPath("source") . DS . $attributes["directory"] . DS . $attributes["name"];
+			$item = $parent->getParent()->getPath("source") . '/' . $attributes["directory"] . '/' . $attributes["name"];
 			$result["type"] = (string)$attributes["type"];
 			$result["result"] = $installer->install($item) ? "INSTALLED" : "NOT_INSTALLED";
 			$this->results[(string)$attributes["name"]] = $result;
@@ -126,12 +126,12 @@ class com_contentmapInstallerScript
 		'</style>' .
 		'<img ' .
 		'class="install_logo" width="128" height="128" ' .
-		'src="' . $manifest->authorUrl->data() . 'logo/' . $this->extension_name . "-" . $this->event . '-logo.jpg" ' .
-		'alt="' . JText::_($manifest->name->data()) . ' Logo" ' .
+		'src="' . (string)$manifest->authorUrl . 'logo/' . $this->extension_name . "-" . $this->event . '-logo.jpg" ' .
+		'alt="' . JText::_((string)$manifest->name) . ' Logo" ' .
 		'/>' .
 		'<div class="install_container">' .
 		'<div class="install_row">' .
-		'<h2 class="install_title">' . JText::_($manifest->name->data()) . '</h2>' .
+		'<h2 class="install_title">' . JText::_((string)$manifest->name) . '</h2>' .
 		'</div>');
 
 		foreach ($this->results as $name => $extension)
