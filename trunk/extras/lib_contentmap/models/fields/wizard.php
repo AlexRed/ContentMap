@@ -39,7 +39,7 @@ class JFormFieldWizard extends JFormField
 
 	protected function getLabel()
 	{
-		$name = basename(realpath(dirname(__FILE__) . DS . '..' . DS . '..'));
+		$name = basename(realpath(dirname(__FILE__) . '/' . '..' . '/' . '..'));
 
 		$direction = intval(JFactory::getLanguage()->get('rtl', 0));
 		$left  = $direction ? "right" : "left";

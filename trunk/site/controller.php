@@ -2,7 +2,7 @@
 
 jimport('joomla.application.component.controller');
 
-class ContentMapController extends JController
+class ContentMapController extends JControllerLegacy
 {
 }
 

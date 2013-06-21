@@ -21,8 +21,8 @@ echo $source;
 
 
 // Required for ContentHelperRoute::getArticleRoute()
-require_once(JPATH_SITE . DS . "components" . DS . "com_content" . DS . "helpers" . DS . "route.php");
-require_once(JPATH_ROOT . DS . "libraries" . DS . "contentmap" . DS . "language" . DS . "contentmap.inc");
+require_once(JPATH_SITE . '/' . "components" . '/' . "com_content" . '/' . "helpers" . '/' . "route.php");
+require_once(JPATH_ROOT . '/' . "libraries" . '/' . "contentmap" . '/' . "language" . '/' . "contentmap.inc");
 
 abstract class GoogleMapMarkers
 {

@@ -5,7 +5,7 @@ window.addEvent('domready',function()
 	<?php
 	$id = JRequest::getVar("id", "", "GET");
 
-	require_once(JPATH_ROOT . DS . "libraries" . DS . "contentmap" . DS . "language" . DS . "contentmap.inc");
+	require_once(JPATH_ROOT . '/' . "libraries" . '/' . "contentmap" . '/' . "language" . '/' . "contentmap.inc");
 	$language = JFactory::getLanguage();
 	$language->load("com_contentmap.sys", JPATH_ROOT . "/administrator/components/com_contentmap");
 	$langcode = preg_replace("/-.*/", "", $language->get("tag"));
@@ -16,6 +16,10 @@ window.addEvent('domready',function()
 	if (!container) container = document.getElementById('plugin-sliders-<?php echo $id; ?>');
 	// Modules manager
 	if (!container) container = document.getElementById('module-sliders');
+
+    // J3 Article manager
+    if(!container) var container = document.getElementById('metadata');
+    if(!container) var container = document.getElementById('details');
 
 	var new_element = document.createElement('div');
 	new_element.className = 'contentmap_message contentmap_red';

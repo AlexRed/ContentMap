@@ -36,6 +36,12 @@ $id = JRequest::getVar("id", "", "GET");
 	color: #0055ff;
 }
 
+/* Prevent max-width styles*/
+#contentmap_<?php echo $owner; ?>_<?php echo $id; ?> img
+{
+    max-width:none;
+}
+
 /* Article image inside the balloon */
 .intro_image
 {

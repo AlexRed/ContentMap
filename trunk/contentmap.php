@@ -25,7 +25,7 @@
 	@copyright Copyright (C) 2012 Open Source Solutions S.L.U. All rights reserved.
 	*/
 
-	require_once(JPATH_ROOT . DS . "libraries" . DS . "contentmap" . DS . "language" . DS . "contentmap.inc");
+	require_once(JPATH_ROOT . '/' . "libraries" . '/' . "contentmap" . '/' . "language" . '/' . "contentmap.inc");
 	$language = JFactory::getLanguage();
 	$language->load("com_contentmap.sys", realpath(dirname(__FILE__)));
 	$langcode = preg_replace("/-.*/", "", $language->get("tag"));
