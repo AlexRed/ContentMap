@@ -31,7 +31,8 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 	{
 		zoom: <?php echo $this->Params->get("zoom", 0); ?>,
 		center: center,
-		mapTypeId: google.maps.MapTypeId.<?php echo $this->Params->get("map_type", "ROADMAP"); ?>
+		mapTypeId: google.maps.MapTypeId.<?php echo $this->Params->get("map_type", "ROADMAP"); ?>,
+		scrollwheel: false
 	});
 
 <?php if (!$center) {
