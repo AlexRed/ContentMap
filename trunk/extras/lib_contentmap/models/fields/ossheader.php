@@ -43,6 +43,7 @@ class JFormFieldOSSHeader extends JFormField
 		$direction = intval(JFactory::getLanguage()->get('rtl', 0));
 		$left  = $direction ? "right" : "left";
 		$right = $direction ? "left" : "right";
+		$class = version_compare(JVERSION, '2.5', 'gt') ? '3x' : '25';
 
 		echo '<div class="clr"></div>';
 		$image = '';
@@ -61,7 +62,7 @@ class JFormFieldOSSHeader extends JFormField
 		$style = 'background:#f4f4f4; color:#025a8d; border:1px solid silver; padding:5px; margin:5px 0;';
 		if ($this->element['default'])
 		{
-			return '<div style="' . $style . '">' .
+			return '<div class="'.$class.'" style="' . $style . '">' .
 			$image .
 			'<span style="padding-' . $left . ':5px; font-weight:bold; line-height:16px;">' .
 			JText::_($this->element['default']) .

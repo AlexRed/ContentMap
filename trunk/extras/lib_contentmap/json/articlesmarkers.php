@@ -108,8 +108,8 @@ abstract class GoogleMapMarkers
 				" src=\"" . $content["image"] . "\"";
 				if ($content["image_intro_alt"]) $content["html"] .= " alt=\"" . $content["image_intro_alt"] . "\"";
 				if ($content["image_intro_caption"]) $content["html"] .= " title=\"" . $content["image_intro_caption"] . "\"";
-				$content["html"] .= ">" .
-				"</div>";
+				$content["html"] .= ">";
+				$content['html'] .= "</div>";
 			}
 			else
 			{
@@ -148,6 +148,14 @@ abstract class GoogleMapMarkers
 				}
 			}
 			unset($content["introtext"]);
+
+			// Add "Get Directions" inside the marker
+			if($this->Params->get('showDirectionsMarker', 0))
+			{
+				$content['html'] .= '<div>';
+				$content['html'] .= '<a href="http://maps.google.com/maps?saddr=&daddr='.$content["latitude"].','.$content["longitude"].'" target="_blank">'.JText::_('CONTENTMAP_GET_DIRECTIONS').'</a>';
+				$content['html'] .= '</div>';
+			}
 		}
 
 	}
@@ -220,9 +228,9 @@ class articleGoogleMapMarkers extends GoogleMapMarkers
 			// Google map js needs them as two separate values (See constructor: google.maps.LatLng(lat, lon))
 			$content["latitude"] = floatval($coordinates[0]);
 			$content["longitude"] = floatval($coordinates[1]);
-			
+
 			// Specify marker
-			// prepend with path 
+			// prepend with path
 			$marker = $registry->get("marker");
 			if (isset($marker)) {
 			    $content["marker"] = JURI::base(true) . '/media/contentmap/markers/icons/' . $marker;
@@ -356,7 +364,7 @@ class articlesGoogleMapMarkers extends GoogleMapMarkers
 			$content["longitude"] = floatval($coordinates[1]);
 
 			// Specify marker
-			// prepend with path 
+			// prepend with path
 			$marker = $registry->get("marker");
 			if (isset($marker)) {
 			    $content["marker"] = JURI::base(true) . '/media/contentmap/markers/icons/' . $marker;
@@ -429,7 +437,7 @@ class remoteGoogleMapMarkers extends GoogleMapMarkers
 			$content["longitude"] = floatval($coordinates[1]);
 
 			// Specify marker
-			// prepend with path 
+			// prepend with path
 			$marker = $registry->get("marker");
 			if (isset($marker)) {
 			    $content["marker"] = JURI::base(true) . '/media/contentmap/markers/icons/' . $marker;

@@ -125,6 +125,19 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 	// Marker Cluster creation
 	var markerCluster = new MarkerClusterer(map, markers);
 <?php } ?>
+
+<?php if($this->Params->get('streetView', 0)):?>
+	var panoramaOptions = {
+	position: center,
+	pov: {
+		heading: 0,
+		pitch: 0
+		}
+	};
+
+	var panorama = new google.maps.StreetViewPanorama(document.getElementById("contentmap_plugin_streetview_<?php echo $id; ?>"), panoramaOptions);
+	//map.setStreetView(panorama);
+<?php endif; ?>
 }
 
 
