@@ -6,6 +6,8 @@ Copy from this source using another file name and select your own new created cs
 $owner = JRequest::getVar("owner", "", "GET");
 $id = JRequest::getVar("id", "", "GET");
 ?>
+#contentmap_wrapper_plugin_<?php echo $id ?> img{max-width:none}
+
 #contentmap_wrapper_<?php echo $owner; ?>_<?php echo $id; ?>
 {
 	width: <?php echo $this->Params->get("map_width", "100"); ?><?php echo $this->Params->get("map_width_unit", "%"); ?>;

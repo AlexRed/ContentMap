@@ -67,6 +67,10 @@
 					<option value="HYBRID">CONTENTMAP_MAPTYPE_HYBRID</option>
 					<option value="TERRAIN">CONTENTMAP_MAPTYPE_TERRAIN</option>
 				</field>
+                <field name="streetView" type="list" label="CONTENTMAP_STREETVIEW" default="0">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
 
 				<field type="ossheader" default="CONTENTMAP_MARKERS_OPTIONS" icon="marker-16.png"/>
 				<field name="markers_icon" type="filelist" label="CONTENTMAP_MARKERS_ICON_LBL" description="CONTENTMAP_MARKERS_ICON_DSC" default="" hide_none="true" directory="media/contentmap/markers/icons" filter="\.png$" exclude="" stripext="" />
@@ -112,6 +116,10 @@
 					<option value="1">JSHOW</option>
 				</field>
 				<field name="introtext_size" type="text" size="6" label="CONTENTMAP_INFOWINDOW_TEXT_SIZE_LBL" description="CONTENTMAP_INFOWINDOW_TEXT_SIZE_DSC" default="300" />
+                <field name="showDirectionsMarker" type="list" label="CONTENTMAP_MARKERS_SHOW_DIRECTIONS_LBL" default="0">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
 			</fieldset>
 
 			<fieldset name="advanced">
