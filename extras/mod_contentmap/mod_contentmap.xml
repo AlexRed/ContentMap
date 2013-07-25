@@ -26,7 +26,7 @@
 	<config>
 		<fields name="params" addfieldpath="/libraries/contentmap/models/fields">
 
-			<fieldset name="basic">
+			<fieldset name="basic" addfieldpath="/libraries/contentmap/models/fields">
 				<field type="langloader"/>
 				<field type="wizard" icon="exclamation-16.png" text="CONTENTMAP_NO_DATA" url="index.php?option=com_contentmap"/>
 				<field type="transchecker"/>
@@ -74,6 +74,7 @@
 
 				<field type="ossheader" default="CONTENTMAP_MARKERS_OPTIONS" icon="marker-16.png"/>
 				<field name="markers_icon" type="filelist" label="CONTENTMAP_MARKERS_ICON_LBL" description="CONTENTMAP_MARKERS_ICON_DSC" default="" hide_none="true" directory="media/contentmap/markers/icons" filter="\.png$" exclude="" stripext="" />
+                <field name="markers_preview" type="markerpreview" label="CONTENTMAP_MARKERS_PREVIEW"/>
 				<field name="markers_action" type="list" label="CONTENTMAP_MARKERS_ACTION_LBL" description="CONTENTMAP_MARKERS_ACTION_DSC" default="infowindow">
 					<option value="infowindow">CONTENTMAP_MARKERS_ACTION_BALLOON</option>
 					<option value="redirect">CONTENTMAP_MARKERS_ACTION_REDIRECT</option>

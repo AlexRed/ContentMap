@@ -54,9 +54,10 @@ class plgContentContentmap extends JPlugin
         if(version_compare(JVERSION, '3.0', 'ge'))
         {
             $form->load('<form>
-				<fieldset name="jmetadata">
+				<fieldset name="jmetadata" addfieldpath="/libraries/contentmap/models/fields">
 				    <fields name="metadata">
 					    <field name="marker" type="imagelist" default="" label="Marker style" description="Select a marker" directory="media/contentmap/markers/icons" exclude="" stripext="" />
+                        <field name="markers_preview" type="markerpreview" label="CONTENTMAP_MARKERS_PREVIEW"/>
 					</fields>
 			      </fieldset>
 			  </form>');
@@ -64,9 +65,10 @@ class plgContentContentmap extends JPlugin
         else
         {
             $form->load('<form>
-                    <fields name="metadata">
+                    <fields name="metadata" addfieldpath="/libraries/contentmap/models/fields">
                         <field name="marker" type="imagelist" default="" label="Marker style" description="Select a marker" directory="media/contentmap/markers/icons" exclude="" stripext="" />
-                      </fields>
+                        <field name="markers_preview" type="markerpreview" label="CONTENTMAP_MARKERS_PREVIEW"/>
+                    </fields>
                   </form>');
         }
 
@@ -170,6 +172,6 @@ class plgContentContentmap extends JPlugin
 		$this->document->addScript($prefix . "&amp;type=json&amp;filename=articlesmarkers&amp;source=article&amp;contentid=" . $article->id);
 		$this->document->addScript($prefix . "&amp;type=js&amp;filename=map");
 
-		$article->text .= $template($id, JText::_("CONTENTMAP_JAVASCRIPT_REQUIRED"));
+		$article->text .= $template($id, JText::_("CONTENTMAP_JAVASCRIPT_REQUIRED"), $this->params->get('streetView', 0));
 	}
 }

@@ -74,6 +74,7 @@
 
 				<field type="ossheader" default="CONTENTMAP_MARKERS_OPTIONS" icon="marker-16.png"/>
 				<field name="markers_icon" type="filelist" label="CONTENTMAP_MARKERS_ICON_LBL" description="CONTENTMAP_MARKERS_ICON_DSC" default="" hide_none="true" directory="media/contentmap/markers/icons" filter="\.png$" exclude="" stripext="" />
+                <field name="markers_preview" type="markerpreview" label="CONTENTMAP_MARKERS_PREVIEW"/>
 				<field name="markers_action" type="hidden" default="infowindow"/>
 
 				<field type="ossheader" default="CONTENTMAP_INFOWINDOWS" icon="infowindow-16.png"/>

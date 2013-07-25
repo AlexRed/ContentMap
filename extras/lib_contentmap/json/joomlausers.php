@@ -25,6 +25,8 @@ class usersGoogleMapMarkers extends GoogleMapMarkers
 		// Run our custom query. It is specific for joomla users
 		$dataset = mysql_query($query, $db) or die(mysql_error());
 
+		$check = array();
+
 		while ($record = mysql_fetch_array($dataset, MYSQL_ASSOC))
 		{
 			// Create a new empty array *each cycle*
@@ -35,6 +37,17 @@ class usersGoogleMapMarkers extends GoogleMapMarkers
 
 			$record["profile_value"] = str_replace('"', '', $record["profile_value"]);
 			$coordinates = explode(",", $record["profile_value"]);
+
+			// Let's remove points with exactly the same coords
+			if(isset($check[md5($record["profile_value"])]))
+			{
+				continue;
+			}
+			else
+			{
+				$check[md5($record["profile_value"])] = 1;
+			}
+
 			// Google map js needs them as two separate values (See constructor: google.maps.LatLng(lat, lon))
 			$content["latitude"] = floatval($coordinates[0]);
 			$content["longitude"] = floatval($coordinates[1]);
@@ -47,8 +60,6 @@ class usersGoogleMapMarkers extends GoogleMapMarkers
 			// Add this record to the stack
 			$this->Contents[] = $content;
 		}
-
-		mysql_close($db);
 	}
 }
 
