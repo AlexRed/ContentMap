@@ -222,12 +222,26 @@ class articleGoogleMapMarkers extends GoogleMapMarkers
 		$db->setQuery($query);
 		$contents_global_params = new JRegistry($db->loadResult());
 
-		foreach ($this->Contents as &$content)
+		$check     = array();
+		$i         = 0;
+		$w_content = $this->Contents;
+		foreach ($w_content as &$content)
 		{
 			// xreference database field is empty.
 			// For some strange reason, it is stored in metadata field on the database
 			$registry = new JRegistry($content["metadata"]); // Equivalent to $registry->loadString($content["metadata"], "JSON")
 			$coordinates = explode(",", $registry->get("xreference"));
+
+			// Let's remove points with exactly the same coords
+			if(isset($check[md5($registry->get('xreference'))]))
+			{
+				unset($w_content[$i]);
+				continue;
+			}
+			else
+			{
+				$check[md5($registry->get('xreference'))] = 1;
+			}
 
 			// Google map js needs them as two separate values (See constructor: google.maps.LatLng(lat, lon))
 			$content["latitude"] = floatval($coordinates[0]);
@@ -259,7 +273,11 @@ class articleGoogleMapMarkers extends GoogleMapMarkers
 			// by saving bandwidth when sending JSON data to the client :)
 			unset($content["metadata"]);
 			unset($content["images"]);
+
+			$i++;
 		}
+
+		$this->Contents = $w_content;
 
 		// Problematic infowindows are near the upper border, so start preload from them
 		// Sort by Latitude
@@ -343,7 +361,8 @@ class articlesGoogleMapMarkers extends GoogleMapMarkers
 			$query->where("(`language` = " . $db->quote($language) . " OR `language` = '*')");
 		}
 
-		// "Order by is intentionally ignored. We don't need to sort point on the map.
+		// Order by newest, in this way if there is any article with the same coords, I'll show the latest one
+		$query->order('id DESC');
 
 		$db->setQuery($query);
 		$this->Contents = $db->loadAssocList() or $this->Contents = array();
@@ -356,12 +375,26 @@ class articlesGoogleMapMarkers extends GoogleMapMarkers
 		$db->setQuery($query);
 		$contents_global_params = new JRegistry($db->loadResult());
 
-		foreach ($this->Contents as &$content)
+		$check     = array();
+		$i         = 0;
+		$w_content = $this->Contents;
+		foreach ($w_content as &$content)
 		{
 			// xreference database field is empty.
 			// For some strange reason, it is stored in metadata field on the database
 			$registry = new JRegistry($content["metadata"]); // Equivalent to $registry->loadString($content["metadata"], "JSON")
 			$coordinates = explode(",", $registry->get("xreference"));
+
+			// Let's remove points with exactly the same coords
+			if(isset($check[md5($registry->get('xreference'))]))
+			{
+				unset($w_content[$i]);
+				continue;
+			}
+			else
+			{
+				$check[md5($registry->get('xreference'))] = 1;
+			}
 
 			// Google map js needs them as two separate values (See constructor: google.maps.LatLng(lat, lon))
 			$content["latitude"] = floatval($coordinates[0]);
@@ -393,7 +426,11 @@ class articlesGoogleMapMarkers extends GoogleMapMarkers
 			// by saving bandwidth when sending JSON data to the client :)
 			unset($content["metadata"]);
 			unset($content["images"]);
+
+			$i++;
 		}
+
+		$this->Contents = $w_content;
 
 		// Problematic infowindows are near the upper border, so start preload from them
 		// Sort by Latitude,
