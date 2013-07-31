@@ -24,10 +24,13 @@ class JFormFieldMarkerpreview extends JFormField
 			$marker = isset($params->marker) ? $params->marker : '';
 		}
 
-		if($marker)
+		// Nothing, let's show the default one
+		if(!$marker)
 		{
-			$html .= '<img src="'.JUri::root().'media/contentmap/markers/icons/'.$marker.'" />';
+			$marker = 'default.png';
 		}
+
+		$html .= '<img src="'.JUri::root().'media/contentmap/markers/icons/'.$marker.'" />';
 
 		$html .= '<br/><small>'.JText::_('CONTENTMAP_PLEASE_SAVE').'</small>';
 		$html .= '</div>';

@@ -3,6 +3,7 @@
 $jlang = JFactory::getLanguage();
 $jlang->load('contentmap', JPATH_LIBRARIES.'/contentmap', 'en-GB', true);
 $jlang->load('contentmap', JPATH_LIBRARIES.'/contentmap', $jlang->getDefault(), true);
+$jlang->load('contentmap', JPATH_LIBRARIES.'/contentmap', null, true);
 
 $source = JRequest::getVar("source", "", "GET");
 // Only admit lowercase a-z, underscore and minus. Forbid numbers, symbols, slashes and other stuff.
