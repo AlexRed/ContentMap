@@ -129,6 +129,7 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 <?php if($this->Params->get('streetView', 0)):?>
 	var panoramaOptions = {
 	position: center,
+	scrollwheel: false,
 	pov: {
 		heading: 0,
 		pitch: 0
