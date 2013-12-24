@@ -71,6 +71,8 @@
 					<option value="HYBRID">CONTENTMAP_MAPTYPE_HYBRID</option>
 					<option value="TERRAIN">CONTENTMAP_MAPTYPE_TERRAIN</option>
 				</field>
+				
+				<field name="kml_url" type="url" default="" label="CONTENTMAP_KML_URL_LBL" description="CONTENTMAP_KML_URL_DSC" />
 
 				<field type="ossheader" default="CONTENTMAP_MARKERS_OPTIONS" icon="marker-16.png"/>
 				<field name="markers_icon" type="filelist" label="CONTENTMAP_MARKERS_ICON_LBL" description="CONTENTMAP_MARKERS_ICON_DSC" default="" hide_none="true" directory="media/contentmap/markers/icons" filter="\.png$" exclude="" stripext="" />
@@ -132,6 +134,12 @@
 
 				<!--			<fieldset name="filtering" label="CONTENTMAP_FILTERING_OPTIONS_LBL"> -->
 				<field type="ossheader" default="CONTENTMAP_FILTERING_OPTIONS_LBL" icon="filter-16.png"/>
+				
+				
+				<field name="category_legend_filter" type="list" default="0" label="CONTENTMAP_CATEGORY_LEGEND_FILTER_LBL">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
 
 				<field name="featured" type="list" default="0,1" label="CONTENTMAP_FEATURED_ARTICLES_LBL" description="CONTENTMAP_FEATURED_ARTICLES_DSC">
 					<option value="0,1">CONTENTMAP_ALL_ARTICLES</option>

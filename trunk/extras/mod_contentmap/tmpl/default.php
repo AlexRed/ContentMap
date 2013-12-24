@@ -66,4 +66,8 @@
 			<noscript><?php echo JText::_("CONTENTMAP_JAVASCRIPT_REQUIRED"); ?></noscript>
 		</div>
 	</div>
+<?php if ($params->get("category_legend_filter", "0")) { ?>
+	<div id="contentmap_legend_module_<?php echo $module->id; ?>">
+	</div>
+<?php }?>	
 </div>
