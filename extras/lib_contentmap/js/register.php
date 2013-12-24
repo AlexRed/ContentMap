@@ -19,6 +19,8 @@ window.addEvent('domready',function()
 
     // J3 Article manager
     if(!container) var container = document.getElementById('metadata');
+    // J3.2 Article manager
+    if(!container) var container = document.getElementById('publishing');
     if(!container) var container = document.getElementById('details');
 
 	var new_element = document.createElement('div');

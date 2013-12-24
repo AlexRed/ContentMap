@@ -302,9 +302,11 @@ class articlesGoogleMapMarkers extends GoogleMapMarkers
 		$language = $db->loadResult();
 
 		$query->clear();
-		$query->select("id, title, alias, introtext, catid, created, created_by_alias, images, metadata");
-		$query->from("#__content");
+		$query->select("c.id, c.title, c.alias, c.introtext, c.catid, c.created, c.created_by_alias, c.images, c.metadata,g.title category");
+		$query->from("#__content c");
 
+		$query->join('inner',"#__categories g ON c.catid=g.id");
+		
 		// Condition: metadata field contains "xreference":"coordinates"
 		// {\"xreference\":\"} the string "xreference":"
 		// {[+-]?} One character. It can be + or - sign. It is optional.
@@ -317,23 +319,23 @@ class articlesGoogleMapMarkers extends GoogleMapMarkers
 		// {([0-9]+)} At least one number. They are mandatory.
 		// {(\.[0-9]+)?} A point followed by other numbers. The whole expression is optional.
 		// {\"} the string "
-		$query->where("metadata REGEXP '\"xreference\":\"[+-]?([0-9]+)(\.[0-9]+)?( +)?,( +)?[+-]?([0-9]+)(\.[0-9]+)?\"'");
+		$query->where("c.metadata REGEXP '\"xreference\":\"[+-]?([0-9]+)(\.[0-9]+)?( +)?,( +)?[+-]?([0-9]+)(\.[0-9]+)?\"'");
 
 		// Condition: Published
-		$query->where("state = '1'");
+		$query->where("c.state = '1'");
 
 		$now = JFactory::getDate()->toSql();
 
 		// Condition: Start Publishing in the past
-		$query->where("publish_up <= " . $db->Quote($now));
+		$query->where("c.publish_up <= " . $db->Quote($now));
 
 		// Condition: Finish Publishing in the future or unset
-		$query->where("(publish_down >= " . $db->Quote($now) . " OR publish_down = " . $db->Quote($db->getNullDate()) . ")");
+		$query->where("(c.publish_down >= " . $db->Quote($now) . " OR c.publish_down = " . $db->Quote($db->getNullDate()) . ")");
 
 		// Condition: Access level
 		$user   = JFactory::getUser();
 		$groups = implode(',', $user->getAuthorisedViewLevels());
-		$query->where("access IN (" . $groups .")");
+		$query->where("c.access IN (" . $groups .")");
 
 		// Condition: Categories inclusive | exclusive filter
 		$category_filter_type = $this->Params->get('category_filter_type', 0);  // Can be "IN", "NOT IN" or "0"
@@ -341,7 +343,7 @@ class articlesGoogleMapMarkers extends GoogleMapMarkers
 		{
 			$categories = $this->Params->get('catid', array("0")); // Defaults to non-existing category (the system root category with id "1" would have worked as well)
 			$categories = implode(',', $categories);         // Converted to string
-			$query->where("catid " . $category_filter_type . " (" . $categories . ")");
+			$query->where("c.catid " . $category_filter_type . " (" . $categories . ")");
 		}
 
 		// Condition: Author inclusive | exclusive filter
@@ -350,20 +352,20 @@ class articlesGoogleMapMarkers extends GoogleMapMarkers
 		{
 			$authors = $this->Params->get('created_by', array("0")); // Defaults to non-existing user
 			$authors = implode(',', $authors);         // Converted to string
-			$query->where("created_by " . $author_filtering_type . " (" . $authors . ")");
+			$query->where("c.created_by " . $author_filtering_type . " (" . $authors . ")");
 		}
 
 		// Condition: Featured
-		$query->where("featured IN (" . $this->Params->get('featured', "0,1") . ")");
+		$query->where("c.featured IN (" . $this->Params->get('featured', "0,1") . ")");
 
 		// Condition: Same language as the module or article associated to "ALL" languages or module associated to "ALL" languages
 		if ($language !== "*")
 		{
-			$query->where("(`language` = " . $db->quote($language) . " OR `language` = '*')");
+			$query->where("(c.language = " . $db->quote($language) . " OR c.language = '*')");
 		}
 
 		// Order by newest, in this way if there is any article with the same coords, I'll show the latest one
-		$query->order('id DESC');
+		$query->order('c.id DESC');
 
 		$db->setQuery($query);
 		$this->Contents = $db->loadAssocList() or $this->Contents = array();
@@ -422,6 +424,7 @@ class articlesGoogleMapMarkers extends GoogleMapMarkers
 
 			// Remove html tags and keeps plain text
 			$content["introtext"] = JFilterInput::getInstance()->clean($content["introtext"], "string");
+			
 
 			// Remove elements useless for the map purposes in order to increase performance
 			// by saving bandwidth when sending JSON data to the client :)

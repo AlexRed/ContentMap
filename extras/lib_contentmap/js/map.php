@@ -7,6 +7,9 @@ imageObjs = new Array();
 
 function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 {
+	var g_category=[];
+	var g_next_category_id=1;
+
 	if (!data_<?php echo $owner; ?>_<?php echo $id; ?>.places.length)
 	{
 		// There is no places viewable in this module
@@ -34,6 +37,13 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 		mapTypeId: google.maps.MapTypeId.<?php echo $this->Params->get("map_type", "ROADMAP"); ?>,
 		scrollwheel: false
 	});
+<?php echo 'var kml_url='.json_encode(trim($this->Params->get("kml_url"))).';'; ?>
+	if (kml_url!=''){
+		var ctaLayer = new google.maps.KmlLayer({
+	    	url: kml_url
+	  	});
+	  	ctaLayer.setMap(map);	
+	}
 
 <?php if (!$center) {
 // Used only by the module which contains more than one marker but only when a center is not defined
@@ -79,7 +89,8 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 			map: map,
 			position: pos,
 			title: data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].title,
-			zIndex: i
+			zIndex: i,
+			cmapdata: {category:data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].category}
 		});
 
 		// Custom marker icon if present
@@ -101,7 +112,9 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 			location.href = data_<?php echo $owner; ?>_<?php echo $id; ?>.places[this.getZIndex()].article_url;
 <?php } ?>
 		});
-
+		if (marker.cmapdata.category){
+			addCategoryMarker_<?php echo $owner; ?>_<?php echo $id; ?>(marker.cmapdata.category);
+		}
 		markers.push(marker);
 	}
 
@@ -139,6 +152,65 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 	var panorama = new google.maps.StreetViewPanorama(document.getElementById("contentmap_plugin_streetview_<?php echo $id; ?>"), panoramaOptions);
 	//map.setStreetView(panorama);
 <?php endif; ?>
+
+	function addCategoryMarker_<?php echo $owner; ?>_<?php echo $id; ?>(name){
+		if (typeof g_category[name] === "undefined"){
+			g_category[name]={};
+			g_category[name].checked=true;
+			g_category[name].num=0;
+			g_category[name].id=g_next_category_id;
+			g_next_category_id+=1;
+<?php if ($this->Params->get("category_legend_filter", "0")) { ?>
+			var checkbox = document.createElement('input');
+			checkbox.type="checkbox";
+			checkbox.checked="checked";
+			checkbox.className ="checkbox";
+			
+			checkbox.onchange=function(){
+				g_category[name].checked=checkbox.checked;
+	        	for (var i=0;i<markers.length;i++){
+	        		if (markers[i].cmapdata.category==name){
+	        			var markervisible=g_category[name].checked;
+	        			markers[i].setVisible(markervisible);
+	<?php 				if ($this->Params->get("cluster", "1")) { ?>
+							if (markervisible){
+								markerCluster.addMarker(markers[i]);
+							}else{
+								markerCluster.removeMarker(markers[i]);
+							}
+	<?php 				} ?>
+	        		}
+	        	}
+			}
+			
+			var div = document.createElement('span');
+			div.className ="contentmap-checkcontainer";
+
+			var categoryname=document.createElement('span');
+			categoryname.appendChild(document.createTextNode(name));
+			
+			var categorynumphotos=document.createElement('span');
+			categorynumphotos.appendChild(document.createTextNode(' (0)'));
+			categorynumphotos.setAttribute("id",'cmap_<?php echo $owner; ?>_<?php echo $id; ?>_category_num_photos_'+g_category[name].id);
+			
+			div.appendChild(checkbox);
+			div.appendChild(categoryname);
+			div.appendChild(categorynumphotos);
+			
+			document.getElementById('contentmap_legend_<?php echo $owner; ?>_<?php echo $id; ?>').appendChild(div);
+			document.getElementById('contentmap_legend_<?php echo $owner; ?>_<?php echo $id; ?>').appendChild(document.createTextNode(" "));
+<?php } ?>
+			
+		}
+		g_category[name].num+=1;
+<?php if ($this->Params->get("category_legend_filter", "0")) { ?>
+		var num_p=document.getElementById('cmap_<?php echo $owner; ?>_<?php echo $id; ?>_category_num_photos_'+g_category[name].id);
+		num_p.innerHTML='';
+		num_p.appendChild(document.createTextNode(' ('+g_category[name].num+')'));
+<?php } ?>
+	}
+
+
 }
 
 

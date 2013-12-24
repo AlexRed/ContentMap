@@ -64,3 +64,19 @@ $id = JRequest::getVar("id", "", "GET");
 	font-style:italic;
 }
 
+
+.contentmap-checkcontainer {
+    margin-right: 30px;
+    white-space: nowrap;
+}
+.contentmap-checkcontainer > span {
+}
+
+.contentmap-checkcontainer > .checkbox {
+    margin: 0;
+    margin-right:5px;
+}
+#contentmap_legend_<?php echo $owner; ?>_<?php echo $id; ?>{
+    margin-top: 5px;
+}
+

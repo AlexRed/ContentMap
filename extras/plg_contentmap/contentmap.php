@@ -51,7 +51,19 @@ class plgContentContentmap extends JPlugin
 		);
 		if (!in_array($form->getName(), $components_list)) return true;
 
-        if(version_compare(JVERSION, '3.0', 'ge'))
+        if(version_compare(JVERSION, '3.2', 'ge'))
+        {
+        	$form->load('<form>
+						<fields name="metadata">
+							<fieldset name="jmetadata" addfieldpath="/libraries/contentmap/models/fields">
+							    <field name="marker" type="imagelist" default="" label="Marker style" description="Select a marker" directory="media/contentmap/markers/icons" exclude="" stripext="" />
+		                        <field name="markers_preview" type="markerpreview" label="CONTENTMAP_MARKERS_PREVIEW"/>
+							</fieldset>
+						</fields>
+					</form>
+			 ');
+        	
+        }else if(version_compare(JVERSION, '3.0', 'ge'))
         {
             $form->load('<form>
 				<fieldset name="jmetadata" addfieldpath="/libraries/contentmap/models/fields">
