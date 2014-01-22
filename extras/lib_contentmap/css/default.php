@@ -26,6 +26,14 @@ $id = JRequest::getVar("id", "", "GET");
 	-moz-box-shadow: 0 2px 5px rgba(64, 64, 64, 0.5);
 	box-shadow: 0 2px 5px rgba(64, 64, 64, 0.5);
 }
+#contentmap_container_module_<?php echo $id; ?>
+{
+	margin-top:0px;
+}
+#contentmap_container_plugin_<?php echo $id; ?>
+{
+}
+
 
 #contentmap_<?php echo $owner; ?>_<?php echo $id; ?>
 {
@@ -80,3 +88,27 @@ $id = JRequest::getVar("id", "", "GET");
     margin-top: 5px;
 }
 
+
+.contentmap-m {
+}
+.contentmap-m img {
+    max-width: none;
+}
+.contentmap-m-actbar-list {
+    border-top: 1px solid #CCCCCC;
+    margin-top: 10px;
+    padding-top: 5px;
+}
+.contentmap-m-info {
+}
+.contentmap-m-info h1 {
+}
+.contentmap-m-act {
+}
+.contentmap-m-act a {
+    cursor: pointer;
+    display: inline-block;
+    margin: 5px;
+}
+.dirform-inner {
+}

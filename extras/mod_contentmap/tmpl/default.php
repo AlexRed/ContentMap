@@ -27,7 +27,8 @@
 	if (empty($GLOBALS["contentmap"]["gapi"]))
 	{
 		// Add Google api to the document only once
-		$document->addScript("http://maps.google.com/maps/api/js?sensor=false" . $language . $api_key);
+		$current_uri = JFactory::getURI();
+		$document->addScript(($current_uri->isSSL()?'https':'http')."://maps.google.com/maps/api/js?sensor=false" . $language . $api_key);
 		$GLOBALS["contentmap"]["gapi"] = true;
 	}
 
