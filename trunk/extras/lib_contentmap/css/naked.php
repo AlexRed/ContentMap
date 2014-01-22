@@ -15,6 +15,15 @@ $id = JRequest::getVar("id", "", "GET");
 {
 }
 
+#contentmap_container_module_<?php echo $id; ?>
+{
+	margin-top:0px;
+}
+#contentmap_container_plugin_<?php echo $id; ?>
+{
+}
+
+
 #contentmap_<?php echo $owner; ?>_<?php echo $id; ?>
 {
 	width: <?php echo $this->Params->get("map_width", "100"); ?><?php echo $this->Params->get("map_width_unit", "%"); ?>;

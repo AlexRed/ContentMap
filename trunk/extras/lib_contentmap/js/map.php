@@ -4,6 +4,7 @@ $id = JRequest::getVar("id", "", "GET");
 JFactory::getLanguage()->load("contentmap", JPATH_LIBRARIES . "/contentmap");
 ?>
 imageObjs = new Array();
+globaldata_<?php echo $owner; ?>_<?php echo $id; ?>={};
 
 function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 {
@@ -37,6 +38,19 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 		mapTypeId: google.maps.MapTypeId.<?php echo $this->Params->get("map_type", "ROADMAP"); ?>,
 		scrollwheel: false
 	});
+	globaldata_<?php echo $owner; ?>_<?php echo $id; ?>.map=map;
+	globaldata_<?php echo $owner; ?>_<?php echo $id; ?>.directionsService = new google.maps.DirectionsService();
+	globaldata_<?php echo $owner; ?>_<?php echo $id; ?>.directionsDisplay = new google.maps.DirectionsRenderer();
+	globaldata_<?php echo $owner; ?>_<?php echo $id; ?>.directionsDisplay.setMap(map);
+	
+	globaldata_<?php echo $owner; ?>_<?php echo $id; ?>.panorama = map.getStreetView();
+	globaldata_<?php echo $owner; ?>_<?php echo $id; ?>.panorama.setPov(({
+		heading: 265,
+		pitch: 0
+	  }));
+	
+	
+	
 <?php echo 'var kml_url='.json_encode(trim($this->Params->get("kml_url"))).';'; ?>
 	if (kml_url!=''){
 		var ctaLayer = new google.maps.KmlLayer({
@@ -210,7 +224,6 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 <?php } ?>
 	}
 
-
 }
 
 
@@ -228,6 +241,80 @@ function preload_<?php echo $owner; ?>_<?php echo $id; ?>()
 		}
 	}
 
+}
+
+function findDirFromAddr_<?php echo $owner; ?>_<?php echo $id; ?>(fromLatLong){
+	newAdd = document.getElementById('contentmap_input_<?php echo $owner; ?>_<?php echo $id; ?>').value;
+		
+	if(newAdd == "")
+		return false;
+	
+	var geocoder = new google.maps.Geocoder();
+	geocoder.geocode( {
+		'address': newAdd
+	}, function(results, status) {
+		if (status == google.maps.GeocoderStatus.OK) {
+			globaldata_<?php echo $owner; ?>_<?php echo $id; ?>.map.setCenter(results[0].geometry.location);
+			createMarker_<?php echo $owner; ?>_<?php echo $id; ?>(results[0].geometry.location,newAdd);
+			showDirections_<?php echo $owner; ?>_<?php echo $id; ?>(fromLatLong,newAdd);
+		} else {
+			alert("Geocode was not successful for the following reason: " + status);
+		}
+	});
+	
+	return false;
+}
+
+function createMarker_<?php echo $owner; ?>_<?php echo $id; ?>(latlng,address){
+	var contentString = '<div class="noo-m-info">'+
+	  '<h1>'+address+'</h1>';
+
+	var infowindow = new google.maps.InfoWindow({
+	  content: contentString,
+	  maxWidth: 300
+	});
+
+	var marker = new google.maps.Marker({
+	  position: latlng,
+	  map: globaldata_<?php echo $owner; ?>_<?php echo $id; ?>.map,
+	  title: address,
+	  draggable: false,
+	  animation: google.maps.Animation.DROP
+	});
+
+
+	google.maps.event.addListener(marker, 'click', function() {
+	  infowindow.open(globaldata_<?php echo $owner; ?>_<?php echo $id; ?>.map,this);
+	});
+
+	if(infowindow){
+	  setTimeout(function(){google.maps.event.trigger(marker, 'click')},2000);
+	}
+}
+
+function showDirections_<?php echo $owner; ?>_<?php echo $id; ?>(formAdd,toAdd){
+	var request = {
+		  origin:formAdd,
+		  destination:toAdd,
+		  travelMode: google.maps.DirectionsTravelMode.DRIVING
+	  };
+	  
+	globaldata_<?php echo $owner; ?>_<?php echo $id; ?>.directionsService.route(request, function(response, status) {
+		if (status == google.maps.DirectionsStatus.OK) {
+			globaldata_<?php echo $owner; ?>_<?php echo $id; ?>.directionsDisplay.setDirections(response);
+		}
+	  });
+}
+
+function toggleStreetView_<?php echo $owner; ?>_<?php echo $id; ?>(latitude,longitude){
+	var Latlng = new google.maps.LatLng(latitude,longitude);
+   globaldata_<?php echo $owner; ?>_<?php echo $id; ?>.panorama.setPosition(Latlng);
+   var toggle = globaldata_<?php echo $owner; ?>_<?php echo $id; ?>.panorama.getVisible();
+   if (toggle == false) {
+	   globaldata_<?php echo $owner; ?>_<?php echo $id; ?>.panorama.setVisible(true);
+   } else {
+	   globaldata_<?php echo $owner; ?>_<?php echo $id; ?>.panorama.setVisible(false);
+   }
 }
 
 google.maps.event.addDomListener(window, 'load', init_<?php echo $owner; ?>_<?php echo $id; ?>);

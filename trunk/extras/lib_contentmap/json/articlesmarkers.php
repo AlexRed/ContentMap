@@ -157,9 +157,23 @@ abstract class GoogleMapMarkers
 			// Add "Get Directions" inside the marker
 			if($this->Params->get('showDirectionsMarker', 0))
 			{
-				$content['html'] .= '<div>';
-				$content['html'] .= '<a href="http://maps.google.com/maps?saddr=&daddr='.$content["latitude"].','.$content["longitude"].'" target="_blank">'.JText::_('CONTENTMAP_GET_DIRECTIONS').'</a>';
-				$content['html'] .= '</div>';
+				//$content['html'] .= '<div>';
+				//$content['html'] .= '<a href="http://maps.google.com/maps?saddr=&daddr='.$content["latitude"].','.$content["longitude"].'" target="_blank">'.JText::_('CONTENTMAP_GET_DIRECTIONS').'</a>';
+				//$content['html'] .= '</div>';
+				
+				$ownerandid= JRequest::getVar("owner", "", "GET").'_'.JRequest::getVar("id", "", "GET");
+				
+				$formHtml = '<form class="" onsubmit="return findDirFromAddr_'.$ownerandid.'(\''.$content["latitude"].','.$content["longitude"].'\');" action="#"><div class="input-append"><input id="contentmap_input_'.$ownerandid.'" placeholder="'.JText::_('CONTENTMAP_FROM_ADDRESS').'" type="text"><button class="btn" type="submit">Go!</button></div></form>';
+				
+			    $content['html'] .='<div class="contentmap-m-actbar-list">';
+					$content['html'] .='<div class="contentmap-m-act">';
+					$content['html'] .='<a href="http://maps.google.com/maps?saddr=&daddr='.$content["latitude"].','.$content["longitude"].'" target="_blank">'.JText::_('CONTENTMAP_GET_DIRECTIONS').'</a> ';
+					$content['html'] .='<a id="contentmapmstreet" onclick="toggleStreetView_'.$ownerandid.'(\''.$content["latitude"].'\',\''.$content["longitude"].'\')">Street View</a>';
+					$content['html'] .='<div class="dirform-inner">'.$formHtml.'</div>';
+					$content['html'] .='</div>';
+			    $content['html'] .='</div>';
+				
+				
 			}
 		}
 
