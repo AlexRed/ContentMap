@@ -182,8 +182,65 @@ class plgContentContentmap extends JPlugin
 		$this->document->addStyleSheet($prefix . "&amp;type=css&amp;filename=" . $stylesheet["filename"]);
 		// Necessario perche' in map.php per default il raggruppamento e' attivo per chiunque, plugin compreso! :(
 		$this->document->addScript(JURI::base(true) . "/libraries/contentmap/js/markerclusterer_compiled.js");
-		$this->document->addScript($prefix . "&amp;type=json&amp;filename=articlesmarkers&amp;source=article&amp;contentid=" . $article->id);
-		$this->document->addScript($prefix . "&amp;type=js&amp;filename=map");
+		//$this->document->addScript($prefix . "&amp;type=json&amp;filename=articlesmarkers&amp;source=article&amp;contentid=" . $article->id);
+		//$this->document->addScript($prefix . "&amp;type=js&amp;filename=map");
+			
+		$json_script=$prefix . "&amp;type=json&amp;filename=articlesmarkers&amp;source=article&amp;contentid=" . $article->id;
+		$map_script=$prefix . "&amp;type=js&amp;filename=map";
+			
+		$ns='plugin_'.$id;
+		
+		$this->document->addScriptDeclaration('
+			var lazy_load_loaded_'.$ns.'={"map":false,"json":false,"alreadyinit":false};
+			
+			function lazy_load_map_loaded_'.$ns.'(){
+				lazy_load_loaded_'.$ns.'.map=true;
+				lazy_load_do_init_'.$ns.'();
+			}
+			function lazy_load_json_loaded_'.$ns.'(){
+				lazy_load_loaded_'.$ns.'.json=true;
+				lazy_load_do_init_'.$ns.'();
+			}
+			function lazy_load_do_init_'.$ns.'(){
+				if (lazy_load_loaded_'.$ns.'.map && lazy_load_loaded_'.$ns.'.json && !lazy_load_loaded_'.$ns.'.alreadyinit){
+					lazy_load_loaded_'.$ns.'.alreadyinit=true;
+					//init definito in map.php
+					init_'.$ns.'();
+					preload_'.$ns.'();
+					
+				}
+			}
+			
+			function lazy_load_json_and_map_'.$ns.'() {
+				document.getElementById("contentmap_'.$ns.'").className = "contentmap_loading";
+			
+				var json_element = document.createElement("script");
+				json_element.src = \''.htmlspecialchars_decode($json_script).'\';
+				json_element.onreadystatechange= function () {
+					if (this.readyState == "complete") lazy_load_json_loaded_'.$ns.'();
+				}
+				json_element.onload= lazy_load_json_loaded_'.$ns.';		
+				document.body.appendChild(json_element);
+				
+				var map_element = document.createElement("script");
+				map_element.src = \''.htmlspecialchars_decode($map_script).'\';
+				map_element.onreadystatechange= function () {
+					if (this.readyState == "complete") lazy_load_map_loaded_'.$ns.'();
+				}
+				map_element.onload= lazy_load_map_loaded_'.$ns.';		
+				document.body.appendChild(map_element);
+			}
+			if (window.addEventListener){
+				window.addEventListener("load", lazy_load_json_and_map_'.$ns.', false);
+			}else if (window.attachEvent){
+				window.attachEvent("onload", lazy_load_json_and_map_'.$ns.');
+			}else{
+				window.onload = lazy_load_json_and_map_'.$ns.';
+			}
+			');	
+			
+			
+		
 
 		$article->text .= $template($id, JText::_("CONTENTMAP_JAVASCRIPT_REQUIRED"), $this->params->get('streetView', 0));
 	}

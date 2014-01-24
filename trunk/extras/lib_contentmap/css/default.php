@@ -112,3 +112,7 @@ $id = JRequest::getVar("id", "", "GET");
 }
 .dirform-inner {
 }
+
+.contentmap_loading{
+	background: url("media/contentmap/images/ajax-loader.gif") no-repeat scroll 50% 50%; 
+}

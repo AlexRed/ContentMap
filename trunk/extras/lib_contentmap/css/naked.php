@@ -55,3 +55,7 @@ $id = JRequest::getVar("id", "", "GET");
 	font-size: 0.8em;
 	font-style:italic;
 }
+
+.contentmap_loading{
+	background: url("media/contentmap/images/ajax-loader.gif") no-repeat scroll 50% 50%; 
+}

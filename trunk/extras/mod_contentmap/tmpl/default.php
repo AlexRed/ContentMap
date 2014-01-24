@@ -41,16 +41,21 @@
 	$document->addScript($prefix . "&amp;type=json&amp;filename=articlesmarkers&amp;source=articles" . $postfix);
 	*/
 
+	$json_script='';
+	
 	switch ($params->get("data_source", "0"))
 	{
 		case "0":
-			$document->addScript($prefix . "&amp;type=json&amp;filename=articlesmarkers&amp;source=articles" . $postfix);
+			$json_script=$prefix . "&amp;type=json&amp;filename=articlesmarkers&amp;source=articles" . $postfix;
+			//$document->addScript($prefix . "&amp;type=json&amp;filename=articlesmarkers&amp;source=articles" . $postfix);
 			break;
 		case "1":
-			$document->addScript($params->get("data_url") . "?source=custom" . $postfix);
+			$json_script=$params->get("data_url") . "?source=custom" . $postfix;
+			//$document->addScript($params->get("data_url") . "?source=custom" . $postfix);
 			break;
 		default:
-			$document->addScript(JURI::base(true) . "/libraries/contentmap/json/" . $params->get("data_source") . ".php?source=custom" . $postfix);
+			$json_script=JURI::base(true) . "/libraries/contentmap/json/" . $params->get("data_source") . ".php?source=custom" . $postfix;
+			//$document->addScript(JURI::base(true) . "/libraries/contentmap/json/" . $params->get("data_source") . ".php?source=custom" . $postfix);
 	}
 
 	if ($params->get("cluster", "1"))
@@ -58,12 +63,70 @@
 		$document->addScript(JURI::base(true) . "/libraries/contentmap/js/markerclusterer_compiled.js");
 	}
 
-	$document->addScript($prefix . "&amp;type=js&amp;filename=map" . $postfix);
+	$map_script=$prefix . "&amp;type=js&amp;filename=map" . $postfix;
+	//$document->addScript($prefix . "&amp;type=js&amp;filename=map" . $postfix);
+	
+	//$document->addScript($json_script);
+	//$document->addScript($map_script);
+	
+	$ns='module_'.$module->id;
+	
+	$document->addScriptDeclaration('
+	
+	var lazy_load_loaded_'.$ns.'={"map":false,"json":false,"alreadyinit":false};
+	
+	function lazy_load_map_loaded_'.$ns.'(){
+		lazy_load_loaded_'.$ns.'.map=true;
+		lazy_load_do_init_'.$ns.'();
+	}
+	function lazy_load_json_loaded_'.$ns.'(){
+		lazy_load_loaded_'.$ns.'.json=true;
+		lazy_load_do_init_'.$ns.'();
+	}
+	function lazy_load_do_init_'.$ns.'(){
+		if (lazy_load_loaded_'.$ns.'.map && lazy_load_loaded_'.$ns.'.json && !lazy_load_loaded_'.$ns.'.alreadyinit){
+			lazy_load_loaded_'.$ns.'.alreadyinit=true;
+			//init definito in map.php
+			init_'.$ns.'();
+			preload_'.$ns.'();
+			
+		}
+	}
+	
+	function lazy_load_json_and_map_'.$ns.'() {
+		document.getElementById("contentmap_'.$ns.'").className = "contentmap_loading";
+		
+		var json_element = document.createElement("script");
+		json_element.src = \''.htmlspecialchars_decode($json_script).'\';
+		json_element.onreadystatechange= function () {
+			if (this.readyState == "complete") lazy_load_json_loaded_'.$ns.'();
+		}
+		json_element.onload= lazy_load_json_loaded_'.$ns.';		
+		document.body.appendChild(json_element);
+		
+		var map_element = document.createElement("script");
+		map_element.src = \''.htmlspecialchars_decode($map_script).'\';
+		map_element.onreadystatechange= function () {
+			if (this.readyState == "complete") lazy_load_map_loaded_'.$ns.'();
+		}
+		map_element.onload= lazy_load_map_loaded_'.$ns.';		
+		document.body.appendChild(map_element);
+	}
+	if (window.addEventListener){
+		window.addEventListener("load", lazy_load_json_and_map_'.$ns.', false);
+	}else if (window.attachEvent){
+		window.attachEvent("onload", lazy_load_json_and_map_'.$ns.');
+	}else{
+		window.onload = lazy_load_json_and_map_'.$ns.';
+	}
+	');	
+	
+	
 ?>
 
 <div id="contentmap_wrapper_module_<?php echo $module->id; ?>">
 	<div id="contentmap_container_module_<?php echo $module->id; ?>">
-		<div id="contentmap_module_<?php echo $module->id; ?>">
+		<div id="contentmap_module_<?php echo $module->id; ?>" class="contentmap_loading">
 			<noscript><?php echo JText::_("CONTENTMAP_JAVASCRIPT_REQUIRED"); ?></noscript>
 		</div>
 	</div>
