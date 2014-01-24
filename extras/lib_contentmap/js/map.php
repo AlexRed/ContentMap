@@ -17,6 +17,8 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 		document.getElementById('contentmap_<?php echo $owner; ?>_<?php echo $id; ?>').innerHTML += '<?php echo str_replace("'", "\\'", JText::_("CONTENTMAP_NO_DATA")); ?>';
 		return;
 	}
+	
+	document.getElementById('contentmap_<?php echo $owner; ?>_<?php echo $id; ?>').className = "";
 
 <?php if ($center = $this->Params->get("center", NULL)) {
 	$coordinates = explode(",", $center);
@@ -317,7 +319,10 @@ function toggleStreetView_<?php echo $owner; ?>_<?php echo $id; ?>(latitude,long
    }
 }
 
-google.maps.event.addDomListener(window, 'load', init_<?php echo $owner; ?>_<?php echo $id; ?>);
-google.maps.event.addDomListener(window, 'load', preload_<?php echo $owner; ?>_<?php echo $id; ?>);
+//google.maps.event.addDomListener(window, 'load', init_<?php echo $owner; ?>_<?php echo $id; ?>);
+//google.maps.event.addDomListener(window, 'load', preload_<?php echo $owner; ?>_<?php echo $id; ?>);
 //window.onload = preload_<?php echo $owner; ?>_<?php echo $id; ?>;
 //google.maps.event.addDomListener(document.getElementById("contentmap_<?php echo $owner; ?>_<?php echo $id; ?>"), 'mouseover', preload_<?php echo $owner; ?>_<?php echo $id; ?>);
+
+
+
