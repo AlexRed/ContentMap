@@ -116,3 +116,8 @@ $id = JRequest::getVar("id", "", "GET");
 .contentmap_loading{
 	background: url("media/contentmap/images/ajax-loader.gif") no-repeat scroll 50% 50%; 
 }
+
+#contentmap_container_<?php echo $owner; ?>_<?php echo $id; ?> img
+{
+    max-width:none !important;
+}
