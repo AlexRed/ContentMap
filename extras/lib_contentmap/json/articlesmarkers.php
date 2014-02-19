@@ -105,15 +105,28 @@ abstract class GoogleMapMarkers
 
 				// Add the base url to the image. Used by both infowindow innerhtml and preload() function
 				$content["image"] = JURI::base(true) . "/" . $content["image"];
+				
+				
+				
 				// Image URL
-				$content["html"] .=
-				"<div style=\"float:" . $content["float_image"] . ";\">" .
-				"<img class=\"intro_image\"" .
+				$content["html"] .= "<div style=\"float:" . $content["float_image"] . ";\">";
+				
+				if ($this->Params->get('link_titles', 0))
+				{
+					$target = ' target="' . $this->Params->get("link_target", "_self") . '"';
+					$content["html"] .=
+					'<a href="' . $sef_link . '"' . $target . '>';
+				}
+				$content["html"] .= "<img class=\"intro_image\"" .
 				$format .
 				" src=\"" . $content["image"] . "\"";
 				if ($content["image_intro_alt"]) $content["html"] .= " alt=\"" . $content["image_intro_alt"] . "\"";
 				if ($content["image_intro_caption"]) $content["html"] .= " title=\"" . $content["image_intro_caption"] . "\"";
 				$content["html"] .= ">";
+				if ($this->Params->get('link_titles', 0))
+				{
+					$content["html"] .= "</a>";
+				}
 				$content['html'] .= "</div>";
 			}
 			else
@@ -395,13 +408,14 @@ class articlesGoogleMapMarkers extends GoogleMapMarkers
 		$check     = array();
 		$i         = 0;
 		$w_content = $this->Contents;
+		
 		foreach ($w_content as &$content)
 		{
 			// xreference database field is empty.
 			// For some strange reason, it is stored in metadata field on the database
 			$registry = new JRegistry($content["metadata"]); // Equivalent to $registry->loadString($content["metadata"], "JSON")
 			$coordinates = explode(",", $registry->get("xreference"));
-
+/*
 			// Let's remove points with exactly the same coords
 			if(isset($check[md5($registry->get('xreference'))]))
 			{
@@ -412,7 +426,7 @@ class articlesGoogleMapMarkers extends GoogleMapMarkers
 			{
 				$check[md5($registry->get('xreference'))] = 1;
 			}
-
+*/
 			// Google map js needs them as two separate values (See constructor: google.maps.LatLng(lat, lon))
 			$content["latitude"] = floatval($coordinates[0]);
 			$content["longitude"] = floatval($coordinates[1]);

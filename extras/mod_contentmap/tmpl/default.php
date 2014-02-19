@@ -62,6 +62,7 @@
 	{
 		$document->addScript(JURI::base(true) . "/libraries/contentmap/js/markerclusterer_compiled.js");
 	}
+	$document->addScript(JURI::base(true) . "/libraries/contentmap/js/oms.min.js");
 
 	$map_script=$prefix . "&amp;type=js&amp;filename=map" . $postfix;
 	//$document->addScript($prefix . "&amp;type=js&amp;filename=map" . $postfix);
@@ -121,10 +122,10 @@
 	}
 	');	
 	
-	
+	$module_class='contentmap_module'.$params->get("moduleclass_sfx", "");
 ?>
 
-<div id="contentmap_wrapper_module_<?php echo $module->id; ?>">
+<div class="<?php echo $module_class;?>" id="contentmap_wrapper_module_<?php echo $module->id; ?>">
 	<div id="contentmap_container_module_<?php echo $module->id; ?>">
 		<div id="contentmap_module_<?php echo $module->id; ?>" class="contentmap_loading">
 			<noscript><?php echo JText::_("CONTENTMAP_JAVASCRIPT_REQUIRED"); ?></noscript>
