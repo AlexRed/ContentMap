@@ -182,6 +182,7 @@ class plgContentContentmap extends JPlugin
 		$this->document->addStyleSheet($prefix . "&amp;type=css&amp;filename=" . $stylesheet["filename"]);
 		// Necessario perche' in map.php per default il raggruppamento e' attivo per chiunque, plugin compreso! :(
 		$this->document->addScript(JURI::base(true) . "/libraries/contentmap/js/markerclusterer_compiled.js");
+		$this->document->addScript(JURI::base(true) . "/libraries/contentmap/js/oms.min.js");
 		//$this->document->addScript($prefix . "&amp;type=json&amp;filename=articlesmarkers&amp;source=article&amp;contentid=" . $article->id);
 		//$this->document->addScript($prefix . "&amp;type=js&amp;filename=map");
 			

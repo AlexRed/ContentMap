@@ -38,8 +38,17 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 		zoom: <?php echo $this->Params->get("zoom", 0); ?>,
 		center: center,
 		mapTypeId: google.maps.MapTypeId.<?php echo $this->Params->get("map_type", "ROADMAP"); ?>,
-		scrollwheel: false
+		scrollwheel: false,
+		
+		//scaleControl: false,
+		//mapTypeControl: false,
+		//navigationControl: false,
+		streetViewControl:<?php echo $this->Params->get('hideStreetViewControl', 0)==0?'true':'false';?>,
+		zoomControl: <?php echo $this->Params->get('hideZoomControl', 0)==0?'true':'false';?>
 	});
+	
+	var oms = new OverlappingMarkerSpiderfier(map);
+	
 	globaldata_<?php echo $owner; ?>_<?php echo $id; ?>.map=map;
 	globaldata_<?php echo $owner; ?>_<?php echo $id; ?>.directionsService = new google.maps.DirectionsService();
 	globaldata_<?php echo $owner; ?>_<?php echo $id; ?>.directionsDisplay = new google.maps.DirectionsRenderer();
@@ -98,7 +107,7 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 
 		// Set marker position
 		var pos = new google.maps.LatLng(data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].latitude, data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].longitude);
-
+		//alert("lat "+data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].latitude+" long "+data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].longitude);
 		// Marker creation
 		var marker = new google.maps.Marker(
 		{
@@ -106,7 +115,7 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 			position: pos,
 			title: data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].title,
 			zIndex: i,
-			cmapdata: {category:data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].category}
+			cmapdata: {category:data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].category,zIndex:i}
 		});
 
 		// Custom marker icon if present
@@ -116,21 +125,20 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 		if ("icon" in data_<?php echo $owner; ?>_<?php echo $id; ?>)
 		marker.setIcon(data_<?php echo $owner; ?>_<?php echo $id; ?>.icon);
 		}
-		google.maps.event.addListener(marker, '<?php echo $this->Params->get("infowindow_event", "click"); ?>',
-		function()
-		{
+		oms.addListener('<?php echo $this->Params->get("infowindow_event", "click"); ?>', function(marker, event) {
 <?php if ($this->Params->get("markers_action") == "infowindow") { ?>
 			// InfoWindow handling event
-			infowindow.setContent(data_<?php echo $owner; ?>_<?php echo $id; ?>.places[this.getZIndex()].html);
-			infowindow.open(map, this);
+			infowindow.setContent(data_<?php echo $owner; ?>_<?php echo $id; ?>.places[marker.cmapdata.zIndex].html);
+			infowindow.open(map, marker);
 <?php } else { ?>
 			// Redirect handling event
-			location.href = data_<?php echo $owner; ?>_<?php echo $id; ?>.places[this.getZIndex()].article_url;
+			location.href = data_<?php echo $owner; ?>_<?php echo $id; ?>.places[marker.cmapdata.zIndex].article_url;
 <?php } ?>
 		});
 		if (marker.cmapdata.category){
 			addCategoryMarker_<?php echo $owner; ?>_<?php echo $id; ?>(marker.cmapdata.category);
 		}
+		oms.addMarker(marker);
 		markers.push(marker);
 	}
 
@@ -152,7 +160,7 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 
 <?php if ($this->Params->get("cluster", "1")) { ?>
 	// Marker Cluster creation
-	var markerCluster = new MarkerClusterer(map, markers);
+	var markerCluster = new MarkerClusterer(map, markers,{maxZoom: 15});
 <?php } ?>
 
 <?php if($this->Params->get('streetView', 0)):?>
