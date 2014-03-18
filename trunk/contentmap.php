@@ -43,15 +43,14 @@
 	<br style="clear:both;" />
 	<?php } ?>
 
-<div class="width-100">
-	<fieldset class="adminform">
-		<legend><?php echo($language->_("COM_CONTENTMAP_INSTRUCTIONS_LBL")); ?></legend>
+<table  width="90%"><tr><td>
+		<h1><?php echo($language->_("COM_CONTENTMAP_INSTRUCTIONS_LBL")); ?></h1>
 		<h2><?php echo($language->_("COM_CONTENTMAP_INSTRUCTIONS_TITLE")); ?></h2>
 		<?php echo($language->_("COM_CONTENTMAP_INSTRUCTIONS_DSC")); ?>
 		<h2><?php echo($language->_("MOD_CONTENTMAP_INSTRUCTIONS_TITLE")); ?></h2>
 		<?php echo($language->_("MOD_CONTENTMAP_INSTRUCTIONS_DSC")); ?>
-	</fieldset>
-</div>
+	</td></tr>
+</table>
 <p><?php echo(sprintf($language->_("JGLOBAL_ISFREESOFTWARE"), "ContentMap")); ?></p>
 
 
