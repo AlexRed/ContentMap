@@ -18,11 +18,11 @@
 		<folder>models</folder>
 		<folder>smartloader</folder>
 	</files>
-
+<!--
 	<media destination="contentmap" folder="media">
 		<filename>index.html</filename>
 		<folder>images</folder>
 		<folder>markers</folder>
 	</media>
-
+-->
 </extension>

@@ -295,7 +295,10 @@ class articleGoogleMapMarkers extends GoogleMapMarkers
 			$content["created"] = htmlspecialchars($content["created"]);
 
 			// Remove html tags and keeps plain text
-			$content["introtext"] = JFilterInput::getInstance()->clean($content["introtext"], "string");
+			if ($this->Params->get('intro_clean_html_tags', 1)){
+				$content["introtext"] = JFilterInput::getInstance()->clean($content["introtext"], "string");
+			}
+			
 
 			// Remove elements useless for the map purposes in order to increase performance
 			// by saving bandwidth when sending JSON data to the client :)
@@ -451,7 +454,9 @@ class articlesGoogleMapMarkers extends GoogleMapMarkers
 			$content["created"] = htmlspecialchars($content["created"]);
 
 			// Remove html tags and keeps plain text
-			$content["introtext"] = JFilterInput::getInstance()->clean($content["introtext"], "string");
+			if ($this->Params->get('intro_clean_html_tags', 1)){
+				$content["introtext"] = JFilterInput::getInstance()->clean($content["introtext"], "string");
+			}
 			
 
 			// Remove elements useless for the map purposes in order to increase performance
@@ -529,7 +534,9 @@ class remoteGoogleMapMarkers extends GoogleMapMarkers
 			$content["created"] = htmlspecialchars($content["created"]);
 
 			// Remove html tags and keeps plain text
-			$content["introtext"] = JFilterInput::getInstance()->clean($content["introtext"], "string");
+			if ($this->Params->get('intro_clean_html_tags', 1)){
+				$content["introtext"] = JFilterInput::getInstance()->clean($content["introtext"], "string");
+			}
 
 			// Remove elements useless for the map purposes in order to increase performance
 			// by saving bandwidth when sending JSON data to the client :)
