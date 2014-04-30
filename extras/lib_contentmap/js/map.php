@@ -125,7 +125,8 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 		if ("icon" in data_<?php echo $owner; ?>_<?php echo $id; ?>)
 		marker.setIcon(data_<?php echo $owner; ?>_<?php echo $id; ?>.icon);
 		}
-		oms.addListener('<?php echo $this->Params->get("infowindow_event", "click"); ?>', function(marker, event) {
+		<?php if ($this->Params->get("infowindow_event", "click")!='never'){ ?>
+		oms.addListener('click', function(marker, event) {
 <?php if ($this->Params->get("markers_action") == "infowindow") { ?>
 			// InfoWindow handling event
 			infowindow.setContent(data_<?php echo $owner; ?>_<?php echo $id; ?>.places[marker.cmapdata.zIndex].html);
@@ -135,6 +136,11 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 			location.href = data_<?php echo $owner; ?>_<?php echo $id; ?>.places[marker.cmapdata.zIndex].article_url;
 <?php } ?>
 		});
+		<?php } /*chiusura != never*/?>
+		<?php if ($this->Params->get("infowindow_event", "click")=='mouseover'){ ?>
+			google.maps.event.addListener(marker,'mouseover',function(ev){ if( marker._omsData == undefined ){ google.maps.event.trigger(marker,'click'); }});
+		<?php } ?>
+		
 		if (marker.cmapdata.category){
 			addCategoryMarker_<?php echo $owner; ?>_<?php echo $id; ?>(marker.cmapdata.category);
 		}
