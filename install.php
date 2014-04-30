@@ -111,6 +111,13 @@ class com_contentmapInstallerScript
 		$result["result"] = $this->results["lib_" . $this->extension_name]["result"];
 		$this->results["lan_" . $this->extension_name] = $result;
 
+		//ho commentato <media destination="contentmap" folder="media"> in extras\lib_contentmap\contentmap.xml e lo copio manualmente 
+		//perché se lo lascio fare a joomla, lui cancella la directory di destinazione prima di copiarvi sopra quella nuova e 
+		//questo causa la cancellazione di marker aggiunti dagli utenti.
+		$src_marker_folder=$parent->getParent()->getPath("source").'/extras/lib_contentmap/media';
+		$dst_marker_folder=JPATH_ROOT.'/media/contentmap';
+		JFolder::create($dst_marker_folder);
+		JFolder::copy($src_marker_folder, $dst_marker_folder,'',true);
 	}
 
 
