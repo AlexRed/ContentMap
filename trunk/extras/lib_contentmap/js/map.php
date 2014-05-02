@@ -9,7 +9,9 @@ globaldata_<?php echo $owner; ?>_<?php echo $id; ?>={};
 function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 {
 	var g_category=[];
+	var g_tags=[];
 	var g_next_category_id=1;
+	var g_next_tag_id=1;
 
 	if (!data_<?php echo $owner; ?>_<?php echo $id; ?>.places.length)
 	{
@@ -97,6 +99,54 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 	var minlongitude = 180.0;
 	var maxlongitude = -180.0;
 
+	var tags=[];
+	for (var i = 0; i < data_<?php echo $owner; ?>_<?php echo $id; ?>.places.length; ++i)
+	{
+		if (typeof data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].tags!=="undefined"){
+			for (var t=0;t<data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].tags.length;t++){
+				var title=data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].tags[t].title;
+				var lft=data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].tags[t].lft;
+				if (typeof tags[title] === "undefined"){
+					tags[title]=lft;
+				}
+			}
+		}
+	}
+	
+	var sortable = [];
+	for (var k in tags){
+		if (tags.hasOwnProperty(k)){
+			sortable.push([k, tags[k]]);
+	    }
+	}
+	sortable.sort(function(a, b) {return a[1] - b[1]})	
+	for (var i = 0; i < sortable.length; ++i)
+	{
+		addTagsMarker_<?php echo $owner; ?>_<?php echo $id; ?>(sortable[i][0]);
+	}
+	
+	//category sort category_lft
+	var categories=[];
+	for (var i = 0; i < data_<?php echo $owner; ?>_<?php echo $id; ?>.places.length; ++i)
+	{
+		var title=data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].category;
+		var lft=data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].category_lft;
+		if (typeof categories[title] === "undefined"){
+			categories[title]=lft;
+		}
+	}
+	var sortable = [];
+	for (var k in categories){
+		if (categories.hasOwnProperty(k)){
+			sortable.push([k, categories[k]]);
+	    }
+	}
+	sortable.sort(function(a, b) {return a[1] - b[1]})	
+	for (var i = 0; i < sortable.length; ++i)
+	{
+		addCategoryMarker_<?php echo $owner; ?>_<?php echo $id; ?>(sortable[i][0]);
+	}
+	
 	for (var i = 0; i < data_<?php echo $owner; ?>_<?php echo $id; ?>.places.length; ++i)
 	{
 		// Compute bounds rectangle
@@ -109,13 +159,21 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 		var pos = new google.maps.LatLng(data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].latitude, data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].longitude);
 		//alert("lat "+data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].latitude+" long "+data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].longitude);
 		// Marker creation
+		
+		var marker_tags=[];
+		if (typeof data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].tags!=="undefined"){
+			for (var t=0;t<data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].tags.length;t++){
+				marker_tags[marker_tags.length]=data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].tags[t].title;
+			}
+		}
+		
 		var marker = new google.maps.Marker(
 		{
 			map: map,
 			position: pos,
 			title: data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].title,
 			zIndex: i,
-			cmapdata: {category:data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].category,zIndex:i}
+			cmapdata: {category:data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].category,zIndex:i,tags:marker_tags,is_visible:true}
 		});
 
 		// Custom marker icon if present
@@ -143,6 +201,11 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 		
 		if (marker.cmapdata.category){
 			addCategoryMarker_<?php echo $owner; ?>_<?php echo $id; ?>(marker.cmapdata.category);
+		}
+		if (marker.cmapdata.tags.length>0){
+			for (var t=0;t<marker.cmapdata.tags.length;t++){
+				addTagsMarker_<?php echo $owner; ?>_<?php echo $id; ?>(marker.cmapdata.tags[t]);
+			}
 		}
 		oms.addMarker(marker);
 		markers.push(marker);
@@ -187,10 +250,10 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 		if (typeof g_category[name] === "undefined"){
 			g_category[name]={};
 			g_category[name].checked=true;
-			g_category[name].num=0;
+			g_category[name].num=-1;
 			g_category[name].id=g_next_category_id;
 			g_next_category_id+=1;
-<?php if ($this->Params->get("category_legend_filter", "0")) { ?>
+<?php if ($this->Params->get("category_legend_filter", "0")==1) { ?>
 			var checkbox = document.createElement('input');
 			checkbox.type="checkbox";
 			checkbox.checked="checked";
@@ -198,19 +261,7 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 			
 			checkbox.onchange=function(){
 				g_category[name].checked=checkbox.checked;
-	        	for (var i=0;i<markers.length;i++){
-	        		if (markers[i].cmapdata.category==name){
-	        			var markervisible=g_category[name].checked;
-	        			markers[i].setVisible(markervisible);
-	<?php 				if ($this->Params->get("cluster", "1")) { ?>
-							if (markervisible){
-								markerCluster.addMarker(markers[i]);
-							}else{
-								markerCluster.removeMarker(markers[i]);
-							}
-	<?php 				} ?>
-	        		}
-	        	}
+				updateMarkersVisibility_<?php echo $owner; ?>_<?php echo $id; ?>();
 			}
 			
 			var div = document.createElement('span');
@@ -233,13 +284,93 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 			
 		}
 		g_category[name].num+=1;
-<?php if ($this->Params->get("category_legend_filter", "0")) { ?>
+<?php if ($this->Params->get("category_legend_filter", "0")==1) { ?>
 		var num_p=document.getElementById('cmap_<?php echo $owner; ?>_<?php echo $id; ?>_category_num_photos_'+g_category[name].id);
 		num_p.innerHTML='';
 		num_p.appendChild(document.createTextNode(' ('+g_category[name].num+')'));
 <?php } ?>
 	}
 
+	function updateMarkersVisibility_<?php echo $owner; ?>_<?php echo $id; ?>(){
+       	for (var i=0;i<markers.length;i++){
+			var category_visible=false;
+			var tag_visible=false;
+			var prev_visible=markers[i].cmapdata.is_visible;
+<?php if ($this->Params->get("category_legend_filter", "0")==1) { ?>
+			category_visible=g_category[markers[i].cmapdata.category].checked;
+<?php } ?>			
+<?php if ($this->Params->get("category_legend_filter", "0")==2) { ?>
+			tag_visible=false;
+			for (var t=0;t<markers[i].cmapdata.tags.length;t++){
+				if (g_tags[markers[i].cmapdata.tags[t]].checked){
+					tag_visible=true;
+					break;
+				}
+			}
+<?php } ?>			
+			var next_visible=category_visible || tag_visible;
+			if (next_visible!=prev_visible){
+				//visualizzo o nascondo
+				markers[i].cmapdata.is_visible=next_visible;
+				markers[i].setVisible(next_visible);
+<?php			if ($this->Params->get("cluster", "1")) { ?>
+					if (next_visible){
+						markerCluster.addMarker(markers[i]);
+					}else{
+						markerCluster.removeMarker(markers[i]);
+					}
+<?php			} ?>
+				
+			}
+		}
+		
+	}
+	
+	function addTagsMarker_<?php echo $owner; ?>_<?php echo $id; ?>(name){
+		if (typeof g_tags[name] === "undefined"){
+			g_tags[name]={};
+			g_tags[name].checked=true;
+			g_tags[name].num=-1;
+			g_tags[name].id=g_next_tag_id;
+			g_next_tag_id+=1;
+<?php if ($this->Params->get("category_legend_filter", "0")==2) { ?>
+			var checkbox = document.createElement('input');
+			checkbox.type="checkbox";
+			checkbox.checked="checked";
+			checkbox.className ="checkbox";
+			
+			checkbox.onchange=function(){
+				g_tags[name].checked=checkbox.checked;
+				updateMarkersVisibility_<?php echo $owner; ?>_<?php echo $id; ?>();
+			}
+			
+			var div = document.createElement('span');
+			div.className ="contentmap-checkcontainer";
+
+			var tagname=document.createElement('span');
+			tagname.appendChild(document.createTextNode(name));
+			
+			var tagnumphotos=document.createElement('span');
+			tagnumphotos.appendChild(document.createTextNode(' (0)'));
+			tagnumphotos.setAttribute("id",'cmap_<?php echo $owner; ?>_<?php echo $id; ?>_tag_num_photos_'+g_tags[name].id);
+			
+			div.appendChild(checkbox);
+			div.appendChild(tagname);
+			div.appendChild(tagnumphotos);
+			
+			document.getElementById('contentmap_legend_tags_<?php echo $owner; ?>_<?php echo $id; ?>').appendChild(div);
+			document.getElementById('contentmap_legend_tags_<?php echo $owner; ?>_<?php echo $id; ?>').appendChild(document.createTextNode(" "));
+<?php } ?>
+			
+		}
+		g_tags[name].num+=1;
+<?php if ($this->Params->get("category_legend_filter", "0")==2) { ?>
+		var num_p=document.getElementById('cmap_<?php echo $owner; ?>_<?php echo $id; ?>_tag_num_photos_'+g_tags[name].id);
+		num_p.innerHTML='';
+		num_p.appendChild(document.createTextNode(' ('+g_tags[name].num+')'));
+<?php } ?>
+	}	
+	
 }
 
 

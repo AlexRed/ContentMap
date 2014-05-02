@@ -332,7 +332,7 @@ class articlesGoogleMapMarkers extends GoogleMapMarkers
 		$language = $db->loadResult();
 
 		$query->clear();
-		$query->select("c.id, c.title, c.alias, c.introtext, c.catid, c.created, c.created_by_alias, c.images, c.metadata,g.title category");
+		$query->select("c.id, c.title, c.alias, c.introtext, c.catid, c.created, c.created_by_alias, c.images, c.metadata,g.title category,g.lft category_lft");
 		$query->from("#__content c");
 
 		$query->join('inner',"#__categories g ON c.catid=g.id");
@@ -412,8 +412,25 @@ class articlesGoogleMapMarkers extends GoogleMapMarkers
 		$i         = 0;
 		$w_content = $this->Contents;
 		
+		$load_tags=version_compare(JVERSION, '3.1', 'ge');
 		foreach ($w_content as &$content)
 		{
+			$content["tags"]=array();
+			if ($load_tags){
+				$query->clear();
+				$query->select("t.title,t.lft");
+				$query->from("#__content c");
+				$query->join('inner',"#__contentitem_tag_map m ON c.id=m.content_item_id");
+				$query->join('inner',"#__tags t ON m.tag_id=t.id");
+				$query->where("m.type_alias='com_content.article'");
+				$query->where("c.id = " . $db->Quote($content['id']));
+				$db->setQuery($query);
+				$content["tags"] = $db->loadAssocList();
+				if (empty($content["tags"])){
+					$content["tags"] = array(array('title'=>'-no tag-','lft'=>0));
+				}
+			}
+		
 			// xreference database field is empty.
 			// For some strange reason, it is stored in metadata field on the database
 			$registry = new JRegistry($content["metadata"]); // Equivalent to $registry->loadString($content["metadata"], "JSON")
