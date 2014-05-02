@@ -196,7 +196,10 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 		});
 		<?php } /*chiusura != never*/?>
 		<?php if ($this->Params->get("infowindow_event", "click")=='mouseover'){ ?>
+		var f=function (marker){
 			google.maps.event.addListener(marker,'mouseover',function(ev){ if( marker._omsData == undefined ){ google.maps.event.trigger(marker,'click'); }});
+			};
+			f(marker);
 		<?php } ?>
 		
 		if (marker.cmapdata.category){
