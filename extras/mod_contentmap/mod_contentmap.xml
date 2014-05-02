@@ -151,9 +151,15 @@
 				
 				<field name="category_legend_filter" type="list" default="0" label="CONTENTMAP_CATEGORY_LEGEND_FILTER_LBL">
 					<option value="0">JHIDE</option>
+					<option value="1">CONTENTMAP_CATEGORIES</option>
+					<option value="2">CONTENTMAP_TAGS</option>
+				</field>
+				<!--
+				<field name="tags_legend_filter" type="list" default="0" label="CONTENTMAP_TAGS_LEGEND_FILTER_LBL">
+					<option value="0">JHIDE</option>
 					<option value="1">JSHOW</option>
 				</field>
-
+-->
 				<field name="featured" type="list" default="0,1" label="CONTENTMAP_FEATURED_ARTICLES_LBL" description="CONTENTMAP_FEATURED_ARTICLES_DSC">
 					<option value="0,1">CONTENTMAP_ALL_ARTICLES</option>
 					<option value="1">CONTENTMAP_FEATURED_ARTICLES</option>

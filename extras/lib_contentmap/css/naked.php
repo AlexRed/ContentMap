@@ -64,3 +64,7 @@ $id = JRequest::getVar("id", "", "GET");
 {
     max-width:none !important;
 }
+
+.contentmap_lengend_title{
+	font-weight: bold;
+}
