@@ -81,6 +81,21 @@
                     <option value="1">JYES</option>
                 </field>
 				
+				<field name="watermark_url" type="url" default="" label="CONTENTMAP_WATERMARK_URL_LBL" description="CONTENTMAP_WATERMARK_URL_DSC" />
+				<field name="watermark_position" type="list" label="CONTENTMAP_WATERMARK_POSITION_LBL" default="RIGHT_TOP">
+					<option value="TOP_CENTER">CONTENTMAP_WATERMARK_POSITION_TOP_CENTER</option>
+					<option value="TOP_LEFT">CONTENTMAP_WATERMARK_POSITION_TOP_LEFT</option>
+					<option value="TOP_RIGHT">CONTENTMAP_WATERMARK_POSITION_TOP_RIGHT</option>
+					<option value="LEFT_TOP">CONTENTMAP_WATERMARK_POSITION_LEFT_TOP</option>
+					<option value="RIGHT_TOP">CONTENTMAP_WATERMARK_POSITION_RIGHT_TOP</option>
+					<option value="LEFT_CENTER">CONTENTMAP_WATERMARK_POSITION_LEFT_CENTER</option>
+					<option value="RIGHT_CENTER">CONTENTMAP_WATERMARK_POSITION_RIGHT_CENTER</option>
+					<option value="LEFT_BOTTOM">CONTENTMAP_WATERMARK_POSITION_LEFT_BOTTOM</option>
+					<option value="RIGHT_BOTTOM">CONTENTMAP_WATERMARK_POSITION_RIGHT_BOTTOM</option>
+					<option value="BOTTOM_CENTER">CONTENTMAP_WATERMARK_POSITION_BOTTOM_CENTER</option>
+					<option value="BOTTOM_LEFT">CONTENTMAP_WATERMARK_POSITION_BOTTOM_LEFT</option>
+					<option value="BOTTOM_RIGHT">CONTENTMAP_WATERMARK_POSITION_BOTTOM_RIGHT</option>
+				</field>
 
 				<field type="ossheader" default="CONTENTMAP_MARKERS_OPTIONS" icon="marker-16.png"/>
 				<field name="markers_icon" type="filelist" label="CONTENTMAP_MARKERS_ICON_LBL" description="CONTENTMAP_MARKERS_ICON_DSC" default="" hide_none="true" directory="media/contentmap/markers/icons" filter="\.png$" exclude="" stripext="" />

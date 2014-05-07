@@ -49,6 +49,28 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 		zoomControl: <?php echo $this->Params->get('hideZoomControl', 0)==0?'true':'false';?>
 	});
 	
+	//image overlay
+	var overlay_options={
+		imageindex: 1,
+		imageurl: <?php echo json_encode(trim($this->Params->get('watermark_url', '')));?>,
+		imageposition: <?php echo json_encode($this->Params->get('watermark_position', 'RIGHT_TOP'));?>
+	};
+	if (overlay_options.imageurl!=''){
+		var controlDiv = document.createElement('div');
+		controlDiv.setAttribute('class', 'contentmap_overlay_controlDiv');
+		//if (overlay_options.imageindex) controlDiv.index = parseInt(overlay_options.imageindex);
+		//else controlDiv.index = 1;
+		var controlUI = document.createElement('div');
+		controlUI.setAttribute('class', 'contentmap_overlay_controlBorderDiv');
+		controlDiv.appendChild(controlUI);
+		var controlIMG = document.createElement('img');
+		controlIMG.setAttribute('src', overlay_options.imageurl);
+		//controlIMG.setAttribute('height', overlay_options.imageheight);
+		//controlIMG.setAttribute('width', overlay_options.imagewidth);
+		controlUI.appendChild(controlIMG);
+		map.controls[eval('google.maps.ControlPosition.' + overlay_options.imageposition.toUpperCase())].push(controlDiv)
+	}
+	
 	var oms = new OverlappingMarkerSpiderfier(map);
 	
 	globaldata_<?php echo $owner; ?>_<?php echo $id; ?>.map=map;
