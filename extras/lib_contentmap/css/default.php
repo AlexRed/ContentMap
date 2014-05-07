@@ -125,3 +125,7 @@ $id = JRequest::getVar("id", "", "GET");
 .contentmap_lengend_title{
 	font-weight: bold;
 }
+
+.contentmap_overlay_controlDiv {
+    padding: 5px;
+}
