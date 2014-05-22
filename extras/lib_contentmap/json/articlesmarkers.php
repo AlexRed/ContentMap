@@ -633,6 +633,8 @@ class tagsGoogleMapMarkers extends GoogleMapMarkers
 			return;
 		}
 	
+		/*
+		//Versione 1
 		//\components\com_tags\models\tags.php
 		jimport('joomla.application.component.model');
 		JModelLegacy::addIncludePath(JPATH_SITE.'/components/com_tags/models');
@@ -699,6 +701,104 @@ class tagsGoogleMapMarkers extends GoogleMapMarkers
 		}
 		
 		$this->Contents = $w_contents;
+		
+		*/
+		//Versione 2
+		JLoader::register('TagsHelperRoute', JPATH_BASE . '/components/com_tags/helpers/route.php');
+		$db				= JFactory::getDbo();
+		$user     		= JFactory::getUser();
+		$groups 		= implode(',', $user->getAuthorisedViewLevels());
+		$timeframe		= 'alltime';
+		$maximum		= 99999;
+		$order_value	= 'count';
+
+		if ($order_value == 'rand()')
+		{
+			$order_direction	= '';
+		}
+		else
+		{
+			$order_value		= $db->quoteName($order_value);
+			$order_direction	= 'DESC';
+		}
+
+		$query = $db->getQuery(true)
+			->select(
+				array(
+					'MAX(' . $db->quoteName('tag_id') . ') AS tag_id',
+					' COUNT(*) AS count', 'MAX(t.title) AS title',
+					'MAX(' . $db->quoteName('t.access') . ') AS access',
+					'MAX(' . $db->quoteName('t.alias') . ') AS alias'
+				)
+			)
+			->group($db->quoteName(array('tag_id', 'title', 'access', 'alias')))
+			->from($db->quoteName('#__contentitem_tag_map'))
+			->where($db->quoteName('t.access') . ' IN (' . $groups . ')');
+
+		// Only return published tags
+		$query->where($db->quoteName('t.published') . ' = 1 ');
+
+		// Optionally filter on language
+		$language = JComponentHelper::getParams('com_tags')->get('tag_list_language_filter', 'all');
+
+		if ($language != 'all')
+		{
+			if ($language == 'current_language')
+			{
+				$language = JHelperContent::getCurrentLanguage();
+			}
+
+			$query->where($db->quoteName('t.language') . ' IN (' . $db->quote($language) . ', ' . $db->quote('*') . ')');
+		}
+
+		if ($timeframe != 'alltime')
+		{
+			$now = new JDate;
+			$query->where($db->quoteName('tag_date') . ' > ' . $query->dateAdd($now->toSql('date'), '-1', strtoupper($timeframe)));
+		}
+
+		$query->join('INNER', $db->quoteName('#__tags', 't') . ' ON ' . $db->quoteName('tag_id') . ' = t.id')
+			->order($order_value . ' ' . $order_direction);
+		$db->setQuery($query, 0, $maximum);
+		
+		$items = $db->loadObjectList();
+		
+		
+		$w_contents=array();
+		
+		foreach ($items as $item){
+			$content=array(
+				'id' => $item->tag_id,
+				'title' => $item->title,
+				'alias' => $item->alias,
+				'introtext' => '',
+				'catid' => 0,
+				'created' => '',
+				'created_by_alias' => '',
+				'category' => '',
+				'category_lft' => 0,
+				'tags' => 
+				array (
+				  0 => 
+				  array (
+					'title' => '-no tag-',
+					'lft' => 0,
+				  ),
+				),
+				'latitude' => 0,
+				'longitude' => 0,
+				'image' => NULL,
+				'float_image' => 'left',
+				'image_intro_alt' => NULL,
+				'image_intro_caption' => NULL,
+				
+				
+				'tag_link'=>JRoute::_(TagsHelperRoute::getTagRoute($item->tag_id . '-' . $item->alias),false)
+				);
+			$w_contents[]=$content;
+		}
+		
+		$this->Contents = $w_contents;		
 	}
 }
 
