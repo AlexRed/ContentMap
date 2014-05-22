@@ -216,7 +216,6 @@
 					default="regions"
 					label="GEO_DISPLAYMODE_LABEL"
 					description="GEO_DISPLAYMODE_DESC">
-					<option value="auto">AUTO_CHOOSE_BASED_ON_THE_FORMAT_OF_THE_DATA</option>
 					<option value="regions">REGION_MAP</option>
 					<option value="markers">MARKER_MAP</option>
 				</field>
@@ -431,7 +430,7 @@
 					<option value="PM">Saint Pierre and Miquelon</option>
 					<option value="PN">Pitcairn</option>
 					<option value="PR">Puerto Rico</option>
-					<option value="PS">Palestine, State of</option>
+					<option value="PS">Palestine</option>
 					<option value="PT">Portugal</option>
 					<option value="PW">Palau</option>
 					<option value="PY">Paraguay</option>
@@ -486,7 +485,7 @@
 					<option value="UZ">Uzbekistan</option>
 					<option value="VA">Holy See (Vatican City State)</option>
 					<option value="VC">Saint Vincent and the Grenadines</option>
-					<option value="VE">Venezuela, Bolivarian Republic of</option>
+					<option value="VE">Venezuela</option>
 					<option value="VG">Virgin Islands, British</option>
 					<option value="VI">Virgin Islands, U.S.</option>
 					<option value="VN">Viet Nam</option>
