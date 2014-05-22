@@ -20,7 +20,7 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 	// Map creation
 	var map = new google.maps.Map(document.getElementById('contentmap_<?php echo $owner; ?>_<?php echo $id; ?>'),
 	{
-		zoom: <?php echo $this->Params->get("zoom", 8); ?>,
+		zoom: <?php echo $this->Params->get("zoom", 0); ?>,
 	});
 	
 	
@@ -48,7 +48,7 @@ function drawVisualization_<?php echo $owner; ?>_<?php echo $id; ?>() {
 		region: 'IT',
 		displayMode: 'markers',
 		legend:'none',
-		width: 680,
+		//width: 900,
 		colorAxis: {colors: ['blue', 'blue']}
 	  };
 
