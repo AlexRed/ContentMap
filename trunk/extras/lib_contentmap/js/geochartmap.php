@@ -2,6 +2,8 @@
 $owner = JRequest::getVar("owner", "", "GET");
 $id = JRequest::getVar("id", "", "GET");
 JFactory::getLanguage()->load("contentmap", JPATH_LIBRARIES . "/contentmap");
+
+$params=$this->Params;
 ?>
 
 function init_<?php echo $owner; ?>_<?php echo $id; ?>()
@@ -31,27 +33,42 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 
 function drawVisualization_<?php echo $owner; ?>_<?php echo $id; ?>() {
 
-	var lista_citta=[['City']];
+	var lista_citta=[[<?php echo json_encode($params->get('geo_resolution','countries')=='provinces'?'Province':'City'); ?>,<?php echo json_encode(JText::_('CONTENTMAP_GEOCHART_ELEMENTS'));?>]];
 	
 	for (var i = 0; i < data_<?php echo $owner; ?>_<?php echo $id; ?>.places.length; ++i)
 	{
 		
-		lista_citta.push([data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].title]);
+		lista_citta.push([data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].title,parseInt(data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].tag_count)]);
 
 	}
-	
 
 	var data = google.visualization.arrayToDataTable(lista_citta);
 
+<?php
+	
+	$options = new stdClass();	
+	$options->displayMode = $params->get('geo_displayMode','regions');
+	$options->region = $params->get('geo_region','world');
+	$options->resolution = $params->get('geo_resolution','countries');
+	$options->enableRegionInteractivity = $params->get('geo_enableRegionInteractivity', 1) ? true : false;
+	$options->markerOpacity = (float) $params->get('geo_markerOpacity', 1.0);
+	$options->colorAxis = new stdClass();
+	$minValue = $params->get('geo_colorAxis_minValue', null);
+	$maxValue = $params->get('geo_colorAxis_maxValue', null);
+	if(is_null($minValue)) {
+		$options->colorAxis->minValue = $minValue;
+	}
+	if(is_null($maxValue)) {
+		$options->colorAxis->maxValue = $maxValue;
+	}
+	$options->colorAxis->colors = array($params->get('geo_colorAxis_fromColor', '#FFFFFF'), $params->get('geo_colorAxis_toColor', '#35A339'));
+	$options->datalessRegionColor = $params->get('datalessRegionColor', '#F5F5F5');
 
-	var options = {
-		region: 'IT',
-		displayMode: 'markers',
-		legend:'none',
-		//width: 900,
-		colorAxis: {colors: ['blue', 'blue']}
-	  };
-
+	
+	$options->legend='none';
+?>
+	var options = <?php echo json_encode($options);?>;
+	
 	var geochart = new google.visualization.GeoChart(document.getElementById('contentmap_<?php echo $owner; ?>_<?php echo $id; ?>'));
 	google.visualization.events.addListener(geochart, 'select', function() {
 		var selectionIdx = geochart.getSelection()[0].row;
