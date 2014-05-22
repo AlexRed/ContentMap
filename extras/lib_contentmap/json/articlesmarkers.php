@@ -756,6 +756,15 @@ class tagsGoogleMapMarkers extends GoogleMapMarkers
 			$now = new JDate;
 			$query->where($db->quoteName('tag_date') . ' > ' . $query->dateAdd($now->toSql('date'), '-1', strtoupper($timeframe)));
 		}
+		
+		$tags_filter_type = $this->Params->get('tags_filter_type', 0);  // Can be "IN", "NOT IN" or "0"
+		if ($tags_filter_type)
+		{
+			$tagsid = $this->Params->get('tagsid', array("0")); // Defaults to non-existing tag
+			$tagsid = implode(',', $tagsid);         // Converted to string
+			$query->where("t.id " . $tags_filter_type . " (" . $tagsid . ")");
+		}
+		
 
 		$query->join('INNER', $db->quoteName('#__tags', 't') . ' ON ' . $db->quoteName('tag_id') . ' = t.id')
 			->order($order_value . ' ' . $order_direction);
@@ -763,7 +772,7 @@ class tagsGoogleMapMarkers extends GoogleMapMarkers
 		
 		$items = $db->loadObjectList();
 		
-		
+		//
 		$w_contents=array();
 		
 		foreach ($items as $item){
@@ -793,8 +802,33 @@ class tagsGoogleMapMarkers extends GoogleMapMarkers
 				'image_intro_caption' => NULL,
 				
 				
-				'tag_link'=>JRoute::_(TagsHelperRoute::getTagRoute($item->tag_id . '-' . $item->alias),false)
+				'tag_link'=>JRoute::_(TagsHelperRoute::getTagRoute($item->tag_id . '-' . $item->alias),false),
+				'tag_count'=>$item->count
 				);
+				
+			
+			if ($item->count==1){
+			
+				$tagsHelper = new JHelperTags;
+				$typesr=null;
+				$includeChildren=false;
+				$orderByOption='c.core_title';
+				$orderDir='ASC';
+				$matchAll=true;
+				$stateFilter = 1;//solo quelli pubblicati
+				$query = $tagsHelper->getTagItemsQuery($item->tag_id, $typesr, $includeChildren, $orderByOption, $orderDir, $matchAll, $language, $stateFilter);
+			
+				$db->setQuery($query, 0, 1);
+				
+				$detail_item = $db->loadObject();
+			
+				if (!empty($detail_item)){
+					$content['tag_link']=JRoute::_(TagsHelperRoute::getItemRoute($detail_item->content_item_id, $detail_item->core_alias, $detail_item->core_catid, $detail_item->core_language, $detail_item->type_alias, $detail_item->router),false);
+				}
+				
+				
+			}			
+			
 			$w_contents[]=$content;
 		}
 		

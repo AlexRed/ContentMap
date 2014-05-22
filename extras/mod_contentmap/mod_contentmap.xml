@@ -199,7 +199,105 @@
 					query="select id, name, username from #__users where id IN (select distinct(created_by) from #__content) order by name ASC"
 					key_field="id" value_field="name">
 				</field>
+				
 			</fieldset>
+			
+			<fieldset name="geo_chart_settings"
+				label="GEO Chart Settings">
+				<field name="geo_displayMode"
+					type="list"
+					default="regions"
+					label="GEO_DISPLAYMODE_LABEL"
+					description="GEO_DISPLAYMODE_DESC">
+					<option value="auto">AUTO_CHOOSE_BASED_ON_THE_FORMAT_OF_THE_DATA</option>
+					<option value="regions">REGION_MAP</option>
+					<option value="markers">MARKER_MAP</option>
+				</field>
+					
+				<field name="geo_region"
+					type="text"
+					size="30"
+					default="world"
+					label="GEO_REGION_LABEL"
+					description="GEO_REGION_DESC" />
+					
+				<field name="geo_resolution"
+					type="list"
+					default="countries"
+					label="GEO_RESOLUTION_LABEL"
+					description="GEO_RESOLUTION_DESC">
+					<option value="countries">COUNTRIES</option>
+					<option value="provinces">PROVINCES</option>
+					<option value="metros">METROS</option>
+				</field>
+					
+				<field name="geo_enableRegionInteractivity"
+					type="radio"
+					class="btn-group"
+					default="1"
+					label="GEO_ENABLEREGIONINTERACTIVITY_LABEL"
+					description="GEO_ENABLEREGIONINTERACTIVITY_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				
+				<field name="geo_markerOpacity"
+					type="list"
+					class="btn-group"
+					default="1.0"
+					label="GEO_MARKEROPACITY_LABEL"
+					description="GEO_MARKEROPACITY_DESC">
+					<option value="0.0">0.0</option>
+					<option value="0.1">0.1</option>
+					<option value="0.2">0.2</option>
+					<option value="0.3">0.3</option>
+					<option value="0.4">0.4</option>
+					<option value="0.5">0.5</option>
+					<option value="0.6">0.6</option>
+					<option value="0.7">0.7</option>
+					<option value="0.8">0.8</option>
+					<option value="0.9">0.9</option>
+					<option value="1.0">1.0</option>
+				</field>
+				
+				<field type="spacer" hr="true" label="Color Axis"/>	
+				<field name="geo_colorAxis_minValue"
+					type="text"
+					default="0"
+					label="GEO_COLORAXIS_MINVALUE_LABEL"
+					description="GEO_COLORAXIS_MINVALUE_DESC" />
+				<field name="geo_colorAxis_maxValue"
+					type="text"
+					default=""
+					label="GEO_COLORAXIS_MAXVALUE_LABEL"
+					description="GEO_COLORAXIS_MAXVALUE_DESC" />
+				<field name="geo_colorAxis_fromColor"
+					type="color"
+					default="#FFFFFF"
+					label="GEO_COLORAXIS_FROMCOLOR_LABEL"
+					description="GEO_COLORAXIS_FROMCOLOR_DESC" />
+				<field name="geo_colorAxis_toColor"
+					type="color"
+					default="#35A339"
+					label="GEO_COLORAXIS_TOCOLOR_LABEL"
+					description="GEO_COLORAXIS_TOCOLOR_DESC" />
+				<field name="geo_datalessRegionColor"
+					type="color"
+					default="#F5F5F5"
+					label="GEO_DATALESSREGIONCOLOR_LABEL"
+					description="GEO_DATALESSREGIONCOLOR_DESC" />
+
+				<field type="spacer" hr="true" />
+				<field name="tags_filter_type" type="list" default="0" label="CONTENTMAP_FILTERINGTYPE_LBL" description="CONTENTMAP_FILTERINGTYPE_DSC">
+					<option value="IN">CONTENTMAP_INCLUSIVE</option>
+					<option value="NOT IN">CONTENTMAP_EXCLUSIVE</option>
+					<option value="0">JDISABLED</option>
+				</field>
+				<field name="tagsid" type="tag" custom="deny" multiple="true" size="5" label="CONTENTMAP_TAGS" description="CONTENTMAP_SELECT_ITEMS_DSC">
+				</field>
+					
+					
+			</fieldset>			
 
 			<fieldset name="advanced">
 				<field name="layout" type="modulelayout" label="JFIELD_ALT_LAYOUT_LABEL" description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
