@@ -27,7 +27,9 @@ $id = JRequest::getVar("id", "", "GET");
 #contentmap_<?php echo $owner; ?>_<?php echo $id; ?>
 {
 	width: <?php echo $this->Params->get("map_width", "100"); ?><?php echo $this->Params->get("map_width_unit", "%"); ?>;
+<?php if ($this->Params->get("data_source", "0")!='joomlatags'){?>
 	height: <?php echo $this->Params->get("map_height", "400"); ?>px;
+<?php }?>	
 	color: #505050;
 }
 
