@@ -26,10 +26,21 @@
 	*/
 	if (empty($GLOBALS["contentmap"]["gapi"]))
 	{
-		// Add Google api to the document only once
-		$current_uri = JFactory::getURI();
-		$document->addScript(($current_uri->isSSL()?'https':'http')."://maps.google.com/maps/api/js?sensor=false" . $language . $api_key);
-		$GLOBALS["contentmap"]["gapi"] = true;
+		if ($params->get("data_source", "0")==0){
+			// Add Google api to the document only once
+			$current_uri = JFactory::getURI();
+			$document->addScript(($current_uri->isSSL()?'https':'http')."://maps.google.com/maps/api/js?sensor=false" . $language . $api_key);
+			$GLOBALS["contentmap"]["gapi"] = true;
+		}
+	}
+	if (empty($GLOBALS["contentmap"]["google_jsapi"]))
+	{
+		if ($params->get("data_source", "0")=='joomlatags'){
+			// Add Google api to the document only once
+			$current_uri = JFactory::getURI();
+			$document->addScript("https://www.google.com/jsapi" );
+			$GLOBALS["contentmap"]["google_jsapi"] = true;
+		}
 	}
 
 	$stylesheet = pathinfo($params->get("css", "default"));
@@ -43,18 +54,25 @@
 
 	$json_script='';
 	
+	$map_script=$prefix . "&amp;type=js&amp;filename=map" . $postfix;
+	
 	switch ($params->get("data_source", "0"))
 	{
 		case "0":
 			$json_script=$prefix . "&amp;type=json&amp;filename=articlesmarkers&amp;source=articles" . $postfix;
 			//$document->addScript($prefix . "&amp;type=json&amp;filename=articlesmarkers&amp;source=articles" . $postfix);
 			break;
-		case "1":
-			$json_script=$params->get("data_url") . "?source=custom" . $postfix;
-			//$document->addScript($params->get("data_url") . "?source=custom" . $postfix);
+		case "joomlatags":
+			$map_script=$prefix . "&amp;type=js&amp;filename=geochartmap" . $postfix;
+			$json_script=$prefix . "&amp;type=json&amp;filename=articlesmarkers&amp;source=tags" . $postfix;
+			//$document->addScript($prefix . "&amp;type=json&amp;filename=articlesmarkers&amp;source=articles" . $postfix);
 			break;
-		default:
-			$json_script=JURI::base(true) . "/libraries/contentmap/json/" . $params->get("data_source") . ".php?source=custom" . $postfix;
+		//case "1":
+		//	$json_script=$params->get("data_url") . "?source=custom" . $postfix;
+		//	//$document->addScript($params->get("data_url") . "?source=custom" . $postfix);
+		//	break;
+		//default:
+		//	$json_script=JURI::base(true) . "/libraries/contentmap/json/" . $params->get("data_source") . ".php?source=custom" . $postfix;
 			//$document->addScript(JURI::base(true) . "/libraries/contentmap/json/" . $params->get("data_source") . ".php?source=custom" . $postfix);
 	}
 
@@ -64,7 +82,7 @@
 	}
 	$document->addScript(JURI::base(true) . "/libraries/contentmap/js/oms.min.js");
 
-	$map_script=$prefix . "&amp;type=js&amp;filename=map" . $postfix;
+	
 	//$document->addScript($prefix . "&amp;type=js&amp;filename=map" . $postfix);
 	
 	//$document->addScript($json_script);

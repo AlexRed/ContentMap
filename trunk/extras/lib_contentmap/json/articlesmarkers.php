@@ -483,7 +483,6 @@ class articlesGoogleMapMarkers extends GoogleMapMarkers
 
 			$i++;
 		}
-
 		$this->Contents = $w_content;
 
 		// Problematic infowindows are near the upper border, so start preload from them
@@ -621,3 +620,85 @@ class UrlWrapper
 		return "";
 	}
 }
+
+
+
+class tagsGoogleMapMarkers extends GoogleMapMarkers
+{
+	protected function Load()
+	{
+		$load_tags=version_compare(JVERSION, '3.1', 'ge');
+		if (!$load_tags){
+			$this->Contents = array();
+			return;
+		}
+	
+		//\components\com_tags\models\tags.php
+		jimport('joomla.application.component.model');
+		JModelLegacy::addIncludePath(JPATH_SITE.'/components/com_tags/models');
+		require_once JPATH_SITE.'/components/com_tags/helpers/route.php';
+		$tagsModel = JModelLegacy::getInstance( 'Tags', 'TagsModel' , array('ignore_request' => true));
+
+		$app = JFactory::getApplication('site');
+
+		// Load state from the request.
+		$pid = 0;
+		$tagsModel->setState('tag.parent_id', $pid);
+
+		$language = $app->input->getString('tag_list_language_filter');
+		$tagsModel->setState('tag.language', $language);
+
+		$offset = 0;
+		$tagsModel->setState('list.offset', $offset);
+		$app = JFactory::getApplication();
+
+		$params = $app->getParams();
+		$tagsModel->setState('params', $params);
+
+		$tagsModel->setState('list.limit', 99999);
+
+		$tagsModel->setState('filter.published', 1);
+		$tagsModel->setState('filter.access', true);
+
+		$tagsModel->setState('list.filter', '');
+		
+		$items = $tagsModel->getItems();
+		
+		$w_contents=array();
+		
+		foreach ($items as $item){
+			$content=array(
+				'id' => $item->id,
+				'title' => $item->title,
+				'alias' => $item->alias,
+				'introtext' => '',
+				'catid' => 0,
+				'created' => $item->created_time,
+				'created_by_alias' => $item->created_by_alias,
+				'category' => '',
+				'category_lft' => 0,
+				'tags' => 
+				array (
+				  0 => 
+				  array (
+					'title' => '-no tag-',
+					'lft' => 0,
+				  ),
+				),
+				'latitude' => 0,
+				'longitude' => 0,
+				'image' => NULL,
+				'float_image' => 'left',
+				'image_intro_alt' => NULL,
+				'image_intro_caption' => NULL,
+				
+				
+				'tag_link'=>JRoute::_(TagsHelperRoute::getTagRoute($item->id . '-' . $item->alias),false)
+				);
+			$w_contents[]=$content;
+		}
+		
+		$this->Contents = $w_contents;
+	}
+}
+
