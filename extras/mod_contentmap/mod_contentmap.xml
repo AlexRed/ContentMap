@@ -563,12 +563,12 @@
 				</field>
 				<field name="geo_colorAxis_fromColor"
 					type="color"
-					default="#9de3f5"
+					default="#33c7f0"
 					label="GEO_COLORAXIS_FROMCOLOR_LABEL"
 					description="GEO_COLORAXIS_FROMCOLOR_DESC" />
 				<field name="geo_colorAxis_toColor"
 					type="color"
-					default="#27a6f0"
+					default="#0c71b0"
 					label="GEO_COLORAXIS_TOCOLOR_LABEL"
 					description="GEO_COLORAXIS_TOCOLOR_DESC" />
 					<!--
