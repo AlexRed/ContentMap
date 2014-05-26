@@ -199,6 +199,9 @@
 					query="select id, name, username from #__users where id IN (select distinct(created_by) from #__content) order by name ASC"
 					key_field="id" value_field="name">
 				</field>
+				<field type="spacer" hr="true" />
+				<field type="spacer" hr="true" />	
+				<field type="spacer" hr="true" />
 				
 			</fieldset>
 			
