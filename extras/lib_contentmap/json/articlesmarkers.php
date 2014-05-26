@@ -765,6 +765,42 @@ class tagsGoogleMapMarkers extends GoogleMapMarkers
 			$query->where("t.id " . $tags_filter_type . " (" . $tagsid . ")");
 		}
 		
+		$typesr=$this->Params->get('tags_content_types', '');
+		if ($typesr)
+		{
+			// Implode is needed because the array can contain a string with a coma separated list of ids
+			$typesr = implode(',', $typesr);
+
+			// Sanitise
+			$typesr = explode(',', $typesr);
+			JArrayHelper::toInteger($typesr);
+
+		}
+		
+		$typesarray = JHelperTags::getTypes('assocList', $typesr, false);
+
+		$typeAliases = '';
+
+		foreach ($typesarray as $type)
+		{
+			$typeAliases .= "'" . $type['type_alias'] . "'" . ',';
+		}
+
+		$typeAliases = rtrim($typeAliases, ',');
+		if (!empty($typeAliases)){
+			$query->where('type_alias IN (' . $typeAliases . ')');
+		}
+		
+		$pid=intval($this->Params->get('tags_parent_id', '0'));
+		
+		if (!empty($pid))
+		{
+			$query->where($db->quoteName('t.parent_id') . ' = ' . $pid);
+		}
+
+		// Exclude the root.
+		$query->where($db->quoteName('t.parent_id') . ' <> 0');
+		
 
 		$query->join('INNER', $db->quoteName('#__tags', 't') . ' ON ' . $db->quoteName('tag_id') . ' = t.id')
 			->order($order_value . ' ' . $order_direction);
@@ -810,7 +846,6 @@ class tagsGoogleMapMarkers extends GoogleMapMarkers
 			if ($item->count==1){
 			
 				$tagsHelper = new JHelperTags;
-				$typesr=null;
 				$includeChildren=false;
 				$orderByOption='c.core_title';
 				$orderDir='ASC';
