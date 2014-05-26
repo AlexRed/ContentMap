@@ -520,16 +520,6 @@
 					<option value="1">JYES</option>
 				</field>
 				
-				<field name="geo_disableGradation"
-					type="radio"
-					class="btn-group"
-					default="0"
-					label="CONTENTMAP_DISABLE_GRADATION_LABEL"
-					description="CONTENTMAP_DISABLE_GRADATION_DESC">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
-				
 				<field name="geo_markerOpacity"
 					type="list"
 					class="btn-group"
@@ -562,6 +552,15 @@
 					label="GEO_COLORAXIS_MAXVALUE_LABEL"
 					description="GEO_COLORAXIS_MAXVALUE_DESC" />
 					  -->
+				<field name="geo_disableGradation"
+					type="radio"
+					class="btn-group"
+					default="0"
+					label="CONTENTMAP_DISABLE_GRADATION_LABEL"
+					description="CONTENTMAP_DISABLE_GRADATION_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
 				<field name="geo_colorAxis_fromColor"
 					type="color"
 					default="#9de3f5"
@@ -572,11 +571,13 @@
 					default="#27a6f0"
 					label="GEO_COLORAXIS_TOCOLOR_LABEL"
 					description="GEO_COLORAXIS_TOCOLOR_DESC" />
+					<!--
 				<field name="geo_datalessRegionColor"
 					type="color"
 					default="#F5F5F5"
 					label="GEO_DATALESSREGIONCOLOR_LABEL"
 					description="GEO_DATALESSREGIONCOLOR_DESC" />
+					-->
 
 				<field type="spacer" hr="true" />
 
@@ -609,7 +610,7 @@
 				<field type="spacer" hr="true" />
 				<field type="spacer" hr="true" />
 				<field type="spacer" hr="true" />	
-					
+				<field type="spacer" hr="true" />	
 			</fieldset>			
 
 			<fieldset name="advanced">
