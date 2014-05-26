@@ -34,7 +34,7 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 function drawVisualization_<?php echo $owner; ?>_<?php echo $id; ?>() {
 
 <?php
-echo 'var enable_gradation=!('.json_encode($params->get('geo_disableGradation',0)).');';
+echo 'var enable_gradation=!('.json_encode(intval($params->get('geo_disableGradation',0))).');';
 ?>
 
 	if (enable_gradation){
