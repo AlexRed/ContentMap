@@ -33,13 +33,27 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 
 function drawVisualization_<?php echo $owner; ?>_<?php echo $id; ?>() {
 
-	var lista_citta=[[<?php echo json_encode($params->get('geo_resolution','countries')=='provinces'?'Province':'City'); ?>,<?php echo json_encode(JText::_('CONTENTMAP_GEOCHART_ELEMENTS'));?>]];
-	
-	for (var i = 0; i < data_<?php echo $owner; ?>_<?php echo $id; ?>.places.length; ++i)
-	{
-		
-		lista_citta.push([data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].title,parseInt(data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].tag_count)]);
+<?php
+echo 'var enable_gradation=!('.json_encode($params->get('geo_disableGradation',0)).');';
+?>
 
+	if (enable_gradation){
+		var lista_citta=[[<?php echo json_encode($params->get('geo_resolution','countries')=='provinces'?'Province':'City'); ?>,<?php echo json_encode(JText::_('CONTENTMAP_GEOCHART_ELEMENTS'));?>]];
+		
+		for (var i = 0; i < data_<?php echo $owner; ?>_<?php echo $id; ?>.places.length; ++i)
+		{
+			
+			lista_citta.push([data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].title,parseInt(data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].tag_count)]);
+
+		}
+	}else{
+		var lista_citta=[[<?php echo json_encode($params->get('geo_resolution','countries')=='provinces'?'Province':'City'); ?>]];
+		
+		for (var i = 0; i < data_<?php echo $owner; ?>_<?php echo $id; ?>.places.length; ++i)
+		{
+			
+			lista_citta.push([data_<?php echo $owner; ?>_<?php echo $id; ?>.places[i].title]);
+		}
 	}
 
 	var data = google.visualization.arrayToDataTable(lista_citta);
