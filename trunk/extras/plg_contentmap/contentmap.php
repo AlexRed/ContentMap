@@ -166,7 +166,8 @@ class plgContentContentmap extends JPlugin
 		$itemid = $menu->getActive() or $itemid = $menu->getDefault();
 		$itemid = "&amp;Itemid=" . $itemid->id;
 		$template = "template";
-		$article->text .= "<!-- plg_contentmap " . $GLOBALS["contentmap"]["version"] . "-->";
+		
+		$plugin_text_html= "<!-- plg_contentmap " . $GLOBALS["contentmap"]["version"] . "-->";
 
 		if (empty($GLOBALS["contentmap"]["gapi"]))
 		{
@@ -241,8 +242,14 @@ class plgContentContentmap extends JPlugin
 			');	
 			
 			
-		
+		$plugin_text_html.= $template($id, JText::_("CONTENTMAP_JAVASCRIPT_REQUIRED"), $this->params->get('streetView', 0));
 
-		$article->text .= $template($id, JText::_("CONTENTMAP_JAVASCRIPT_REQUIRED"), $this->params->get('streetView', 0));
+		$position=$this->params->get('position', 'ACL');
+		
+		if ($position=='ACL' || $position=='ACR'){
+			$article->text .= $plugin_text_html;
+		}else{
+			$article->text=$plugin_text_html.$article->text;
+		}
 	}
 }

@@ -38,6 +38,15 @@
 					<option value="%">CONTENTMAP_PERCENT</option>
 				</field>
 				<field name="map_height" type="text" size="6" label="CONTENTMAP_HEIGHT" description="CONTENTMAP_MAPHEIGHT_DSC" default="400" required="true"/>
+				
+                <field name="position" type="list" default="ACL" label="CONTENTMAP_POSITION_LBL" description="CONTENTMAP_POSITION_DSC">
+                    <option value="BCL">CONTENTMAP_BEFORECONTENT_LEFT</option>
+                    <option value="BCR">CONTENTMAP_BEFORECONTENT_RIGHT</option>
+                    <option value="ACL">CONTENTMAP_AFTERCONTENT_LEFT</option>
+                    <option value="ACR">CONTENTMAP_AFTERCONTENT_RIGHT</option>
+                </field>
+				
+				
 				<field name="zoom" type="list" default="17" label="CONTENTMAP_ZOOM_LBL" description="CONTENTMAP_ZOOM_DSC">
 					<option value="1">1</option>
 					<option value="2">2</option>
