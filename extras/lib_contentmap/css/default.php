@@ -15,6 +15,11 @@ $id = JRequest::getVar("id", "", "GET");
 	clear: both; /*Avoid overlapping with joomla article image, but it can create problems with some templates*/
 }
 
+#contentmap_wrapper_plugin_<?php echo $id; ?>
+{
+	float: <?php echo (substr($this->Params->get('position', 'ACL'),2,1)=='L'?'left':'right'); ?>;
+}
+
 #contentmap_container_<?php echo $owner; ?>_<?php echo $id; ?>
 {
 	padding: 6px; /*inner spacer*/
