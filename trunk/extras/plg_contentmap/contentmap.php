@@ -120,6 +120,16 @@ class plgContentContentmap extends JPlugin
 	{
 		if (JRequest::getCmd("option") != "com_content" || JRequest::getCmd("view") != "article") return;
 
+		// Exluded Articles
+		$excludedCats    = $this->params->get( 'excludeCats','' );
+		$excludeArticles = $this->params->get( 'excludeArticles','' );
+		if( $excludedCats )    { array_map( "trim", $excludedCats = explode(',', $excludedCats) ); }
+		if( $excludeArticles ) { array_map( "trim", $excludeArticles = explode(',', $excludeArticles) ); }
+		settype($excludedCats, 	  'array');
+		settype($excludeArticles, 'array');
+		if( in_array( $article->catid, $excludedCats ) || in_array( $article->id, $excludeArticles ) ) { return; }
+		
+		
 		// Beware:
 		// components/com_content/views/article/view.html.php trigs onContentAfterDisplay and passes $article->metadata as JRegistry while
 		// modules/mod_articles_news/helper.php trigs onContentAfterDisplay but passes $article->metadata as string
@@ -244,9 +254,9 @@ class plgContentContentmap extends JPlugin
 			
 		$plugin_text_html.= $template($id, JText::_("CONTENTMAP_JAVASCRIPT_REQUIRED"), $this->params->get('streetView', 0));
 
-		$position=$this->params->get('position', 'ACL');
+		$position=$this->params->get('position', 'AC');
 		
-		if ($position=='ACL' || $position=='ACR'){
+		if ($position=='ACL' || $position=='ACR' || $position=='AC'){
 			$article->text .= $plugin_text_html;
 		}else{
 			$article->text=$plugin_text_html.$article->text;

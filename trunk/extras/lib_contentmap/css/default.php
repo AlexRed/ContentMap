@@ -8,16 +8,43 @@ $id = JRequest::getVar("id", "", "GET");
 ?>
 #contentmap_wrapper_plugin_<?php echo $id ?> img{max-width:none}
 
+<?php
+	$position=trim(substr($this->Params->get('position', 'AC').' ',2,1));
+?>
+
 #contentmap_wrapper_<?php echo $owner; ?>_<?php echo $id; ?>
 {
-	width: <?php echo $this->Params->get("map_width", "100"); ?><?php echo $this->Params->get("map_width_unit", "%"); ?>;
-	margin: auto; /*Horizontally center the map*/
-	clear: both; /*Avoid overlapping with joomla article image, but it can create problems with some templates*/
+<?php
+	if (!empty($position)){
+		$map_width_unit=$this->Params->get("map_width_unit", "%");
+		$map_width=$this->Params->get("map_width", "100");
+		if ($map_width_unit=='%'){
+			$map_width_unit='px';
+			$map_width='300';
+		}
+		echo 'width: '.$map_width.$map_width_unit.';';
+	}else{
+?>	
+		width: <?php echo $this->Params->get("map_width", "100"); ?><?php echo $this->Params->get("map_width_unit", "%"); ?>;
+		margin: auto; /*Horizontally center the map*/
+		clear: both; /*Avoid overlapping with joomla article image, but it can create problems with some templates*/
+<?php } ?>
 }
 
 #contentmap_wrapper_plugin_<?php echo $id; ?>
 {
-	float: <?php echo (substr($this->Params->get('position', 'ACL'),2,1)=='L'?'left':'right'); ?>;
+<?php
+	if (!empty($position)){
+		echo 'float: '.($position=='L'?'left':'right').';';
+		
+		$fullposition=$this->Params->get('position', 'AC');
+		if ($fullposition=='BCR'){
+			echo 'margin: 3px 0px 6px 24px;';
+		}else if ($fullposition=='BCL'){
+			echo 'margin: 3px 24px 6px 0px;';
+		}
+	}
+?>
 }
 
 #contentmap_container_<?php echo $owner; ?>_<?php echo $id; ?>
@@ -37,6 +64,11 @@ $id = JRequest::getVar("id", "", "GET");
 }
 #contentmap_container_plugin_<?php echo $id; ?>
 {
+<?php
+	if (!empty($position)){
+		echo 'margin: 0;';
+	}
+?>
 }
 
 

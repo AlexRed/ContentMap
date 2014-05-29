@@ -39,13 +39,12 @@
 				</field>
 				<field name="map_height" type="text" size="6" label="CONTENTMAP_HEIGHT" description="CONTENTMAP_MAPHEIGHT_DSC" default="400" required="true"/>
 				
-                <field name="position" type="list" default="ACL" label="CONTENTMAP_POSITION_LBL" description="CONTENTMAP_POSITION_DSC">
+                <field name="position" type="list" default="AC" label="CONTENTMAP_POSITION_LBL" description="CONTENTMAP_POSITION_DSC">
+                    <option value="BC">CONTENTMAP_BEFORECONTENT</option>
                     <option value="BCL">CONTENTMAP_BEFORECONTENT_LEFT</option>
                     <option value="BCR">CONTENTMAP_BEFORECONTENT_RIGHT</option>
-                    <option value="ACL">CONTENTMAP_AFTERCONTENT_LEFT</option>
-                    <option value="ACR">CONTENTMAP_AFTERCONTENT_RIGHT</option>
+                    <option value="AC">CONTENTMAP_AFTERCONTENT</option>
                 </field>
-				
 				
 				<field name="zoom" type="list" default="17" label="CONTENTMAP_ZOOM_LBL" description="CONTENTMAP_ZOOM_DSC">
 					<option value="1">1</option>
@@ -105,6 +104,22 @@
 					<option value="BOTTOM_LEFT">CONTENTMAP_WATERMARK_POSITION_BOTTOM_LEFT</option>
 					<option value="BOTTOM_RIGHT">CONTENTMAP_WATERMARK_POSITION_BOTTOM_RIGHT</option>
 				</field>
+				
+				<field 
+					name="excludeArticles" 
+					type="text" 
+					default="" 
+					size="40" 					
+					label="CONTENTMAP_EXCLUDE_ARTICLES_LBL" 
+					description="CONTENTMAP_EXCLUDE_ARTICLES_DESC" />
+				<field 
+					name="excludeCats" 
+					type="text" 
+					default="" 
+					size="40" 					
+					label="CONTENTMAP_EXCLUDE_CATEGORIES_LBL" 
+					description="CONTENTMAP_EXCLUDE_CATEGORIES_DESC" />
+				
 
 				<field type="ossheader" default="CONTENTMAP_MARKERS_OPTIONS" icon="marker-16.png"/>
 				<field name="markers_icon" type="filelist" label="CONTENTMAP_MARKERS_ICON_LBL" description="CONTENTMAP_MARKERS_ICON_DSC" default="" hide_none="true" directory="media/contentmap/markers/icons" filter="\.png$" exclude="" stripext="" />
