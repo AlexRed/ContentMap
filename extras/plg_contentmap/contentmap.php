@@ -183,7 +183,7 @@ class plgContentContentmap extends JPlugin
 		{
 			// Add Google api to the document only once
 			$current_uri = JFactory::getURI();
-			$this->document->addScript(($current_uri->isSSL()?'https':'http')."://maps.google.com/maps/api/js?sensor=false" . $language . $api_key);
+			$this->document->addScript(($current_uri->isSSL()?'https':'http')."://maps.google.com/maps/api/js?sensor=false&amp;libraries=weather" . $language . $api_key);
 			$GLOBALS["contentmap"]["gapi"] = true;
 		}
 

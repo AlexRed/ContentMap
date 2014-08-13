@@ -105,6 +105,11 @@
 					<option value="BOTTOM_RIGHT">CONTENTMAP_WATERMARK_POSITION_BOTTOM_RIGHT</option>
 				</field>
 				
+				<field name="show_weather" type="list" default="0" label="CONTENTMAP_SHOW_WEATHER_LABEL" description="CONTENTMAP_SHOW_WEATHER_DESC">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+				
 				<field 
 					name="excludeArticles" 
 					type="text" 
@@ -165,6 +170,13 @@
 					<option value="0">JHIDE</option>
 					<option value="1">JSHOW</option>
 				</field>
+
+				<field name="intro_from" type="list" default="article" label="CONTENTMAP_TAKE_INTRO_FROM_LBL" description="CONTENTMAP_TAKE_INTRO_FROM_DSC">
+					<option value="article">CONTENTMAP_INTRO_FROM_ARTICLE</option>
+					<option value="metadesc">CONTENTMAP_INTRO_FROM_METADESC</option>
+				</field>
+				
+				
 				<field name="intro_clean_html_tags" type="list" default="1" label="CONTENTMAP_INTRO_CLEAN_HTML_TAGS_LBL"  description="CONTENTMAP_INTRO_CLEAN_HTML_TAGS_DSC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>

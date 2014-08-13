@@ -99,6 +99,14 @@
 					<option value="BOTTOM_RIGHT">CONTENTMAP_WATERMARK_POSITION_BOTTOM_RIGHT</option>
 				</field>
 				
+				<field name="bottom_description" type="textarea" default="" label="CONTENTMAP_BOTTOM_DESCRIPTION_LABEL" description="CONTENTMAP_BOTTOM_DESCRIPTION_DSC" rows="10" cols="5" filter="safehtml" />
+				
+				<field name="show_weather" type="list" default="0" label="CONTENTMAP_SHOW_WEATHER_LABEL" description="CONTENTMAP_SHOW_WEATHER_DESC">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+				
+				
 				<field type="ossheader" default="CONTENTMAP_MARKERS_OPTIONS" icon="marker-16.png"/>
 				<field name="markers_icon" type="filelist" label="CONTENTMAP_MARKERS_ICON_LBL" description="CONTENTMAP_MARKERS_ICON_DSC" default="" hide_none="true" directory="media/contentmap/markers/icons" filter="\.png$" exclude="" stripext="" />
                 <field name="markers_preview" type="markerpreview" label="CONTENTMAP_MARKERS_PREVIEW"/>
@@ -574,13 +582,18 @@
 					default="#0c71b0"
 					label="GEO_COLORAXIS_TOCOLOR_LABEL"
 					description="GEO_COLORAXIS_TOCOLOR_DESC" />
-					<!--
+
 				<field name="geo_datalessRegionColor"
 					type="color"
 					default="#F5F5F5"
 					label="GEO_DATALESSREGIONCOLOR_LABEL"
 					description="GEO_DATALESSREGIONCOLOR_DESC" />
-					-->
+					
+				<field name="geo_backgroundColor"
+					type="color"
+					default="#666666"
+					label="GEO_BACKGROUNDCOLOR_LABEL"
+					description="GEO_BACKGROUNDCOLOR_DESC" />
 
 				<field type="spacer" hr="true" />
 
