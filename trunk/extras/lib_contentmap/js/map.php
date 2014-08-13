@@ -70,6 +70,14 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 		controlUI.appendChild(controlIMG);
 		map.controls[eval('google.maps.ControlPosition.' + overlay_options.imageposition.toUpperCase())].push(controlDiv)
 	}
+<?php if ($this->Params->get("show_weather", 0)==1) {
+?>
+	
+var weatherLayer = new google.maps.weather.WeatherLayer({
+    temperatureUnits: google.maps.weather.TemperatureUnit.CELSIUS
+  });
+  weatherLayer.setMap(map);
+<?php } ?>
 	
 	var oms = new OverlappingMarkerSpiderfier(map);
 	
@@ -169,6 +177,20 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 		addCategoryMarker_<?php echo $owner; ?>_<?php echo $id; ?>(sortable[i][0]);
 	}
 	
+	<?php if ($this->Params->get("infowindow_event", "click")!='never'){ ?>
+	oms.addListener('click', function(marker, event) {
+<?php if ($this->Params->get("markers_action") == "infowindow") { ?>
+			// InfoWindow handling event
+			infowindow.setContent(data_<?php echo $owner; ?>_<?php echo $id; ?>.places[marker.cmapdata.zIndex].html);
+			infowindow.open(map, marker);
+<?php } else { ?>
+			// Redirect handling event
+			location.href = data_<?php echo $owner; ?>_<?php echo $id; ?>.places[marker.cmapdata.zIndex].article_url;
+<?php } ?>
+	});
+	<?php } /*chiusura != never*/?>
+	
+	
 	for (var i = 0; i < data_<?php echo $owner; ?>_<?php echo $id; ?>.places.length; ++i)
 	{
 		// Compute bounds rectangle
@@ -205,18 +227,6 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 		if ("icon" in data_<?php echo $owner; ?>_<?php echo $id; ?>)
 		marker.setIcon(data_<?php echo $owner; ?>_<?php echo $id; ?>.icon);
 		}
-		<?php if ($this->Params->get("infowindow_event", "click")!='never'){ ?>
-		oms.addListener('click', function(marker, event) {
-<?php if ($this->Params->get("markers_action") == "infowindow") { ?>
-			// InfoWindow handling event
-			infowindow.setContent(data_<?php echo $owner; ?>_<?php echo $id; ?>.places[marker.cmapdata.zIndex].html);
-			infowindow.open(map, marker);
-<?php } else { ?>
-			// Redirect handling event
-			location.href = data_<?php echo $owner; ?>_<?php echo $id; ?>.places[marker.cmapdata.zIndex].article_url;
-<?php } ?>
-		});
-		<?php } /*chiusura != never*/?>
 		<?php if ($this->Params->get("infowindow_event", "click")=='mouseover'){ ?>
 		var f=function (marker){
 			google.maps.event.addListener(marker,'mouseover',function(ev){ if( marker._omsData == undefined ){ google.maps.event.trigger(marker,'click'); }});

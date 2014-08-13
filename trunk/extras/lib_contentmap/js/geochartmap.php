@@ -76,8 +76,8 @@ echo 'var enable_gradation=!('.json_encode(intval($params->get('geo_disableGrada
 		$options->colorAxis->maxValue = $maxValue;
 	}
 	$options->colorAxis->colors = array($params->get('geo_colorAxis_fromColor', '#FFFFFF'), $params->get('geo_colorAxis_toColor', '#35A339'));
-	$options->datalessRegionColor = $params->get('datalessRegionColor', '#F5F5F5');
-
+	$options->datalessRegionColor = $params->get('geo_datalessRegionColor', '#F5F5F5');
+	$options->backgroundColor = $params->get('geo_backgroundColor', '#666');
 	
 	$options->legend='none';
 ?>

@@ -29,7 +29,7 @@
 		if ($params->get("data_source", "0")==0){
 			// Add Google api to the document only once
 			$current_uri = JFactory::getURI();
-			$document->addScript(($current_uri->isSSL()?'https':'http')."://maps.google.com/maps/api/js?sensor=false" . $language . $api_key);
+			$document->addScript(($current_uri->isSSL()?'https':'http')."://maps.google.com/maps/api/js?sensor=false&amp;libraries=weather" . $language . $api_key);
 			$GLOBALS["contentmap"]["gapi"] = true;
 		}
 	}
@@ -156,5 +156,17 @@
 <?php if ($params->get("category_legend_filter", "0")==2) {  ?>
 	<div id="contentmap_legend_tags_module_<?php echo $module->id; ?>">
 	</div>
-<?php }?>	
+<?php }?>
+
+
+<?php 
+$testo_sotto_mappa=trim($params->get("bottom_description", ""));
+
+if (!empty($testo_sotto_mappa)) {  ?>
+	<div id="contentmap_description_module_<?php echo $module->id; ?>">
+	<?php echo $testo_sotto_mappa; ?>
+	</div>
+<?php }?>
+
+
 </div>

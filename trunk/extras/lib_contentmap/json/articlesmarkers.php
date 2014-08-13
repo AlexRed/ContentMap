@@ -218,7 +218,7 @@ class articleGoogleMapMarkers extends GoogleMapMarkers
 	{
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
-		$query->select("id, title, alias, introtext, catid, created, created_by_alias, images, metadata");
+		$query->select("id, title, alias, introtext, catid, created, created_by_alias, images, metadata, metadesc");
 		$query->from("#__content");
 
 		// Condition: content id passed py plugin
@@ -260,6 +260,7 @@ class articleGoogleMapMarkers extends GoogleMapMarkers
 			$registry = new JRegistry($content["metadata"]); // Equivalent to $registry->loadString($content["metadata"], "JSON")
 			$coordinates = explode(",", $registry->get("xreference"));
 
+			
 			// Let's remove points with exactly the same coords
 			if(isset($check[md5($registry->get('xreference'))]))
 			{
@@ -294,11 +295,18 @@ class articleGoogleMapMarkers extends GoogleMapMarkers
 			$content["created_by_alias"] = htmlspecialchars($content["created_by_alias"]);
 			$content["created"] = htmlspecialchars($content["created"]);
 
+			
+			
+			if ($this->Params->get('intro_from', 'article')=='metadesc'){
+				$content["introtext"]=$content["metadesc"];
+			}
+			unset($content["metadesc"]);
+			
+			
 			// Remove html tags and keeps plain text
 			if ($this->Params->get('intro_clean_html_tags', 1)){
 				$content["introtext"] = JFilterInput::getInstance()->clean($content["introtext"], "string");
 			}
-			
 
 			// Remove elements useless for the map purposes in order to increase performance
 			// by saving bandwidth when sending JSON data to the client :)
