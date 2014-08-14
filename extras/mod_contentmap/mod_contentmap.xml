@@ -591,7 +591,7 @@
 					
 				<field name="geo_backgroundColor"
 					type="color"
-					default="#666666"
+					default="#b3d1ff"
 					label="GEO_BACKGROUNDCOLOR_LABEL"
 					description="GEO_BACKGROUNDCOLOR_DESC" />
 
