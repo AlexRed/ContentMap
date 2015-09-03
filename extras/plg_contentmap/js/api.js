@@ -67,7 +67,7 @@
 		/**
 		 * Create iframe URL
 		 */
-		var iframeUrl = 'http://api.mygeoposition.com/api/geopicker/id-' + id + '/?';
+		var iframeUrl ='http://api.mygeoposition.com/api/geopicker/id-' + id + '/?';
 		function addToUrl(name, value) {
 			if (value) {
 				iframeUrl = iframeUrl + "&" + name + "=" + escape(value);

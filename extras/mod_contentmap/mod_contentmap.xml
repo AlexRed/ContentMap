@@ -107,6 +107,14 @@
 				</field>
 				
 				
+				<field name="hide_poi" type="list" default="0" label="CONTENTMAP_HIDE_POI_LABEL" description="CONTENTMAP_HIDE_POI_DSC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				
+				
+				
+				
 				<field type="ossheader" default="CONTENTMAP_MARKERS_OPTIONS" icon="marker-16.png"/>
 				<field name="markers_icon" type="filelist" label="CONTENTMAP_MARKERS_ICON_LBL" description="CONTENTMAP_MARKERS_ICON_DSC" default="" hide_none="true" directory="media/contentmap/markers/icons" filter="\.png$" exclude="" stripext="" />
                 <field name="markers_preview" type="markerpreview" label="CONTENTMAP_MARKERS_PREVIEW"/>
@@ -114,6 +122,7 @@
 					<option value="infowindow">CONTENTMAP_MARKERS_ACTION_BALLOON</option>
 					<option value="redirect">CONTENTMAP_MARKERS_ACTION_REDIRECT</option>
 				</field>
+				
 				<field name="cluster" type="list" label="CONTENTMAP_MARKERS_CLUSTER_LBL" description="CONTENTMAP_MARKERS_CLUSTER_DSC" default="1">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
@@ -146,10 +155,23 @@
 					<option value="_parent">CONTENTMAP_TARGET_PARENT</option>
 					<option value="_top">CONTENTMAP_TARGET_TOP</option>
 				</field>
+				
+				<field name="show_readmore" type="list" default="0" label="CONTENTMAP_SHOW_READMORE_LABEL" description="CONTENTMAP_SHOW_READMORE_DESC">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+				
 				<field name="show_image" type="list" default="1" label="CONTENTMAP_INFOWINDOW_SHOWIMAGE_LBL" description="CONTENTMAP_INFOWINDOW_SHOWIMAGE_DSC">
 					<option value="0">JHIDE</option>
 					<option value="1">JSHOW</option>
 				</field>
+				
+				
+				<field name="image_max_width" type="text" size="6" label="CONTENTMAP_INFOWINDOW_IMAGE_MAX_WIDTH_LBL" description="CONTENTMAP_INFOWINDOW_IMAGE_MAX_WIDTH_DSC" default="100"/>
+				<field name="image_max_height" type="text" size="6" label="CONTENTMAP_INFOWINDOW_IMAGE_MAX_HEIGHT_LBL" description="CONTENTMAP_INFOWINDOW_IMAGE_MAX_HEIGHT_DSC" default="100"/>
+				
+				
+				
 				<field name="show_created_by_alias" type="list" default="0" label="CONTENTMAP_INFOWINDOW_SHOWALIAS_LBL">
 					<option value="0">JHIDE</option>
 					<option value="1">JSHOW</option>
@@ -178,6 +200,13 @@
 					<option value="1">CONTENTMAP_CATEGORIES</option>
 					<option value="2">CONTENTMAP_TAGS</option>
 				</field>
+				
+				<field name="show_deselect_all" type="list" default="0" label="CONTENTMAP_SHOW_DESELECT_ALL_LBL" description="CONTENTMAP_SHOW_DESELECT_ALL_DSC">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+				
+				
 				<!--
 				<field name="tags_legend_filter" type="list" default="0" label="CONTENTMAP_TAGS_LEGEND_FILTER_LBL">
 					<option value="0">JHIDE</option>
@@ -630,6 +659,10 @@
 			</fieldset>			
 
 			<fieldset name="advanced">
+				<field name="map_style_json" type="textarea" default="" label="CONTENTMAP_MAP_STYLE_JSON_LBL" description="CONTENTMAP_MAP_STYLE_JSON_DSC" rows="10" cols="5" filter="safehtml" />
+			
+			
+			
 				<field name="layout" type="modulelayout" label="JFIELD_ALT_LAYOUT_LABEL" description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
 				<field name="css" type="filelist" label="CONTENTMAP_ALT_CSS_LBL" description="CONTENTMAP_ALT_CSS_DSC" default="default.php" hide_none="true" directory="libraries/contentmap/css" filter="\.php$" exclude="" stripext="true"/>
 				<field name="moduleclass_sfx" type="text" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />

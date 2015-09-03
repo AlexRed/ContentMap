@@ -77,9 +77,66 @@ class com_contentmapInstallerScript
 	}
 
 
-	function postflight($type, $parent)
-	{
-	}
+	function postflight($type, $parent) {
+		if ($type == 'uninstall') return true;
+
+		$installed = true;
+		foreach ($this->results as $res){
+			if ($res['result']!="INSTALLED"){
+				$installed = false;
+				break;
+			}
+		}
+		if (!$installed){
+			return true;
+		}
+		
+		if (version_compare(JVERSION, '3.0', 'ge')){
+			
+			//style="width:34%;margin-left:-20%;top:25%;"
+			$app = JFactory::getApplication();
+			$html=array();			
+			$html[] ='<div id="contentmap-modal" class="modal hide fade" >';
+			$html[] ='';
+			$html[] ='	<div class="modal-header">';
+			$html[] ='		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
+			$html[] ='		<h3>ContentMap</h3>';
+			$html[] ='	</div>';
+			$html[] ='	<div class="modal-body">';
+			$html[] ='		<div class="progress progress-success progress-striped">';
+			$html[] ='			<div class="bar" style="width: 0;"></div>';
+			$html[] ='		</div>';
+			
+			
+			require_once(JPATH_ROOT . '/' . "libraries" . '/' . "contentmap" . '/' . "language" . '/' . "contentmap.inc");
+			$language = JFactory::getLanguage();
+			$language->load("com_contentmap.sys", realpath(dirname(__FILE__)));
+			$langcode = preg_replace("/-.*/", "", $language->get("tag"));
+
+			if ($GLOBALS["contentmap"]["version"][strlen($GLOBALS["contentmap"]["version"]) - 1] == " ") {
+				$html[] ='			<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">×</button> ';
+				$html[] ='				<div style="float:left;margin-right:16px;margin-left:10px;">';
+				$html[] ='					<a href="http://www.opensourcesolutions.es/ext/contentmap.html" target="_blank">';
+				$html[] ='						<img src="'.JURI::root().'media/contentmap/images/buy_now.jpg" border="0" alt="Buy now">';
+				$html[] ='					</a>';
+				$html[] ='				</div>';
+				$html[] ='				<p><strong>'.$language->_("COM_CONTENTMAP_PURCHASE").'</strong></p></div> ';
+			}
+			
+			
+			
+			$html[] ='	</div>';
+			$html[] ='	<div class="modal-footer">';
+			$html[] ='		<button class="btn" data-dismiss="modal" aria-hidden="true">OK</button>';
+			$html[] ='	</div>';
+			$html[] ='</div>';
+			$html[] ="<script>jQuery('#contentmap-modal').remove().prependTo('body').modal({keyboard: false});jQuery('#contentmap-modal .bar').animate({ width: '100%' },1000);</script>";
+			$app->enqueueMessage('Installing ContentMap... '.implode("\n",$html));
+		}
+		
+		
+		return true;
+	}	
 
 
 	private function chain_install(&$parent)

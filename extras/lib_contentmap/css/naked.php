@@ -93,7 +93,7 @@ $id = JRequest::getVar("id", "", "GET");
 }
 
 .contentmap_loading{
-	background: url("media/contentmap/images/ajax-loader.gif") no-repeat scroll 50% 50%; 
+	background: url(<?php echo json_encode(JURI::root()."media/contentmap/images/ajax-loader.gif"); ?>) no-repeat scroll 50% 50%; 
 }
 
 #contentmap_container_<?php echo $owner; ?>_<?php echo $id; ?> img

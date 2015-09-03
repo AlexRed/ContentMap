@@ -109,6 +109,11 @@
 					<option value="1">JSHOW</option>
 				</field>
 				
+				<field name="hide_poi" type="list" default="0" label="CONTENTMAP_HIDE_POI_LABEL" description="CONTENTMAP_HIDE_POI_DSC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				
 				<field 
 					name="excludeArticles" 
 					type="text" 
@@ -153,10 +158,20 @@
 					<option value="_parent">CONTENTMAP_TARGET_PARENT</option>
 					<option value="_top">CONTENTMAP_TARGET_TOP</option>
 				</field>
+				
+				<field name="show_readmore" type="list" default="0" label="CONTENTMAP_SHOW_READMORE_LABEL" description="CONTENTMAP_SHOW_READMORE_DESC">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+				
 				<field name="show_image" type="list" default="1" label="CONTENTMAP_INFOWINDOW_SHOWIMAGE_LBL" description="CONTENTMAP_INFOWINDOW_SHOWIMAGE_DSC">
 					<option value="0">JHIDE</option>
 					<option value="1">JSHOW</option>
 				</field>
+				
+				<field name="image_max_width" type="text" size="6" label="CONTENTMAP_INFOWINDOW_IMAGE_MAX_WIDTH_LBL" description="CONTENTMAP_INFOWINDOW_IMAGE_MAX_WIDTH_DSC" default="100"/>
+				<field name="image_max_height" type="text" size="6" label="CONTENTMAP_INFOWINDOW_IMAGE_MAX_HEIGHT_LBL" description="CONTENTMAP_INFOWINDOW_IMAGE_MAX_HEIGHT_DSC" default="100"/>
+				
 				<field name="show_created_by_alias" type="list" default="0" label="CONTENTMAP_INFOWINDOW_SHOWALIAS_LBL">
 					<option value="0">JHIDE</option>
 					<option value="1">JSHOW</option>
@@ -188,7 +203,9 @@
 			</fieldset>
 
 			<fieldset name="advanced">
-				<field name="css" type="filelist" label="CONTENTMAP_ALT_CSS_LBL" description="CONTENTMAP_ALT_CSS_DSC" default="default.css" hide_none="true" directory="libraries/contentmap/css" filter="\.css$" exclude="" stripext="true"/>
+				<field name="map_style_json" type="textarea" default="" label="CONTENTMAP_MAP_STYLE_JSON_LBL" description="CONTENTMAP_MAP_STYLE_JSON_DSC" rows="10" cols="5" filter="safehtml" />
+
+				<field name="css" type="filelist" label="CONTENTMAP_ALT_CSS_LBL" description="CONTENTMAP_ALT_CSS_DSC" default="default.css" hide_none="true" directory="libraries/contentmap/css" filter="\.php$" exclude="" stripext="true"/>
 				<!-- <field name="markers" type="hidden" default="markers.json" /> -->
 				<field name="api_key" type="text" label="CONTENTMAP_API_KEY_LBL" description="CONTENTMAP_API_KEY_DSC" size="26"/>
 			</fieldset>

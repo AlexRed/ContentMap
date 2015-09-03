@@ -49,6 +49,37 @@ function init_<?php echo $owner; ?>_<?php echo $id; ?>()
 		zoomControl: <?php echo $this->Params->get('hideZoomControl', 0)==0?'true':'false';?>
 	});
 	
+	var map_json_style=[];
+	
+	<?php 
+	$map_style_json =trim( $this->Params->get("map_style_json", ""));
+	
+	if (!empty($map_style_json)){
+		echo 'map_json_style='.$map_style_json.';'."\n";
+	}
+	
+	
+	?>
+
+	if (map_json_style==null){
+		map_json_style=[];
+	}
+	
+<?php if ($this->Params->get("hide_poi", 0)) { ?>
+	
+	map_json_style.push(
+	{
+		featureType: "poi",
+		stylers: [
+		  { visibility: "off" }
+		]   
+	  });
+<?php } ?>	
+
+	if (map_json_style.length>0){
+		map.setOptions({styles: map_json_style});
+	}
+	
 	//image overlay
 	var overlay_options={
 		imageindex: 1,
@@ -149,7 +180,30 @@ var weatherLayer = new google.maps.weather.WeatherLayer({
 			sortable.push([k, tags[k]]);
 	    }
 	}
-	sortable.sort(function(a, b) {return a[1] - b[1]})	
+	sortable.sort(function(a, b) {return a[1] - b[1]})	;
+	
+<?php if ($this->Params->get("category_legend_filter", "0")==2 && $this->Params->get("show_deselect_all",0)==1) { ?>
+	
+	if (sortable.length>0){
+		
+			var deselect_all = document.createElement('a');
+			deselect_all.className ="contentmap-checkcontainer";
+			deselect_all.appendChild(document.createTextNode(<?php echo json_encode(JText::_("CONTENTMAP_DESELECT_ALL")); ?>));
+			deselect_all.onclick=function(){
+				var checkboxes = document.getElementById('contentmap_legend_tags_<?php echo $owner; ?>_<?php echo $id; ?>').getElementsByTagName("input");
+				for (var ci = 0; ci<checkboxes.length; ci++){
+					checkboxes[ci].checked = false;
+					checkboxes[ci].onchange();
+				}
+				return false;
+			};
+		
+			document.getElementById('contentmap_legend_tags_<?php echo $owner; ?>_<?php echo $id; ?>').appendChild(deselect_all);
+			document.getElementById('contentmap_legend_tags_<?php echo $owner; ?>_<?php echo $id; ?>').appendChild(document.createTextNode(" "));
+		
+	}
+<?php } ?>	
+	
 	for (var i = 0; i < sortable.length; ++i)
 	{
 		addTagsMarker_<?php echo $owner; ?>_<?php echo $id; ?>(sortable[i][0]);
@@ -171,11 +225,33 @@ var weatherLayer = new google.maps.weather.WeatherLayer({
 			sortable.push([k, categories[k]]);
 	    }
 	}
-	sortable.sort(function(a, b) {return a[1] - b[1]})	
+	sortable.sort(function(a, b) {return a[1] - b[1]})	;
+	
+<?php if ($this->Params->get("category_legend_filter", "0")==1 && $this->Params->get("show_deselect_all",0)==1) { ?>
+	if (sortable.length>0){
+		
+			var deselect_all = document.createElement('a');
+			deselect_all.className ="contentmap-checkcontainer";
+			deselect_all.appendChild(document.createTextNode(<?php echo json_encode(JText::_("CONTENTMAP_DESELECT_ALL")); ?>));
+			deselect_all.onclick=function(){
+				var checkboxes = document.getElementById('contentmap_legend_<?php echo $owner; ?>_<?php echo $id; ?>').getElementsByTagName("input");
+				for (var ci = 0; ci<checkboxes.length; ci++){
+					checkboxes[ci].checked = false;
+					checkboxes[ci].onchange();
+				}
+				return false;
+			};
+			document.getElementById('contentmap_legend_<?php echo $owner; ?>_<?php echo $id; ?>').appendChild(deselect_all);
+			document.getElementById('contentmap_legend_<?php echo $owner; ?>_<?php echo $id; ?>').appendChild(document.createTextNode(" "));		
+		
+	}
+<?php } ?>	
+	
 	for (var i = 0; i < sortable.length; ++i)
 	{
 		addCategoryMarker_<?php echo $owner; ?>_<?php echo $id; ?>(sortable[i][0]);
 	}
+	
 	
 	<?php if ($this->Params->get("infowindow_event", "click")!='never'){ ?>
 	oms.addListener('click', function(marker, event) {

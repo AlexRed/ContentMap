@@ -49,10 +49,15 @@ abstract class GoogleMapMarkers
 		$this->Zoom = $this->Params->get('zoom', 17);
 	}
 
+	
+
 
 	public function PrepareInfoWindows()
 	{
 		require_once JPATH_SITE . "/components/com_content/helpers/route.php";
+		$jlang = JFactory::getLanguage();
+		$jlang->load("com_content");
+		
 
 		//$baseuri = str_replace("modules/mod_contentmap/lib", "", JURI::base(true));
 		foreach ($this->Contents as &$content)
@@ -61,7 +66,7 @@ abstract class GoogleMapMarkers
 
 			// We haven't the active menu item, since we are acting in background, so we hope it is in the URL request
 			// Itemid variable influences ContentHelperRoute::getArticleRoute() link creation
-			$unsef_link = ContentHelperRoute::getArticleRoute($content["id"], $content["catid"]);
+			$unsef_link = ContentHelperRoute::getArticleRoute($content["id"], $content["catid"], $content["language"]);
 
 			// Sef Link examples:
 			// without &Itemid : http://site/index.php/component/content/article/2-categoryalias/2-articlealias - This is always valid
@@ -117,7 +122,11 @@ abstract class GoogleMapMarkers
 					$content["html"] .=
 					'<a href="' . $sef_link . '"' . $target . '>';
 				}
-				$content["html"] .= "<img class=\"intro_image\"" .
+				
+				$img_max_width = intval($this->Params->get('image_max_width','100'))."px";
+				$img_max_height = intval($this->Params->get('image_max_height','100'))."px";
+				
+				$content["html"] .= "<img style=\"max-width:${img_max_width} !important; max-height:${img_max_height} !important;\" class=\"intro_image\"" .
 				$format .
 				" src=\"" . $content["image"] . "\"";
 				if ($content["image_intro_alt"]) $content["html"] .= " alt=\"" . $content["image_intro_alt"] . "\"";
@@ -161,8 +170,16 @@ abstract class GoogleMapMarkers
 				if ($maxsize = $this->Params->get('introtext_size', 0))
 				{
 					// Cut text exceeding maximum size
-					$readmore = strlen($content["introtext"]) > $maxsize ? "..." : "";
-					$content["html"] .= "<div>" . substr($content["introtext"], 0, $maxsize) . $readmore . "</div>";
+					$readmore_dot = strlen($content["introtext"]) > $maxsize ? "..." : "";
+					
+					$target = ' target="' . $this->Params->get("link_target", "_self") . '"';
+					
+					$readmore = '';
+					if ($this->Params->get('show_readmore', 0)){
+						$readmore = '<p><a href="' . $sef_link . '"' . $target . '>'.JText::_('COM_CONTENT_READ_MORE_TITLE').'</a></p>';
+					}
+					$introtext = substr($content["introtext"], 0, $maxsize);
+					$content["html"] .= "<div>" . $introtext . $readmore_dot . $readmore . "</div>";
 				}
 			}
 			unset($content["introtext"]);
@@ -218,7 +235,7 @@ class articleGoogleMapMarkers extends GoogleMapMarkers
 	{
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
-		$query->select("id, title, alias, introtext, catid, created, created_by_alias, images, metadata, metadesc");
+		$query->select("id, title, alias, introtext, catid, created, created_by_alias, images, metadata, metadesc, language");
 		$query->from("#__content");
 
 		// Condition: content id passed py plugin
@@ -340,7 +357,7 @@ class articlesGoogleMapMarkers extends GoogleMapMarkers
 		$language = $db->loadResult();
 
 		$query->clear();
-		$query->select("c.id, c.title, c.alias, c.introtext, c.catid, c.created, c.created_by_alias, c.images, c.metadata,g.title category,g.lft category_lft");
+		$query->select("c.id, c.title, c.alias, c.introtext, c.catid, c.created, c.created_by_alias, c.images, c.metadata,g.title category,g.lft category_lft, c.language");
 		$query->from("#__content c");
 
 		$query->join('inner',"#__categories g ON c.catid=g.id");
