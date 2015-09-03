@@ -78,9 +78,9 @@
 
 	if ($params->get("cluster", "1"))
 	{
-		$document->addScript(JURI::base(true) . "/libraries/contentmap/js/markerclusterer_compiled.js");
+		$document->addScript(JURI::root() . "media/contentmap/js/markerclusterer_compiled.js");
 	}
-	$document->addScript(JURI::base(true) . "/libraries/contentmap/js/oms.min.js");
+	$document->addScript(JURI::root() . "media/contentmap/js/oms.min.js");
 
 	
 	//$document->addScript($prefix . "&amp;type=js&amp;filename=map" . $postfix);

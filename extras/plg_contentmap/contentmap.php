@@ -49,6 +49,8 @@ class plgContentContentmap extends JPlugin
 			"com_content.article",
 			"com_flexicontent.item"
 		);
+		
+		
 		if (!in_array($form->getName(), $components_list)) return true;
 
         if(version_compare(JVERSION, '3.2', 'ge'))
@@ -58,7 +60,9 @@ class plgContentContentmap extends JPlugin
 							<fieldset name="jmetadata" addfieldpath="/libraries/contentmap/models/fields">
 							    <field name="marker" type="imagelist" default="" label="Marker style" description="Select a marker" directory="media/contentmap/markers/icons" exclude="" stripext="" />
 		                        <field name="markers_preview" type="markerpreview" label="CONTENTMAP_MARKERS_PREVIEW"/>
-							</fieldset>
+							</fieldset>				
+								
+
 						</fields>
 					</form>
 			 ');
@@ -85,9 +89,8 @@ class plgContentContentmap extends JPlugin
         }
 
 		JHtml::_('behavior.framework', true);
-
-		$this->document->addStyleSheet("../plugins/content/contentmap/css/picker.css");
-		$this->document->addScript("../plugins/content/contentmap/js/api.js");
+		$this->document->addStyleSheet(JURI::root()."plugins/content/contentmap/css/picker.css");
+		$this->document->addScript(JURI::root()."plugins/content/contentmap/js/api.js");
 		//$this->document->addScript(JURI::root(true) . "/libraries/contentmap/js/geopicker-min.js");
 		$this->document->addScript(JURI::root(true)
 			. "/index.php"
@@ -101,7 +104,7 @@ class plgContentContentmap extends JPlugin
 		require_once(JPATH_ROOT . '/' . "libraries" . '/' . "contentmap" . '/' . "language" . '/' . "contentmap.inc");
 		if ($GLOBALS["contentmap"]["version"][strlen($GLOBALS["contentmap"]["version"]) - 1] == " ")
 		{
-			$this->document->addStyleSheet("../plugins/content/contentmap/css/picker.css");
+			$this->document->addStyleSheet(JURI::root()."plugins/content/contentmap/css/picker.css");
 			$this->document->addScript(JURI::root(true)
 				. "/index.php"
 				. "?option=com_contentmap"
@@ -192,8 +195,8 @@ class plgContentContentmap extends JPlugin
 		$stylesheet = pathinfo($this->params->get("css", "default"));
 		$this->document->addStyleSheet($prefix . "&amp;type=css&amp;filename=" . $stylesheet["filename"]);
 		// Necessario perche' in map.php per default il raggruppamento e' attivo per chiunque, plugin compreso! :(
-		$this->document->addScript(JURI::base(true) . "/libraries/contentmap/js/markerclusterer_compiled.js");
-		$this->document->addScript(JURI::base(true) . "/libraries/contentmap/js/oms.min.js");
+		$this->document->addScript(JURI::root() . "media/contentmap/js/markerclusterer_compiled.js");
+		$this->document->addScript(JURI::root() . "media/contentmap/js/oms.min.js");
 		//$this->document->addScript($prefix . "&amp;type=json&amp;filename=articlesmarkers&amp;source=article&amp;contentid=" . $article->id);
 		//$this->document->addScript($prefix . "&amp;type=js&amp;filename=map");
 			

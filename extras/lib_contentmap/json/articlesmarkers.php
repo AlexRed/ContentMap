@@ -15,6 +15,28 @@ $classname = $source . "GoogleMapMarkers";
 $markers = new $classname($this->Params);
 $markers->PrepareInfoWindows();
 
+if ($source == 'article' && $this->Params->get('show_other_markers', 0)==1){
+	
+	$this->Params->set("lang_from_site",1);
+	$other_markers = new articlesGoogleMapMarkers($this->Params);
+	$other_markers->PrepareInfoWindows();
+	
+	$markers->Contents[0]['center_this']=true;
+	
+	foreach ($other_markers->Contents as $content){
+		if ($content['article_url']!=$markers->Contents[0]['article_url']){
+			
+			if (!isset($content['marker'])){
+				$content['marker']= JURI::base(true) . '/media/contentmap/markers/icons/default.png';
+			}
+			
+			$markers->Contents[] = $content;
+		}
+	}
+	
+}
+
+
 // Load additional data
 $markers_icon = $this->Params->get("markers_icon", NULL);
 $markers_icon = $markers_icon ? '"icon":' . json_encode(JURI::base(true) . '/media/contentmap/markers/icons/' . $markers_icon) . ',' : "";
@@ -123,10 +145,19 @@ abstract class GoogleMapMarkers
 					'<a href="' . $sef_link . '"' . $target . '>';
 				}
 				
-				$img_max_width = intval($this->Params->get('image_max_width','100'))."px";
-				$img_max_height = intval($this->Params->get('image_max_height','100'))."px";
+				$img_max_width = intval($this->Params->get('image_max_width','0'));
+				$img_max_height = intval($this->Params->get('image_max_height','0'));
 				
-				$content["html"] .= "<img style=\"max-width:${img_max_width} !important; max-height:${img_max_height} !important;\" class=\"intro_image\"" .
+				$style_max_w_h='';
+				if ($img_max_width>0){
+					$style_max_w_h.="max-width:${img_max_width}px !important;";
+				}
+				if ($img_max_height>0){
+					$style_max_w_h.="max-height:${img_max_height}px !important;";
+				}
+				
+				
+				$content["html"] .= "<img style=\"${style_max_w_h}\" class=\"intro_image\"" .
 				$format .
 				" src=\"" . $content["image"] . "\"";
 				if ($content["image_intro_alt"]) $content["html"] .= " alt=\"" . $content["image_intro_alt"] . "\"";
@@ -347,15 +378,22 @@ class articlesGoogleMapMarkers extends GoogleMapMarkers
 	{
 		$db = JFactory::getDBO();
 
-		// Detect the language associated to the module. It will be used as articles filter
 		$query = $db->getQuery(true);
-		$query->select("language");
-		$query->from("#__modules");
-		$query->where("`id` = " . intval(JRequest::getVar("id", 0, "GET")));
-		$query->where("`module` = 'mod_contentmap'");
-		$db->setQuery($query);
-		$language = $db->loadResult();
-
+		
+		 if ($this->Params->get('lang_from_site',0)==1){
+			
+			$lang = JFactory::getLanguage();
+			$language = $lang->getTag();
+		}else{
+			$mod_id = intval(JRequest::getVar("id", 0, "GET"));
+			// Detect the language associated to the module. It will be used as articles filter
+			$query->select("language");
+			$query->from("#__modules");
+			$query->where("`id` = " .$mod_id );
+			$query->where("`module` = 'mod_contentmap'");
+			$db->setQuery($query);
+			$language = $db->loadResult();
+		}
 		$query->clear();
 		$query->select("c.id, c.title, c.alias, c.introtext, c.catid, c.created, c.created_by_alias, c.images, c.metadata,g.title category,g.lft category_lft, c.language");
 		$query->from("#__content c");
@@ -410,6 +448,21 @@ class articlesGoogleMapMarkers extends GoogleMapMarkers
 			$query->where("c.created_by " . $author_filtering_type . " (" . $authors . ")");
 		}
 
+		// Condition: Tags inclusive | exclusive filter
+		$tag_filtering_type = $this->Params->get('tag_filtering_type_list', "0");  // Can be "IN", "NOT IN" or "0"
+		$tags_filter_vals = $this->Params->get('tagid', array());
+
+
+		// Condition: Article inclusive | exclusive filter
+		$article_filtering_type = $this->Params->get('article_filtering_type', 0);  // Can be "IN", "NOT IN" or "0"
+		if ($article_filtering_type)
+		{
+			$articlesf = $this->Params->get('artid', array("0")); // Defaults to non-existing user
+			$articlesf = implode(',', $articlesf);         // Converted to string
+			$query->where("c.id " . $article_filtering_type . " (" . $articlesf . ")");
+		}
+		
+		
 		// Condition: Featured
 		$query->where("c.featured IN (" . $this->Params->get('featured', "0,1") . ")");
 
@@ -437,13 +490,15 @@ class articlesGoogleMapMarkers extends GoogleMapMarkers
 		$i         = 0;
 		$w_content = $this->Contents;
 		
+		
+		$this->Contents = array();
 		$load_tags=version_compare(JVERSION, '3.1', 'ge');
-		foreach ($w_content as &$content)
+		foreach ($w_content as $content)
 		{
 			$content["tags"]=array();
 			if ($load_tags){
 				$query->clear();
-				$query->select("t.title,t.lft");
+				$query->select("t.title,t.lft, t.id");
 				$query->from("#__content c");
 				$query->join('inner',"#__contentitem_tag_map m ON c.id=m.content_item_id");
 				$query->join('inner',"#__tags t ON m.tag_id=t.id");
@@ -452,9 +507,35 @@ class articlesGoogleMapMarkers extends GoogleMapMarkers
 				$db->setQuery($query);
 				$content["tags"] = $db->loadAssocList();
 				if (empty($content["tags"])){
-					$content["tags"] = array(array('title'=>'-no tag-','lft'=>0));
+					$content["tags"] = array(array('title'=>'-no tag-','lft'=>0,'id'=>0));
 				}
+				
+				$tags_id=array();
+				foreach ($content["tags"] as &$tag_r){
+					$tags_id[] = $tag_r['id'];
+					unset($tag_r['id']);
+				}
+				unset($tag_r);
+				
+				$at_least_one = false;
+				foreach ($tags_id as $tid){
+					if (in_array($tid, $tags_filter_vals)){
+						$at_least_one=true;
+						break;
+					}
+				}
+				if ($tag_filtering_type=='IN'){
+					if (!$at_least_one){
+						continue;
+					}
+				}else if ($tag_filtering_type=='NOT IN'){
+					if ($at_least_one){
+						continue;
+					}
+				}
+				
 			}
+			
 		
 			// xreference database field is empty.
 			// For some strange reason, it is stored in metadata field on the database
@@ -506,9 +587,12 @@ class articlesGoogleMapMarkers extends GoogleMapMarkers
 			unset($content["metadata"]);
 			unset($content["images"]);
 
+			$this->Contents[] = $content;
 			$i++;
 		}
-		$this->Contents = $w_content;
+		
+		
+		//$this->Contents = $w_content;
 
 		// Problematic infowindows are near the upper border, so start preload from them
 		// Sort by Latitude,

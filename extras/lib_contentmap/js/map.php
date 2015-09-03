@@ -326,7 +326,7 @@ var weatherLayer = new google.maps.weather.WeatherLayer({
 // Set bounds rectangle
 // Used only by the module which contains more than one marker but only when a center is not defined
 ?>
-	if (data_<?php echo $owner; ?>_<?php echo $id; ?>.places.length > 1)
+	if (data_<?php echo $owner; ?>_<?php echo $id; ?>.places.length > 1 && !data_<?php echo $owner; ?>_<?php echo $id; ?>.places[0].hasOwnProperty('center_this'))
 	{
 		// Automatic scale and center the map based on the marker points
 		var bounds = new google.maps.LatLngBounds();

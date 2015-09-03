@@ -167,8 +167,8 @@
 				</field>
 				
 				
-				<field name="image_max_width" type="text" size="6" label="CONTENTMAP_INFOWINDOW_IMAGE_MAX_WIDTH_LBL" description="CONTENTMAP_INFOWINDOW_IMAGE_MAX_WIDTH_DSC" default="100"/>
-				<field name="image_max_height" type="text" size="6" label="CONTENTMAP_INFOWINDOW_IMAGE_MAX_HEIGHT_LBL" description="CONTENTMAP_INFOWINDOW_IMAGE_MAX_HEIGHT_DSC" default="100"/>
+				<field name="image_max_width" type="text" size="6" label="CONTENTMAP_INFOWINDOW_IMAGE_MAX_WIDTH_LBL" description="CONTENTMAP_INFOWINDOW_IMAGE_MAX_WIDTH_DSC" default="0"/>
+				<field name="image_max_height" type="text" size="6" label="CONTENTMAP_INFOWINDOW_IMAGE_MAX_HEIGHT_LBL" description="CONTENTMAP_INFOWINDOW_IMAGE_MAX_HEIGHT_DSC" default="0"/>
 				
 				
 				
@@ -236,6 +236,26 @@
 					query="select id, name, username from #__users where id IN (select distinct(created_by) from #__content) order by name ASC"
 					key_field="id" value_field="name">
 				</field>
+
+
+				<field type="spacer" hr="true" />
+				<field name="tag_filtering_type_list" type="list" default="0" label="CONTENTMAP_FILTERINGTYPE_LBL" description="CONTENTMAP_FILTERINGTYPE_DSC">
+					<option value="IN">CONTENTMAP_INCLUSIVE</option>
+					<option value="NOT IN">CONTENTMAP_EXCLUSIVE</option>
+					<option value="0">JDISABLED</option>
+				</field>
+				<field name="tagid" type="tag" multiple="true" label="JTAG" mode="ajax" description="CONTENTMAP_SELECT_ITEMS_DSC" />
+
+
+				<field type="spacer" hr="true" />
+				<field name="article_filtering_type" type="list" default="0" label="CONTENTMAP_FILTERINGTYPE_LBL" description="CONTENTMAP_FILTERINGTYPE_DSC">
+					<option value="IN">CONTENTMAP_INCLUSIVE</option>
+					<option value="NOT IN">CONTENTMAP_EXCLUSIVE</option>
+					<option value="0">JDISABLED</option>
+				</field>
+				<field name="artid" type="sql" multiple="true" size="5" label="CONTENTMAP_ARTICLES_LBL" description="CONTENTMAP_SELECT_ITEMS_DSC" query="SELECT id, title FROM #__content order by title ASC" key_field="id" value_field="title" />
+
+
 				<field type="spacer" hr="true" />
 				<field type="spacer" hr="true" />	
 				<field type="spacer" hr="true" />

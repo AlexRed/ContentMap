@@ -26,7 +26,7 @@ window.addEvent('domready',function()
 	var new_element = document.createElement('div');
 	new_element.className = 'contentmap_message contentmap_red';
 	new_element.innerHTML =
-	'<img style="margin:0; float:left' + ';" src="../media/contentmap/images/cross-circle-frame.png">' +
+	'<img style="margin:0; float:left' + ';" src="<?php echo JUri::root(); ?>media/contentmap/images/cross-circle-frame.png">' +
 	'<span style="padding-left' + ':5px; line-height:16px;">' +
 	'<?php echo($language->_("COM_CONTENTMAP_PURCHASE")); ?> <a href="http://www.opensourcesolutions.es/ext/contentmap.html" target="_blank"><?php echo($language->_("COM_CONTENTMAP_BUYNOW")); ?></a>' +
 	'</span>';
