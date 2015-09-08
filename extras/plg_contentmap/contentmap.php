@@ -180,7 +180,7 @@ class plgContentContentmap extends JPlugin
 		$itemid = "&amp;Itemid=" . $itemid->id;
 		$template = "template";
 		
-		$plugin_text_html= "<!-- plg_contentmap " . $GLOBALS["contentmap"]["version"] . "-->";
+		$plugin_text_html= "<!-- plg_contentmap " . $GLOBALS["contentmap"]["version"] . "-->".'<div style="display:none;">contentmap_plugin</div>';
 
 		if (empty($GLOBALS["contentmap"]["gapi"]))
 		{

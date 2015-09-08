@@ -54,7 +54,7 @@ $itemid = "&amp;Itemid=" . $itemid->id;
 // Used by templates
 $document = JFactory::getDocument();
 
-echo "<!-- mod_contentmap " . $GLOBALS["contentmap"]["version"] . "-->";
+echo "<!-- mod_contentmap " . $GLOBALS["contentmap"]["version"] . "-->".'<div style="display:none;">contentmap_module</div>';
 $prefix = JURI::base(true) . "/index.php?option=com_contentmap&amp;view=smartloader";
 $postfix = "&amp;owner=module&amp;id=" . $module->id . $itemid;
 require JModuleHelper::getLayoutPath($app->scope, $params->get('layout', 'default'));
