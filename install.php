@@ -113,7 +113,8 @@ class com_contentmapInstallerScript
 			$language->load("com_contentmap.sys", realpath(dirname(__FILE__)));
 			$langcode = preg_replace("/-.*/", "", $language->get("tag"));
 
-			if ($GLOBALS["contentmap"]["version"][strlen($GLOBALS["contentmap"]["version"]) - 1] == " ") {
+			if (isset($GLOBALS["contentmap"]) && isset($GLOBALS["contentmap"]["ha"]) && $GLOBALS["contentmap"]["ha"]) {
+			}else{
 				$html[] ='			<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">×</button> ';
 				$html[] ='				<div style="float:left;margin-right:16px;margin-left:10px;">';
 				$html[] ='					<a href="http://www.opensourcesolutions.es/ext/contentmap.html" target="_blank">';
