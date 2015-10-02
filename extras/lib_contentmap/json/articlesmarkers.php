@@ -587,6 +587,7 @@ class articlesGoogleMapMarkers extends GoogleMapMarkers
 			unset($content["metadata"]);
 			unset($content["images"]);
 
+			$content['language']=$language;
 			$this->Contents[] = $content;
 			$i++;
 		}
@@ -946,6 +947,7 @@ class tagsGoogleMapMarkers extends GoogleMapMarkers
 				'image_intro_alt' => NULL,
 				'image_intro_caption' => NULL,
 				
+				'language' => $language,
 				
 				'tag_link'=>JRoute::_(TagsHelperRoute::getTagRoute($item->tag_id . '-' . $item->alias),false),
 				'tag_count'=>$item->count
