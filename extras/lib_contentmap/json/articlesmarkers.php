@@ -246,9 +246,94 @@ abstract class GoogleMapMarkers
 	}
 
 
+		
+	//http://www.icosaedro.it/articoli/php-i18n.html
+	/*. string .*/ public function utf8_bmp_filter(/*. string .*/ $s)
+	/*.
+		DOC Filter and sanify UTF-8 BMP string
+
+		Only valid UTF-8 bytes encoding the Unicode Basic Multilingual Plane
+		subset (codes from 0x0000 up to 0xFFFF) are passed. Any other code or
+		sequence is dropped. See RFC 3629 par. 4 for details.
+	.*/
+	{
+		$T = "[\x80-\xBF]";
+
+		return preg_replace("/("
+
+			# Unicode range 0x0000-0x007F (ASCII charset):
+			."[\\x00-\x7F]"
+			
+			# Unicode range 0x0080-0x07FF:
+			."|[\xC2-\xDF]$T"
+
+			# Unicode range 0x0800-0xD7FF, 0xE000-0xFFFF:
+			."|\xE0[\xA0-\xBF]$T|[\xE1-\xEC]$T$T|\xED[\x80-\x9F]$T|[\xEE-\xEF]$T$T"
+
+			# Invalid/unsupported multi-byte sequence:
+			.")|(.)/",
+			
+			"\$1", $s);
+	}
+	
+	public function utf8_bmp_filter_rec(&$a){
+		foreach ($a as &$elem){
+			if (is_array($elem)){
+				$this->utf8_bmp_filter_rec($elem);
+			}else if (is_string($elem)){
+				$elem = $this->utf8_bmp_filter($elem);
+			}
+		}
+		unset($elem);
+	}
+	
 	public function asJSON()
 	{
-		return json_encode($this->Contents);
+		$this->utf8_bmp_filter_rec($this->Contents);
+		$json = json_encode($this->Contents);
+		
+		if ($json === FALSE){
+			/*
+			$last_error_msg = '';
+			switch (json_last_error()) {
+				case JSON_ERROR_NONE:
+					$last_error_msg = ' - No errors';
+					break;
+				case JSON_ERROR_DEPTH:
+					$last_error_msg = ' - Maximum stack depth exceeded';
+					break;
+				case JSON_ERROR_STATE_MISMATCH:
+					$last_error_msg = ' - Underflow or the modes mismatch';
+					break;
+				case JSON_ERROR_CTRL_CHAR:
+					$last_error_msg = ' - Unexpected control character found';
+					break;
+				case JSON_ERROR_SYNTAX:
+					$last_error_msg = ' - Syntax error, malformed JSON';
+					break;
+				case JSON_ERROR_UTF8:
+					$last_error_msg = ' - Malformed UTF-8 characters, possibly incorrectly encoded';
+					break;
+				//PHP 5.5
+				case JSON_ERROR_RECURSION:
+					$last_error_msg = ' - One or more recursive references in the value to be encoded';
+					break;
+				case JSON_ERROR_INF_OR_NAN:
+					$last_error_msg = ' - One or more NAN or INF values in the value to be encoded';
+					break;
+				case JSON_ERROR_UNSUPPORTED_TYPE:
+					$last_error_msg = ' - A value of a type that cannot be encoded was given';
+					break;
+				default:
+					$last_error_msg = ' - Unknown error';
+					break;
+			}
+			
+			error_log($last_error_msg,3,'php-errors.log');
+			*/
+		}
+		
+		return $json;
 	}
 
 
@@ -587,7 +672,6 @@ class articlesGoogleMapMarkers extends GoogleMapMarkers
 			unset($content["metadata"]);
 			unset($content["images"]);
 
-			$content['language']=$language;
 			$this->Contents[] = $content;
 			$i++;
 		}
@@ -947,7 +1031,6 @@ class tagsGoogleMapMarkers extends GoogleMapMarkers
 				'image_intro_alt' => NULL,
 				'image_intro_caption' => NULL,
 				
-				'language' => $language,
 				
 				'tag_link'=>JRoute::_(TagsHelperRoute::getTagRoute($item->tag_id . '-' . $item->alias),false),
 				'tag_count'=>$item->count
