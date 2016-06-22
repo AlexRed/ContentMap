@@ -368,7 +368,7 @@ var weatherLayer = new google.maps.weather.WeatherLayer({
 			var checkbox = document.createElement('input');
 			checkbox.type="checkbox";
 			checkbox.checked="checked";
-			checkbox.className ="checkbox";
+			checkbox.className ="checkboxxx";
 			
 			checkbox.onchange=function(){
 				g_category[name].checked=checkbox.checked;
@@ -448,7 +448,7 @@ var weatherLayer = new google.maps.weather.WeatherLayer({
 			var checkbox = document.createElement('input');
 			checkbox.type="checkbox";
 			checkbox.checked="checked";
-			checkbox.className ="checkbox";
+			checkbox.className ="checkboxxx";
 			
 			checkbox.onchange=function(){
 				g_tags[name].checked=checkbox.checked;

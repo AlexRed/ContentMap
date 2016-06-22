@@ -119,7 +119,7 @@ $id = JRequest::getVar("id", "", "GET");
 .contentmap-checkcontainer > span {
 }
 
-.contentmap-checkcontainer > .checkbox {
+.contentmap-checkcontainer > .checkboxxx {
     margin: 0;
     margin-right:5px;
 }
