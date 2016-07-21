@@ -686,7 +686,6 @@
 				<field name="layout" type="modulelayout" label="JFIELD_ALT_LAYOUT_LABEL" description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
 				<field name="css" type="filelist" label="CONTENTMAP_ALT_CSS_LBL" description="CONTENTMAP_ALT_CSS_DSC" default="default.php" hide_none="true" directory="libraries/contentmap/css" filter="\.php$" exclude="" stripext="true"/>
 				<field name="moduleclass_sfx" type="text" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
-				<field name="api_key" type="text" label="CONTENTMAP_API_KEY_LBL" description="CONTENTMAP_API_KEY_DSC" size="26"/>
 				<!--<field name="data_url" type="text" label="CONTENTMAP_CONNECTOR_URL_LBL" description="CONTENTMAP_CONNECTOR_URL_DSC" default="http://forum.joomla.it/libraries/contentmap/json/smf.php"/>-->
 
 			</fieldset>
