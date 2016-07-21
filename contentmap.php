@@ -43,7 +43,20 @@
 	<br style="clear:both;" />
 	<?php } ?>
 
-<table  width="90%"><tr><td>
+<table  width="90%">
+    <tr>
+		<td align="left" valign="bottom">
+
+			<a href="https://plus.google.com/communities/114304425977801029322" target="blank" class="btn btn-large btn-warning"><i class="icon-users"></i>  COMMUNITY</a>
+		    <a href="https://github.com/AlexRed/contentmap" target="blank" class="btn btn-large btn-inverse"><i class="icon-cogs"></i>  GitHub</a>
+			<a href="http://www.opensourcesolutions.es/ext/contentmap.html" target="blank" class="btn btn-large btn-success"><i class="icon-download"></i>  INFO & DOWNLOAD</a>
+			<a href="http://www.opensourcesolutions.es/ext/contentmap.html" target="blank" class="btn btn-large btn-info"><i class="icon-eye"></i>  DEMO</a>
+			<br /><br />
+		</td>
+	</tr>
+
+
+	<tr><td>
 		<h1><?php echo($language->_("COM_CONTENTMAP_INSTRUCTIONS_LBL")); ?></h1>
 		<h2><?php echo($language->_("COM_CONTENTMAP_INSTRUCTIONS_TITLE")); ?></h2>
 		<?php echo($language->_("COM_CONTENTMAP_INSTRUCTIONS_DSC")); ?>

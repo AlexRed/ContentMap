@@ -30,7 +30,7 @@
 				<field type="wizard" icon="exclamation-16.png" text="CONTENTMAP_NO_DATA" url="index.php?option=com_contentmap"/>
 				<field type="transchecker"/>
 				<field type="register"/>
-
+				<field name="api_key" type="text" label="CONTENTMAP_API_KEY_LBL" description="CONTENTMAP_API_KEY_DSC" size="26"/>
 				<field type="ossheader" default="CONTENTMAP_MAP_LAYOUT" icon="map-16.png"/>
 				<field name="map_width" type="text" size="6" label="CONTENTMAP_WIDTH" description="CONTENTMAP_MAPWIDTH_DSC" default="100" required="true"/>
 				<field name="map_width_unit" type="list" label="CONTENTMAP_UNITS_LBL" default="%">
@@ -213,7 +213,7 @@
 
 				<field name="css" type="filelist" label="CONTENTMAP_ALT_CSS_LBL" description="CONTENTMAP_ALT_CSS_DSC" default="default.css" hide_none="true" directory="libraries/contentmap/css" filter="\.php$" exclude="" stripext="true"/>
 				<!-- <field name="markers" type="hidden" default="markers.json" /> -->
-				<field name="api_key" type="text" label="CONTENTMAP_API_KEY_LBL" description="CONTENTMAP_API_KEY_DSC" size="26"/>
+				
 			</fieldset>
 
 
