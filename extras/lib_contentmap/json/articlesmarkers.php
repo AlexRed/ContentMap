@@ -355,7 +355,7 @@ class articleGoogleMapMarkers extends GoogleMapMarkers
 		$query->from("#__content");
 
 		// Condition: content id passed py plugin
-		$query->where("id = '" . JRequest::getVar("contentid", 0, "GET") . "'");
+		$query->where("id = '" . intval(JRequest::getVar("contentid", 0, "GET")) . "'");
 
 		// Condition: metadata field contains "xreference":"coordinates"
 		// {\"xreference\":\"} the string "xreference":"

@@ -11,6 +11,10 @@ class ContentMapViewSmartLoader extends JViewLegacy
 		// Load module || component || plugin parameters. Defaults to plugin
 		$owner = JRequest::getVar("owner", "", "GET") or $owner = "plugin"; // getVar() default value doesn't work with ?owner=""
 
+		if (!in_array($owner,array('module','plugin','component','article'))){
+			die();
+		}
+		
 		$db = JFactory::getDbo();
 		jimport("joomla.database.databasequery");
 		$query = $db->getQuery(true);
