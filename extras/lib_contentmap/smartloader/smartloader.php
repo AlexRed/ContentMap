@@ -133,7 +133,7 @@ class jsonSmartLoader extends SmartLoader
 
 	protected function http_headers()
 	{
-		header('content-type: application/json');
+		header('content-type: application/javascript');
 	}
 
 	protected function content_header()
